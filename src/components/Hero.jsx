@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import profilePic from '../assets/profile.png';
 
 export default function HeroWithGridLines() {
   const [time, setTime] = useState(new Date());
@@ -85,8 +86,8 @@ export default function HeroWithGridLines() {
             <div className="absolute -inset-4 rounded-3xl" />
             <div className="relative aspect-[4/3] overflow-hidden">
               <img
-                className="h-full w-full object-cover opacity-95"
-                src="https://d2j7mtsoydewxq.cloudfront.net/facets-ii/468-desktop.png"
+                className="h-full w-full object-contain opacity-95"
+                src={profilePic}
                 alt="Portrait"
               />
             </div>
