@@ -1,0 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+body, .font-display {
+  font-family: 'Inter', 'Poppins', 'Segoe UI', Arial, sans-serif;
+}
