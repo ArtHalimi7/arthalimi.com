@@ -63,6 +63,7 @@ const Prism = ({
     });
     container.appendChild(gl.canvas);
 
+    // Reduce STEPS for performance
     const vertex = /* glsl */ `
       attribute vec2 position;
       void main() {
@@ -157,7 +158,7 @@ const Prism = ({
           wob = mat2(c0, c1, c2, c0);
         }
 
-        const int STEPS = 100;
+        const int STEPS = 60; // Reduced from 100 for performance
         for (int i = 0; i < STEPS; i++) {
           p = vec3(f, z);
           p.xz = p.xz * wob;

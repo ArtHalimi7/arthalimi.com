@@ -7,8 +7,8 @@ const Hero = () => {
         <Prism
           animationType="rotate"
           timeScale={0.5}
-          height={3.5}
-          baseWidth={5.5}
+          height={3}
+          baseWidth={3.5}
           scale={3.6}
           hueShift={0}
           colorFrequency={1}
@@ -17,13 +17,13 @@ const Hero = () => {
           className="mt-32"
         />
         <div
-          className="hero-content flex flex-col items-center md:items-start justify-center absolute top-0 left-0 h-full px-8 sm:px-16 md:pl-32 w-full md:w-2/3"
+          className="hero-content flex flex-col items-center md:items-start justify-center absolute top-0 left-0 h-full px-12 sm:px-24 md:pl-48 w-full md:w-3/4"
           style={{ zIndex: 2 }}
         >
-          <p className="text-xl sm:text-xl md:text-2xl text-gray-300 mb-2 text-center md:text-left">Hello, my name is</p>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 text-white text-center md:text-left">Art Halimi</h1>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold mb-8 text-gray-200 text-center md:text-left">Full Stack Web Developer</h2>
-            <p className="text-xl sm:text-xl md:text-2xl text-gray-400 max-w-xl text-center md:text-left">
+          <p className="text-2xl sm:text-3xl md:text-4xl text-blue-300 mb-4 text-center md:text-left font-light tracking-wide drop-shadow-lg">Hello, my name is</p>
+            <h1 className="text-6xl sm:text-7xl md:text-8xl font-extrabold mb-8 text-white text-center md:text-left tracking-tight drop-shadow-xl">Art Halimi</h1>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-10 text-blue-200 text-center md:text-left tracking-wide drop-shadow-lg">Full Stack Web Developer</h2>
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-2xl text-center md:text-left font-medium leading-relaxed drop-shadow-md">
             A dedicated Full Stack Web Developer from Kosovo, specializing in React, Node.js, and modern web technologies.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-8 items-center md:items-start justify-center md:justify-start w-full">
