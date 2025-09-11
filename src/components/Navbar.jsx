@@ -53,54 +53,38 @@ const Navbar = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-md ${
-        isMobileMenuOpen || isScrolled ? "bg-white/10" : "bg-transparent"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-4 py-6 bg-transparent"
     >
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="font-mono text-white"
-          >
-            &lt;Art.dev/&gt;
-          </motion.div>
+      <div className="w-full max-w-4xl mx-auto rounded-full border border-white/20 bg-white/5 backdrop-blur-lg flex items-center justify-between px-8 py-2 shadow-lg" style={{ minHeight: '64px' }}>
+  {/* Logo */}
+  <div className="font-mono text-white text-lg font-semibold">&lt;Art.dev/&gt;</div>
 
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <motion.button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`relative px-4 py-2 rounded-full transition-all duration-300 text-white/80 hover:text-white`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {item.label}
-                {activeSection === item.id && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 bg-white/20 rounded-full border border-white/30"
-                    transition={{ type: "spring", duration: 0.6 }}
-                  />
-                )}
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-white p-2 z-50 relative"
+        {/* Desktop Nav Items with original routes */}
+        <div className="hidden md:flex items-center gap-8">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className={`text-white font-semibold hover:text-white/80 transition px-2`}
             >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </motion.button>
-          </div>
+              {item.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Mobile menu button */}
+        <div className="md:hidden">
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="text-white p-2 z-50 relative"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </motion.button>
         </div>
       </div>
 
@@ -114,7 +98,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-white/10 z-40 md:hidden backdrop-blur-md"
+              className="fixed inset-0 bg-black/40 z-40 md:hidden backdrop-blur-sm"
             />
 
             {/* Sidebar */}
@@ -123,11 +107,11 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "tween", duration: 0.3 }}
-              className="fixed right-0 top-0 h-full w-80 bg-white/10 z-50 shadow-2xl border-l border-white/10 md:hidden backdrop-blur-md"
+              className="fixed right-0 top-0 h-full w-72 bg-white/10 z-50 shadow-2xl border-l border-white/10 md:hidden backdrop-blur-lg flex flex-col"
             >
               {/* Sidebar Header */}
               <div className="flex items-center justify-between p-4 border-b border-white/10">
-                <div className="font-mono text-white">&lt;Art.dev/&gt;</div>
+                <div className="font-mono text-white text-lg font-semibold">&lt;Art.dev/&gt;</div>
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -137,7 +121,7 @@ const Navbar = () => {
                 </motion.button>
               </div>
 
-              <div className="p-6 pt-4">
+              <div className="p-6 pt-4 flex-1 flex flex-col justify-between">
                 <div className="space-y-4">
                   {navItems.map((item, index) => (
                     <motion.button
@@ -146,7 +130,7 @@ const Navbar = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
                       onClick={() => scrollToSection(item.id)}
-                      className={`w-full text-left p-4 rounded-2xl transition-all duration-300 text-white/80 hover:bg-white/10 hover:text-white`}
+                      className="w-full text-left p-4 rounded-xl transition-all duration-300 text-white/80 hover:bg-white/10 hover:text-white"
                     >
                       <span className="text-lg font-medium">{item.label}</span>
                     </motion.button>
@@ -154,20 +138,11 @@ const Navbar = () => {
                 </div>
 
                 {/* Contact info in sidebar */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="mt-8 p-4 bg-white/5 rounded-2xl border border-white/10"
-                >
-                  <h3 className="font-mono text-white mb-2">
-                    Get in touch
-                  </h3>
-                  <p className="text-white/70 text-sm">
-                    arthalimi989@gmail.com
-                  </p>
+                <div className="mt-8 p-4 bg-white/5 rounded-xl border border-white/10">
+                  <h3 className="font-mono text-white mb-2 text-base font-semibold">Get in touch</h3>
+                  <p className="text-white/70 text-sm">arthalimi989@gmail.com</p>
                   <p className="text-white/70 text-sm"></p>
-                </motion.div>
+                </div>
               </div>
             </motion.div>
           </>
