@@ -72,7 +72,7 @@ export default function HeroWithGridLines() {
           style={{ fontFamily: 'Space Grotesk, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Cantarell, Noto Sans, sans-serif' }}
         >
                     <p className="text-lg md:text-xl font-semibold text-zinc-100 text-center tracking-widest md:text-left">
-          Hi, I'm Art Halimi
+          Hi, I'm <span className="text-[#B71C1C]">Art Halimi</span>
         </p>
           <span className="block">CREATIVE</span>
           <span className="block ml-24 md:ml-40">FULL STACK</span>
@@ -97,7 +97,7 @@ export default function HeroWithGridLines() {
             <div className="flex items-center gap-3">
               <span className="text-xl">*</span>
               <div className="h-px flex-1 bg-white/10" />
-              <span className="text-[10px] uppercase tracking-widest text-zinc-400">Modern Web Architect</span>
+              <span className="text-[10px] uppercase tracking-widest text-red-600">Modern Web Architect</span>
             </div>
 
             <p className="mt-[150px] max-w-xl text-zinc-300">
