@@ -65,7 +65,6 @@ export default function HeroWithGridLines() {
           <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
           <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
           <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white/5" />
-          <span className="absolute bottom-0 left-0 right-0 h-px bg-white/10" />
         </div>
 
         <h1
@@ -132,7 +131,7 @@ function Lines() {
     <div aria-hidden className="pointer-events-none absolute inset-0">
       {/* Outer frame (like the red guide lines in the screenshot) */}
       <div className="absolute left-2 right-2 top-2 bottom-[50px]">
-        <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
+        <span className="absolute left-0 right-0 -bottom-12 h-px bg-white/10" />
       </div>
       {/* Inner gutter lines */}
       <span className="absolute top-0 bottom-0 left-10 w-px bg-white/10" />
