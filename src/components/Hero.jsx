@@ -15,6 +15,7 @@ export default function HeroWithGridLines() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-[#18191A] text-zinc-100">
       <Lines />
+
       {/* HERO */}
       <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-12 md:pb-24 md:pt-20">
         {/* Container boundary lines */}
