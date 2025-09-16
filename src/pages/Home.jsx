@@ -6,6 +6,7 @@ import WorkExperience from '../components/WorkExperience';
 import ServicesSection  from '../components/Services';
 import Education from '../components/Education';
 import Contact from '../components/Contact';
+import Footer from '../components/Footer';
 const Home = () => {
   return (
     <div>
@@ -16,6 +17,7 @@ const Home = () => {
       <Projects />
       <ServicesSection />
       <Contact />
+      <Footer />
     </div>
   )
 }

@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
-import { Mail, MapPin, Phone } from 'lucide-react';
-import ModelViewer from './ModelViewer';
+import emailjs from '@emailjs/browser';
+import { Mail, MapPin, Phone, User, FileText } from 'lucide-react';
 
-function InputField({ label, name, type = 'text', required = false }) {
+function InputField({ label, name, type = 'text', required = false, icon: Icon, placeholder }) {
   return (
     <div>
       <label className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2 block">{label}</label>
-      <input
-        name={name}
-        type={type}
-        required={required}
-        className="w-full mt-2 bg-[#18191A] border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#B71C1C]"
-      />
+      <div className="relative">
+        {Icon && (
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B71C1C]">
+            <Icon className="w-4 h-4" />
+          </span>
+        )}
+        <input
+          name={name}
+          type={type}
+          required={required}
+          placeholder={placeholder}
+          className={`w-full mt-2 bg-[#18191A] border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] placeholder:text-zinc-500 ${Icon ? 'pl-10' : ''}`}
+        />
+      </div>
     </div>
   );
 }
@@ -25,6 +33,32 @@ function GridLines() {
 }
 
 export default function Contact() {
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSending(true);
+    setError(null);
+    setSent(false);
+    const form = e.target;
+    try {
+      await emailjs.sendForm(
+        'service_edxi3zr',
+        'template_k7mg7ap',
+        form,
+        '-NWp731-hJ2KBhmcB'
+      );
+      setSent(true);
+      form.reset();
+    } catch (err) {
+      setError('Failed to send message. Please try again.');
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <section id="contact" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
       <GridLines />
@@ -37,97 +71,71 @@ export default function Contact() {
             <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">Contact</span>
           </div>
 
-          <h1 className="text-[clamp(2.25rem,6vw,3.5rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-white mb-4">
-            <span className="block">GET IN</span>
-            <span className="block ml-12">TOUCH</span>
+          <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-white mb-8">
+            <span className="block">Contact</span>
+            <span className="block ml-16">Me</span>
           </h1>
+          <div className="flex items-center gap-3 max-w-3xl">
+            <span className="text-xl text-[#B71C1C]">*</span>
+            <div className="h-px flex-1 bg-white/10" />
+            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+              Let's connect and build something great together!
+            </span>
+          </div>
 
           <p className="mt-4 max-w-2xl text-zinc-300">If you'd like to work together or just say hi, drop a message — I usually reply within a day or two.</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 items-start">
-          {/* Model column: make the car visually on top and remove the card background */}
-          <div className="order-first lg:order-none">
-            <div className="relative z-20 -mt-6 lg:mt-0 lg:mr-6">
-              <div className="rounded-2xl overflow-hidden" style={{ background: 'transparent' }}>
-                <ModelViewer
-                  url="/models/audirs7.glb"
-                  width="100%"
-                  height={420}
-                  modelXOffset={0}
-                  modelYOffset={0}
-                  defaultRotationX={0}
-                  defaultRotationY={0}
-                  defaultZoom={1.2}
-                  enableMouseParallax={false}
-                  enableManualRotation={true}
-                  enableHoverRotation={false}
-                  autoRotate={true}
-                  autoRotateSpeed={0.25}
-                  enableManualZoom={true}
-                  enableVerticalRotation={false}
-                  modelScale={3}
-                  autoFrame={false}
-                  showScreenshotButton={false}
-                  fadeIn={true}
-                />
-              </div>
-            </div>
-          </div>
-
           {/* Form column: replace static info with a contact form */}
           <div>
-            <div className="p-6 bg-[#232425] border border-white/10 rounded-2xl">
+            <div className="p-6 bg-[#232425] border border-white/10">
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
+                onSubmit={handleSubmit}
                 className="space-y-4"
                 id="contact-form"
               >
-                <InputField label="Your name" name="name" required />
-                <InputField label="Your email" name="email" type="email" required />
-                <InputField label="Subject" name="subject" />
+                <InputField label="Your name" name="name" required icon={User} placeholder="John Doe" />
+                <InputField label="Your email" name="email" type="email" required icon={Mail} placeholder="johndoe@email.com" />
+                <InputField label="Subject" name="subject" icon={FileText} placeholder="Subject (optional)" />
                 <div>
                   <label className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2 block">Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={6}
-                    className="w-full mt-2 bg-[#18191A] border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#B71C1C]"
-                    placeholder="Tell me about your project..."
-                    required
-                  />
+                  <div className="relative">
+                    <span className="absolute left-3 top-5 text-[#B71C1C]">
+                      <FileText className="w-4 h-4" />
+                    </span>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={6}
+                      className="w-full mt-2 bg-[#18191A] border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] pl-10 placeholder:text-zinc-500"
+                      placeholder="Tell me about your project..."
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-4">
                   <button
-                    type="button"
-                    onClick={() => {
-                      // construct mailto from form fields
-                      const form = document.getElementById('contact-form');
-                      const fd = new FormData(form);
-                      const name = fd.get('name') || '';
-                      const email = fd.get('email') || '';
-                      const subject = fd.get('subject') || 'Hello';
-                      const message = fd.get('message') || '';
-                      const body = `From: ${name} (${email})\n\n${message}`;
-                      const mailto = `mailto:arthalimi989@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                      window.location.href = mailto;
-                    }}
-                    className="inline-flex items-center rounded-xl bg-[#B71C1C] px-5 py-3 font-medium text-white shadow-sm hover:brightness-95 hover:bg-[#8B1515]"
+                    type="submit"
+                    disabled={sending}
+                    className="inline-flex items-center rounded-xl bg-[#B71C1C] px-5 py-3 font-medium text-white shadow-sm hover:brightness-95 hover:bg-[#8B1515] disabled:opacity-60"
                   >
-                    Send message
+                    {sending ? 'Sending...' : 'Send message'}
                   </button>
-
                   <button
                     type="reset"
                     className="inline-flex items-center rounded-xl px-4 py-2 ring-1 ring-white/15 hover:bg-[#2a2b2c]"
-                    onClick={() => document.getElementById('contact-form')?.reset()}
                   >
                     Reset
                   </button>
                 </div>
+                {sent && (
+                  <div className="text-green-500 mt-2">Message sent successfully!</div>
+                )}
+                {error && (
+                  <div className="text-red-500 mt-2">{error}</div>
+                )}
               </form>
             </div>
           </div>

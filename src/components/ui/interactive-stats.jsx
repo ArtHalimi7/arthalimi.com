@@ -63,7 +63,7 @@ export function InteractiveStats({ totalYears, totalProjects, satisfaction, curr
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 mb-16">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
       {stats.map((stat, index) => {
         const Icon = stat.icon;
         
@@ -83,26 +83,26 @@ export function InteractiveStats({ totalYears, totalProjects, satisfaction, curr
               <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
             </div>
             
-            <div className="relative bg-[#232425] p-6 text-center hover:bg-[#2a2b2c] transition-colors duration-200">
+            <div className="relative bg-[#232425] p-6 flex flex-col items-center justify-center text-center hover:bg-[#2a2b2c] transition-colors duration-200 min-h-[140px] w-full max-w-full overflow-hidden">
               {/* Icon */}
-              <div className="flex justify-center mb-4">
-                <div className="w-10 h-10 bg-[#18191A] border border-white/10 flex items-center justify-center">
+              <div className="flex justify-center items-center mb-4">
+                <div className="w-10 h-10 bg-[#18191A] border border-white/10 flex items-center justify-center rounded-lg">
                   <Icon className="w-5 h-5 text-[#B71C1C]" />
                 </div>
               </div>
 
               {/* Value */}
-              <div className="mb-2">
-                <span className="text-2xl font-semibold text-white tracking-tight">
+              <div className="mb-2 flex items-end justify-center gap-1 flex-wrap w-full max-w-full overflow-hidden">
+                <span className="text-2xl font-semibold text-white tracking-tight break-words max-w-full w-full">
                   {stat.value}
                 </span>
-                <span className="text-[#B71C1C] font-medium">{stat.suffix}</span>
+                <span className="text-[#B71C1C] font-medium text-lg break-words max-w-full w-full">{stat.suffix}</span>
               </div>
 
               {/* Label */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full min-w-0">
                 <div className="h-px flex-1 bg-white/10" />
-                <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-medium">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-medium text-center break-words max-w-full w-full">
                   {stat.label}
                 </span>
                 <div className="h-px flex-1 bg-white/10" />
