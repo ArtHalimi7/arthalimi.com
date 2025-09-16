@@ -7,6 +7,7 @@ import About from './pages/About';
 import Services from './pages/Services';
 import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
+import CustomScrollbar from './components/CustomScrollbar';
 
 const App = () => {
   
@@ -14,6 +15,7 @@ const App = () => {
     <main className='background1'>
       <Router>
         <Navbar />
+        <CustomScrollbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

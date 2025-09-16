@@ -13,7 +13,7 @@ export default function HeroWithGridLines() {
 
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#18191A] text-zinc-100">
+    <section id="home" className="relative min-h-screen overflow-hidden bg-[#18191A] text-zinc-100">
       <Lines />
 
       {/* HERO */}

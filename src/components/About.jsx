@@ -404,27 +404,6 @@ export function AboutMe() {
             </p>
           </div>
         </motion.div>
-
-        {/* Footer CTA */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <div className="flex items-center gap-3 mb-6 justify-center">
-            <div className="h-px flex-1 bg-white/10 max-w-32" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Let's Connect
-            </span>
-            <div className="h-px flex-1 bg-white/10 max-w-32" />
-          </div>
-          
-          <button className="inline-flex items-center gap-3 bg-[#B71C1C] text-white px-8 py-4 font-medium hover:bg-[#8B1515] transition-colors duration-200">
-            <span>Get In Touch</span>
-            <ArrowRight className="w-5 h-5" />
-          </button>
-        </motion.div>
       </div>
     </section>
   );

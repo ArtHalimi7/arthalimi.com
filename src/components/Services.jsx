@@ -85,7 +85,7 @@ function ServiceCard({ service, index }) {
 
 export function ServicesSection() {
   return (
-    <section className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
+    <section id="services" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
       <GridLines />
       <div className="relative mx-auto max-w-7xl px-6">
         {/* Header */}
