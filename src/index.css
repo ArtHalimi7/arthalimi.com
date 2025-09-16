@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth in-page anchor scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --blue-rgb: 237 245 255;
   --green-rgb: 125 161 35;

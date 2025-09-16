@@ -171,7 +171,7 @@ function ProjectCard({ project, index }) {
 
 export function Projects() {
   return (
-    <section className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
+    <section id="projects" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
       <GridLines />
       <div className="relative mx-auto max-w-7xl px-6">
         {/* Header */}

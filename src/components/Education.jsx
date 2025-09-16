@@ -8,7 +8,7 @@ function GridLines() {
 
 export function Education() {
   return (
-    <section className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
+    <section id="education" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
       <GridLines />
 
       <div className="relative mx-auto max-w-7xl px-6">

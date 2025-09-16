@@ -164,7 +164,7 @@ export function AboutMe() {
   ];
 
   return (
-    <section className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
+  <section id="about" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
       <GridLines />
       
       <div className="relative mx-auto max-w-7xl px-6">
@@ -358,7 +358,7 @@ export function AboutMe() {
             <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
           </div>
 
-          <div className="relative bg-[#232425] p-8">
+          <div id="contact" className="relative bg-[#232425] p-8">
             <div className="flex items-center gap-3 mb-6">
               <Star className="w-4 h-4 text-[#B71C1C]" />
               <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
