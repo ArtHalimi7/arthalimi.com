@@ -35,6 +35,12 @@ body:has(.card[data-color="green"]:hover) {
     @apply font-semibold sm:text-3xl text-xl relative font-poppins;
   }
 
+  /* custom shadow utility used by form controls */
+  .shadow-card {
+    /* subtle card shadow */
+    box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+  }
+
   .input {
     @apply bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2.5 font-normal shadow-card;
   }
