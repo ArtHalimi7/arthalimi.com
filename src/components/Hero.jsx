@@ -64,7 +64,6 @@ export default function HeroWithGridLines() {
         <div className="pointer-events-none absolute inset-0">
           <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
           <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
-          <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white/5" />
         </div>
 
         <h1

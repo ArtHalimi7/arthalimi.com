@@ -265,6 +265,11 @@ const Projects = () => {
 		<section id="projects" className="py-20 bg-[#18191A]">
 			<div className="max-w-6xl mx-auto px-6">
 				<div className="bg-[#18191A] p-8 md:p-12">
+					{/* Professional snapshot label and line */}
+					<div className="flex items-center space-x-4 mb-8">
+						<span className="text-meta text-[#B6862C]">★ WORK</span>
+						<div className="flex-1 h-px bg-white/10" />
+					</div>
 					<motion.div
 						initial={{ opacity: 0, y: 50 }}
 						whileInView={{ opacity: 1, y: 0 }}

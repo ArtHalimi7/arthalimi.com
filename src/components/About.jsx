@@ -43,7 +43,11 @@ const About = () => {
         <div className="pointer-events-none absolute inset-0">
           <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
           <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
-          <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white/5" />
+        </div>
+        {/* Professional snapshot label and line */}
+        <div className="flex items-center space-x-4 mb-8">
+          <span className="text-meta text-[#B6862C]">★ PROFESSIONAL SNAPSHOT</span>
+          <div className="flex-1 h-px bg-white/10" />
         </div>
         <motion.div
           initial={{ opacity: 0, y: 50 }}
