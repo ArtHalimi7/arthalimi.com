@@ -61,7 +61,7 @@ export default function Navbar({ formatted }) {
 
           <div className="flex items-center justify-between">
             <div className="text-white font-semibold tracking-wider">&lt;Art.dev/&gt;</div>
-            <button className="text-zinc-400 text-3xl hover:text-[#B6862C]" onClick={() => setSidebarOpen(false)} aria-label="Close sidebar">&times;</button>
+            <button className="text-zinc-400 text-3xl hover:text-[#b9310f]" onClick={() => setSidebarOpen(false)} aria-label="Close sidebar">&times;</button>
           </div>
 
           <div className="my-4 h-px w-full bg-white/10" />
@@ -163,7 +163,7 @@ export default function Navbar({ formatted }) {
           {/* Time on desktop, menu icon on mobile */}
           <div className="flex items-center">
             <span className="hidden md:block text-[10px] tracking-widest text-zinc-500 md:text-xs">{time}</span>
-            <button className="md:hidden text-[#B6862C] text-2xl ml-2" onClick={() => setSidebarOpen(true)}>
+            <button className="md:hidden text-[#d10000] text-2xl ml-2" onClick={() => setSidebarOpen(true)}>
               &#9776;
             </button>
           </div>
