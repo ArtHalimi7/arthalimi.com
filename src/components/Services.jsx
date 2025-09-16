@@ -1,143 +1,152 @@
-import React from 'react';
+import { motion } from 'framer-motion';
 import { Code, Palette, Zap, ArrowRight } from 'lucide-react';
 
-/**
- * @param {{ className?: string }} props
- */
-export function ServicesSection({ className = '' }) {
-  const services = [
-    {
-      icon: Code,
-      title: 'Frontend Development',
-      description: 'Modern, responsive UIs with React, Next.js, and TailwindCSS.',
-      capabilities: [
-        'ReactJS',
-        'NextJS',
-        'TailwindCSS',
-        'ThreeJS',
-      ],
-      accent: 'red-700',
-    },
-    {
-      icon: Zap,
-      title: 'Backend Development',
-      description: 'Robust APIs and databases with Node.js, Express, and MongoDB.',
-      capabilities: [
-        'NodeJS',
-        'ExpressJS',
-        'MongoDB',
-        'MySQL',
-      ],
-      accent: 'yellow-600',
-    },
-    {
-      icon: Palette,
-      title: 'Web Tools & Workflow',
-      description: 'Efficient dev workflow with Git, Vite, and modern tooling.',
-      capabilities: [
-        'Git & GitHub',
-        'Vite',
-        'VS Code',
-        'Chrome DevTools',
-      ],
-      accent: 'red-700',
-    },
-  ];
+const services = [
+  {
+    icon: Code,
+    title: 'Frontend Development',
+    description: 'Modern, responsive UIs with React, Next.js, and TailwindCSS.',
+    capabilities: [
+      'ReactJS',
+      'NextJS',
+      'TailwindCSS',
+      'ThreeJS',
+    ],
+    accent: 'bg-[#B71C1C]',
+  },
+  {
+    icon: Zap,
+    title: 'Backend Development',
+    description: 'Robust APIs and databases with Node.js, Express, and MongoDB.',
+    capabilities: [
+      'NodeJS',
+      'ExpressJS',
+      'MongoDB',
+      'MySQL',
+    ],
+    accent: 'bg-yellow-600',
+  },
+  {
+    icon: Palette,
+    title: 'Web Tools & Workflow',
+    description: 'Efficient dev workflow with Git, Vite, and modern tooling.',
+    capabilities: [
+      'Git & GitHub',
+      'Vite',
+      'VS Code',
+      'Chrome DevTools',
+    ],
+    accent: 'bg-[#B71C1C]',
+  },
+];
 
+function GridLines() {
+  return <div aria-hidden className="pointer-events-none absolute inset-0" />;
+}
+
+function ServiceCard({ service, index }) {
+  const Icon = service.icon;
   return (
-    <section id="services" className={`relative py-32 bg-[#18191A] text-zinc-100 ${className}`}>
-      <div className="relative px-8 lg:px-24 max-w-7xl mx-auto">
-        {/* Professional snapshot label and line */}
-        <div className="flex items-center space-x-4 mb-8">
-          <span className="text-meta text-[#B6862C]">★ SERVICES</span>
-          <div className="flex-1 h-px bg-white/10" />
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.1 * index }}
+      className="group relative bg-[#232425] border border-white/10 hover:border-[#B71C1C] transition-all duration-300 rounded-xl overflow-hidden flex flex-col shadow-none hover:shadow-2xl hover:scale-[1.025]"
+      style={{ minHeight: 320 }}
+    >
+      {/* Accent bar */}
+      <div className={`absolute left-0 top-0 h-full w-2 ${service.accent} rounded-r-xl`} />
+      {/* Gradient overlay on hover */}
+      <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'linear-gradient(120deg,rgba(183,28,28,0.08) 0%,rgba(255,255,255,0.02) 100%)'}} />
+      <div className="flex items-center gap-4 p-6 border-b border-white/10 relative z-10">
+        <div className={`w-14 h-14 flex items-center justify-center border border-white/10 rounded-xl shadow-lg ${service.accent} bg-opacity-80 group-hover:shadow-[0_0_24px_4px_rgba(183,28,28,0.25)] transition-all duration-300`}>
+          <Icon className="w-7 h-7 text-white drop-shadow-lg" />
         </div>
+        <div>
+          <h3 className="text-xl font-bold text-white mb-1">{service.title}</h3>
+          <p className="text-zinc-400 text-sm">{service.description}</p>
+        </div>
+      </div>
+      <div className="flex-1 flex flex-col p-6 relative z-10">
+        <div className="mb-2">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-medium">
+            Key Capabilities
+          </span>
+          <ul className="list-disc pl-5 text-zinc-200 text-sm space-y-1 mt-1">
+            {service.capabilities.map((cap, i) => (
+              <li key={i}>{cap}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
-
-        <div className="mb-16">
-          <h2
-            className="font-extrabold uppercase leading-[0.85] tracking-tight text-[clamp(2.75rem,6vw,4.5rem)] text-[#e7e6e3] text-center"
-            style={{ fontFamily: 'Space Grotesk, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Cantarell, Noto Sans, sans-serif' }}
-          >
-            <span className="block">WHAT</span>
-            <span className="block text-[#B71C1C]">I DO</span>
-          </h2>
-          <p className="text-lg md:text-xl font-medium text-zinc-300 text-center tracking-wide mt-4">
-            A comprehensive suite of services to elevate your web presence
+export function ServicesSection() {
+  return (
+    <section className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
+      <GridLines />
+      <div className="relative mx-auto max-w-7xl px-6">
+        {/* Header */}
+        <motion.div
+          className="mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <Code className="w-6 h-6 text-[#B71C1C]" />
+            <div className="h-px flex-1 bg-white/10" />
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+              My Services
+            </span>
+          </div>
+          <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-white mb-8">
+            <span className="block">What</span>
+            <span className="block ml-16">I Do</span>
+          </h1>
+          <div className="flex items-center gap-3 max-w-3xl">
+            <span className="text-xl text-[#B71C1C]">*</span>
+            <div className="h-px flex-1 bg-white/10" />
+            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+              Elevate your web presence
+            </span>
+          </div>
+          <p className="mt-8 max-w-2xl text-zinc-300 leading-relaxed">
+            A comprehensive suite of services to help you build, launch, and grow your digital products with modern web technologies.
           </p>
-        </div>
+        </motion.div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <div
-              key={index}
-              className="group relative bg-[#232425] border border-white/10 rounded-2xl p-8 hover:border-[#B6862C]/30 transition-all duration-300"
-            >
-              {/* Top hairline */}
-              <div className="absolute top-0 left-8 right-8 h-px bg-white/10" />
-              {/* Accent stripe */}
-              <div className={`absolute top-0 left-0 w-1 h-16 bg-${service.accent} rounded-r`} />
-
-              <div className="space-y-6">
-                {/* Icon */}
-                <div className="w-12 h-12 bg-[#18191A] border border-white/10 rounded-xl flex items-center justify-center group-hover:border-[#B6862C]/30 transition-colors duration-300">
-                  <service.icon size={20} className="text-[#B6862C]" />
-                </div>
-
-                {/* Content */}
-                <div className="space-y-4">
-                  <h3 className="text-h2 text-zinc-100 group-hover:text-[#B6862C] transition-colors duration-200">
-                    {service.title}
-                  </h3>
-                  <p className="text-body text-zinc-400">
-                    {service.description}
-                  </p>
-                </div>
-
-                {/* Capabilities */}
-                <div className="space-y-3">
-                  <div className="text-meta text-zinc-500 uppercase tracking-wider">
-                    Key Capabilities
-                  </div>
-                  <div className="space-y-2">
-                    {service.capabilities.map((capability, capIndex) => (
-                      <div key={capIndex} className="flex items-center space-x-2 text-body text-zinc-300">
-                        <div className="w-1 h-1 bg-[#B6862C] rounded-full" />
-                        <span>{capability}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Mini-case link */}
-                <button className="group/btn flex items-center space-x-2 text-meta text-[#B6862C] hover:text-[#B71C1C] transition-colors duration-200 mt-6">
-                  <span>VIEW CASE STUDY</span>
-                  <ArrowRight size={12} className="group-hover/btn:translate-x-1 transition-transform duration-200" />
-                </button>
-              </div>
-
-              {/* Grid overlay on hover */}
-              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute inset-4 border border-white/5" />
-                <div className="absolute top-0 bottom-0 left-1/2 w-px bg-white/5" />
-              </div>
-            </div>
+            <ServiceCard key={service.title} service={service} index={index} />
           ))}
         </div>
 
-        {/* CTA Section */}
-        <div className="text-center mt-16 p-8 bg-[#232425] border border-white/10 rounded-2xl">
-          <h3 className="text-h2 text-zinc-100 mb-4">
-            Ready to Start Your Project?
-          </h3>
-          <p className="text-body text-zinc-400 mb-6 max-w-lg mx-auto">
-            Let's discuss how I can help bring your vision to life with modern web technologies.
-          </p>
-          <button className="group relative px-8 py-4 bg-[#B71C1C] text-zinc-100 text-meta rounded-2xl transition-all duration-200 hover:bg-[#8B1515] hover:shadow-lg">
-            <span className="relative z-10">START A PROJECT</span>
-          </button>
-        </div>
+        {/* Footer CTA */}
+        <motion.div
+          className="mt-16 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+        >
+          <div className="flex items-center gap-3 mb-6 justify-center">
+            <div className="h-px flex-1 bg-white/10 max-w-32" />
+            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+              Ready to start your project?
+            </span>
+            <div className="h-px flex-1 bg-white/10 max-w-32" />
+          </div>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-3 bg-[#B71C1C] text-white px-8 py-4 font-medium hover:bg-[#8B1515] transition-colors duration-200"
+          >
+            <span>Start a Project</span>
+            <ArrowRight className="w-5 h-5" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );
