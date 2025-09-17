@@ -15,10 +15,20 @@ const projects = [
     image: illyonImg,
     role: "Full-Stack Developer",
     year: "2025",
-    description: "Ecommerce platform with product catalog, checkout, and admin features.",
-    tech: ["React", "Node.js", "Express", "MongoDB"],
-    features: ["Catalog", "Auth", "Checkout"],
-    impact: "Helped businesses launch online stores.",
+    description:
+      "Illyon is a robust ecommerce platform designed for seamless online shopping experiences. It features advanced product catalog management, secure user authentication, shopping cart, order tracking, and integrated payment gateways. The platform supports promotional campaigns, product reviews, and real-time inventory updates, making it ideal for businesses looking to scale online sales.",
+    tech: ["React", "Node.js", "Express", "MongoDB", "Stripe", "TailwindCSS"],
+    features: [
+      "Product Catalog & Search",
+      "User Authentication & Profiles",
+      "Shopping Cart & Checkout",
+      "Order Tracking",
+      "Integrated Payments",
+      "Promotions & Reviews",
+      "Admin Dashboard",
+    ],
+    impact:
+      "Enabled hundreds of businesses to launch online stores and increased sales conversion rates.",
     link: "https://illyon.com",
   },
   {
@@ -28,10 +38,27 @@ const projects = [
     image: zahlxImg,
     role: "Lead Developer",
     year: "2025",
-    description: "AI-backed business platform for automated invoicing and analytics.",
-    tech: ["React", "Node.js", "OpenAI API"],
-    features: ["Analytics", "Invoicing"],
-    impact: "Streamlined operations for SMEs.",
+    description:
+      "ZahlX is an AI-powered business management platform that streamlines operations for SMEs. It offers intelligent analytics, automated invoicing, expense tracking, and predictive insights. ZahlX integrates with popular accounting tools and provides a dashboard for monitoring KPIs, employee performance, and financial health. The AI assistant helps with decision-making and workflow automation.",
+    tech: [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "OpenAI API",
+      "TailwindCSS",
+    ],
+    features: [
+      "AI Analytics & Insights",
+      "Automated Invoicing",
+      "Expense Tracking",
+      "KPI Dashboard",
+      "Employee Performance Monitoring",
+      "Workflow Automation",
+      "Accounting Integrations",
+    ],
+    impact:
+      "Helped businesses save time and money by automating management tasks and providing actionable insights.",
     link: "https://zahlx.com",
   },
   {
@@ -41,10 +68,19 @@ const projects = [
     image: andiImg,
     role: "Frontend Developer",
     year: "2025",
-    description: "Campaign site with biography, events, and volunteer signup.",
-    tech: ["React", "TailwindCSS"],
-    features: ["Profile", "Events"],
-    impact: "Increased campaign engagement.",
+    description:
+      "A modern campaign website for a municipal assembly candidate, Andi. The site features candidate biography, campaign goals, news updates, event calendar, and volunteer sign-up forms. It integrates social media feeds and donation processing, providing a central hub for supporters and constituents to engage with the campaign.",
+    tech: ["React", "TailwindCSS", "Vite", "Framer Motion"],
+    features: [
+      "Candidate Profile",
+      "Campaign Goals",
+      "News & Events",
+      "Volunteer Sign-Up",
+      "Donation Integration",
+      "Social Media Feeds",
+    ],
+    impact:
+      "Boosted campaign engagement and donations through a user-friendly, informative platform.",
     link: "https://andi.com",
   },
   {
@@ -54,10 +90,17 @@ const projects = [
     image: arsaImg,
     role: "Frontend Developer",
     year: "2025",
-    description: "Company website showcasing projects and services.",
-    tech: ["React", "TailwindCSS"],
-    features: ["Gallery", "Contact"],
-    impact: "Helped reach new clients.",
+    description:
+      "Arsa is a professional website for a construction company based in Switzerland, specializing in drywall installation and other construction services. The site showcases completed projects, service offerings, client testimonials, and contact forms. It features a gallery, service request forms, and multilingual support for Swiss and international clients.",
+    tech: ["React", "TailwindCSS", "Vite", "Framer Motion"],
+    features: [
+      "Project Gallery",
+      "Service Offerings",
+      "Client Testimonials",
+      "Contact & Service Request Forms",
+    ],
+    impact:
+      "Helped Arsa reach new clients and showcase their expertise in Swiss construction.",
     link: "https://arsa.com",
   },
 ];

@@ -119,24 +119,8 @@ export function Education() {
                 <strong className="text-white">Practical Application:</strong> Applied theoretical knowledge to real-world development projects.
               </li>
             </ul>
-
-            <div className="mt-6 p-4 bg-[#2a2b2c] border border-white/5">
-              <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2">Learning Philosophy</div>
-              <p className="text-zinc-300 text-sm">"Education is not just about acquiring knowledge—it's about developing the ability to think critically, solve complex problems, and adapt to new technologies. I believe in combining academic rigor with hands-on experience to create meaningful solutions."</p>
-            </div>
           </motion.div>
         </div>
-
-        {/* Timeline Footer */}
-        <motion.div
-          className="mt-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <div className="flex items-center gap-3 mb-6 justify-center">
-          </div> 
-        </motion.div>
       </div>
     </section>
   );

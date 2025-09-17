@@ -66,19 +66,19 @@ function LanguageItem({ language, proficiency, level }) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="p-4 bg-[#232425] border border-white/10"
+      className="p-6 min-h-[80px] bg-[#232425] border border-white/10 flex flex-col justify-center"
     >
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-3">
         <span className="text-zinc-300 font-medium">{language}</span>
         <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
           {proficiency}
         </span>
       </div>
-      <div className="flex gap-1">
+      <div className="flex gap-1 items-center min-h-[20.5px]">
         {[...Array(5)].map((_, i) => (
           <div
             key={i}
-            className={`h-1 flex-1 ${
+            className={`h-3 flex-1 rounded ${
               i < level ? 'bg-[#B71C1C]' : 'bg-white/10'
             }`}
           />
@@ -150,17 +150,6 @@ export function AboutMe() {
     { language: 'Albanian', proficiency: 'Native proficiency', level: 5 },
     { language: 'English', proficiency: 'Advanced proficiency', level: 4 },
     { language: 'German', proficiency: 'Intermediate proficiency', level: 3 }
-  ];
-
-  const softSkills = [
-    'Critical thinking',
-    'Attention to detail',
-    'Creativity',
-    'Time management',
-    'Adaptibility',
-    'Strong communication',
-    'Problem-solving',
-    'Quick learner'
   ];
 
   return (
@@ -343,54 +332,6 @@ export function AboutMe() {
             </div>
           </motion.div>
         </div>
-
-        {/* Soft Skills */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="relative mb-16"
-        >
-          <div className="absolute inset-0 pointer-events-none">
-            <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
-            <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
-            <span className="absolute left-0 right-0 top-0 h-px bg-white/10" />
-            <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
-          </div>
-
-          <div id="contact" className="relative bg-[#232425] p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <Star className="w-4 h-4 text-[#B71C1C]" />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-                Soft Skills
-              </span>
-              <div className="h-px flex-1 bg-white/10" />
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {softSkills.map((skill, index) => (
-                <SkillItem key={skill} skill={skill} index={index} />
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Fun Fact */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="relative mb-16"
-        >
-          <div className="absolute inset-0 pointer-events-none">
-            <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
-            <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
-            <span className="absolute left-0 right-0 top-0 h-px bg-white/10" />
-            <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
-          </div>
-
-
-        </motion.div>
       </div>
     </section>
   );

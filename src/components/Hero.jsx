@@ -1,6 +1,5 @@
 
 import { useEffect, useState, useRef } from "react";
-import profilePic from '../assets/profile.png';
 import windowBg from '../assets/window.png';
 
 export default function HeroWithGridLines() {
