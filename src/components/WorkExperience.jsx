@@ -94,7 +94,7 @@ export function WorkExperiences() {
             <span className="text-xl text-[#B71C1C]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Interactive Portfolio
+              Professional Snapshot
             </span>
           </div>
           
@@ -106,8 +106,8 @@ export function WorkExperiences() {
 
         {/* Interactive Stats Grid */}
         <InteractiveStats 
-          totalYears={5}
-          totalProjects={42}
+          totalYears={3}
+          totalProjects={10}
           satisfaction={100}
           currentStreak={127}
         />
@@ -130,27 +130,6 @@ export function WorkExperiences() {
             />
           ))}
         </div>
-
-        {/* Footer CTA */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-        >
-          <div className="flex items-center gap-3 mb-6 justify-center">
-            <div className="h-px flex-1 bg-white/10 max-w-32" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Ready to Connect
-            </span>
-            <div className="h-px flex-1 bg-white/10 max-w-32" />
-          </div>
-          
-          <button className="inline-flex items-center gap-3 bg-[#B71C1C] text-white px-8 py-4 font-medium hover:bg-[#8B1515] transition-colors duration-200">
-            <span>View Full Portfolio</span>
-            <ArrowRight className="w-5 h-5" />
-          </button>
-        </motion.div>
       </div>
     </section>
   );

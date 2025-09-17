@@ -12,7 +12,7 @@ const services = [
       'TailwindCSS',
       'ThreeJS',
     ],
-    accent: 'bg-[#B71C1C]',
+  accent: 'bg-[#b71c1c]/80',
   },
   {
     icon: Zap,
@@ -24,7 +24,7 @@ const services = [
       'MongoDB',
       'MySQL',
     ],
-    accent: 'bg-yellow-600',
+  accent: 'bg-[#b71c1c]/40',
   },
   {
     icon: Palette,
@@ -36,7 +36,7 @@ const services = [
       'VS Code',
       'Chrome DevTools',
     ],
-    accent: 'bg-[#B71C1C]',
+  accent: 'bg-[#b71c1c]/80',
   },
 ];
 
@@ -51,33 +51,27 @@ function ServiceCard({ service, index }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.1 * index }}
-      className="group relative bg-[#232425] border border-white/10 hover:border-[#B71C1C] transition-all duration-300 rounded-xl overflow-hidden flex flex-col shadow-none hover:shadow-2xl hover:scale-[1.025]"
+      className="relative bg-[#232425] p-8 border border-white/10 rounded-xl flex flex-col"
       style={{ minHeight: 320 }}
     >
-      {/* Accent bar */}
-      <div className={`absolute left-0 top-0 h-full w-2 ${service.accent} rounded-r-xl`} />
-      {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'linear-gradient(120deg,rgba(183,28,28,0.08) 0%,rgba(255,255,255,0.02) 100%)'}} />
-      <div className="flex items-center gap-4 p-6 border-b border-white/10 relative z-10">
-        <div className={`w-14 h-14 flex items-center justify-center border border-white/10 rounded-xl shadow-lg ${service.accent} bg-opacity-80 group-hover:shadow-[0_0_24px_4px_rgba(183,28,28,0.25)] transition-all duration-300`}>
-          <Icon className="w-7 h-7 text-white drop-shadow-lg" />
+      <div className="flex items-center gap-4 mb-4">
+        <div className="w-14 h-14 flex items-center justify-center border border-white/10 rounded-xl bg-[#18191A]">
+          <Icon className="w-7 h-7 text-white" />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-white mb-1">{service.title}</h3>
+          <h3 className="text-lg font-bold text-white mb-1">{service.title}</h3>
           <p className="text-zinc-400 text-sm">{service.description}</p>
         </div>
       </div>
-      <div className="flex-1 flex flex-col p-6 relative z-10">
-        <div className="mb-2">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-medium">
-            Key Capabilities
-          </span>
-          <ul className="list-disc pl-5 text-zinc-200 text-sm space-y-1 mt-1">
-            {service.capabilities.map((cap, i) => (
-              <li key={i}>{cap}</li>
-            ))}
-          </ul>
-        </div>
+      <div className="flex-1 flex flex-col">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-medium mb-2">
+          Key Capabilities
+        </span>
+        <ul className="list-disc pl-5 text-zinc-200 text-sm space-y-1 mt-1">
+          {service.capabilities.map((cap, i) => (
+            <li key={i}>{cap}</li>
+          ))}
+        </ul>
       </div>
     </motion.div>
   );

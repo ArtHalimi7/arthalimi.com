@@ -210,31 +210,6 @@ export function Projects() {
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
-
-        {/* Footer CTA */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-        >
-          <div className="flex items-center gap-3 mb-6 justify-center">
-            <div className="h-px flex-1 bg-white/10 max-w-32" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Want to see more?
-            </span>
-            <div className="h-px flex-1 bg-white/10 max-w-32" />
-          </div>
-          <a
-            href="https://arthalimi.netlify.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-[#B71C1C] text-white px-8 py-4 font-medium hover:bg-[#8B1515] transition-colors duration-200"
-          >
-            <span>View Full Portfolio</span>
-            <ArrowRight className="w-5 h-5" />
-          </a>
-        </motion.div>
       </div>
     </section>
   );

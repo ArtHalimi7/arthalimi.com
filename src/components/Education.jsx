@@ -135,55 +135,7 @@ export function Education() {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <div className="flex items-center gap-3 mb-6 justify-center">
-          </div>
-
-          <div className="w-full max-w-3xl mx-auto px-8">
-            <div className="relative">
-              {/* gradient line (grayscale) */}
-              <div aria-hidden className="h-0.5 rounded-full bg-gradient-to-r from-zinc-600 via-zinc-500 to-zinc-400" />
-
-              {/* Dots and labels container */}
-              <div className="absolute inset-0 flex items-center justify-between">
-                {/* Dot 1 */}
-                <motion.div
-                  className="flex flex-col items-center text-center w-1/3"
-                  initial={{ y: 6, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.45, duration: 0.5 }}
-                >
-                  <span className="block w-3 h-3 rounded-full bg-zinc-400 ring-2 ring-black/40" aria-hidden />
-                  <div className="mt-3 text-white text-2xl font-bold">2021</div>
-                  <div className="text-sm text-zinc-300">Started</div>
-                </motion.div>
-
-                {/* Dot 2 */}
-                <motion.div
-                  className="flex flex-col items-center text-center w-1/3"
-                  initial={{ y: 6, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.6, duration: 0.5 }}
-                >
-                  <span className="block w-3 h-3 rounded-full bg-zinc-500 ring-2 ring-black/40" aria-hidden />
-                  {/* subtle red accent under current */}
-                  <span className="block mt-2 w-8 h-1 rounded-full bg-[#b71c1c] opacity-85" aria-hidden />
-                  <div className="mt-3 text-white text-2xl font-bold">2025</div>
-                  <div className="text-sm text-zinc-300">Current</div>
-                </motion.div>
-
-                {/* Dot 3 */}
-                <motion.div
-                  className="flex flex-col items-center text-center w-1/3"
-                  initial={{ y: 6, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.75, duration: 0.5 }}
-                >
-                  <span className="block w-3 h-3 rounded-full bg-zinc-300 ring-2 ring-black/40" aria-hidden />
-                  <div className="mt-3 text-white text-2xl font-bold">2026</div>
-                  <div className="text-sm text-zinc-300">Graduation</div>
-                </motion.div>
-              </div>
-            </div>
-          </div>
+          </div> 
         </motion.div>
       </div>
     </section>

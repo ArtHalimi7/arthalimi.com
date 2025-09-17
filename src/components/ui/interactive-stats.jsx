@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Clock, Star, Target } from 'lucide-react';
+import { TrendingUp, Clock, Star, Target, Code2 } from 'lucide-react';
 
 /**
  * @typedef {Object} InteractiveStatsProps
@@ -10,12 +10,16 @@ import { TrendingUp, Clock, Star, Target } from 'lucide-react';
  * @property {number} currentStreak
  */
 
-export function InteractiveStats({ totalYears, totalProjects, satisfaction, currentStreak }) {
+/**
+ * InteractiveStats component displays animated statistics.
+ * @param {InteractiveStatsProps} props
+ */
+function InteractiveStats({ totalYears, totalProjects, satisfaction, currentStreak }) {
   const [animatedValues, setAnimatedValues] = useState({
     years: 0,
     projects: 0,
     satisfaction: 0,
-    streak: 0
+    technologies: 0
   });
 
   useEffect(() => {
@@ -24,12 +28,12 @@ export function InteractiveStats({ totalYears, totalProjects, satisfaction, curr
         years: totalYears,
         projects: totalProjects,
         satisfaction: satisfaction,
-        streak: currentStreak
+        technologies: 7 // Set your mastered technologies count here
       });
     }, 800);
 
     return () => clearTimeout(timer);
-  }, [totalYears, totalProjects, satisfaction, currentStreak]);
+  }, [totalYears, totalProjects, satisfaction]);
 
   const stats = [
     {
@@ -54,16 +58,16 @@ export function InteractiveStats({ totalYears, totalProjects, satisfaction, curr
       delay: 0.2
     },
     {
-      icon: TrendingUp,
-      value: animatedValues.streak,
-      suffix: ' days',
-      label: 'Current Streak',
+      icon: Code2,
+      value: animatedValues.technologies,
+      suffix: '+',
+      label: 'Technologies Mastered',
       delay: 0.3
     }
   ];
 
   return (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
       {stats.map((stat, index) => {
         const Icon = stat.icon;
         
@@ -117,3 +121,5 @@ export function InteractiveStats({ totalYears, totalProjects, satisfaction, curr
     </div>
   );
 }
+
+export { InteractiveStats };
