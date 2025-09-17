@@ -66,19 +66,19 @@ function LanguageItem({ language, proficiency, level }) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="p-6 min-h-[80px] bg-[#232425] border border-white/10 flex flex-col justify-center"
+      className="p-4 bg-[#232425] border border-white/10"
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
         <span className="text-zinc-300 font-medium">{language}</span>
         <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
           {proficiency}
         </span>
       </div>
-      <div className="flex gap-1 items-center min-h-[20px]">
+      <div className="flex gap-1">
         {[...Array(5)].map((_, i) => (
           <div
             key={i}
-            className={`h-3 flex-1 rounded ${
+            className={`h-1 flex-1 ${
               i < level ? 'bg-[#B71C1C]' : 'bg-white/10'
             }`}
           />
@@ -373,6 +373,23 @@ export function AboutMe() {
               ))}
             </div>
           </div>
+        </motion.div>
+
+        {/* Fun Fact */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.7 }}
+          className="relative mb-16"
+        >
+          <div className="absolute inset-0 pointer-events-none">
+            <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
+            <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
+            <span className="absolute left-0 right-0 top-0 h-px bg-white/10" />
+            <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
+          </div>
+
+
         </motion.div>
       </div>
     </section>

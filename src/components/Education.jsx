@@ -39,7 +39,7 @@ export function Education() {
             </span>
           </div>
           <p className="mt-8 max-w-2xl text-zinc-300 leading-relaxed">
-            Pursuing a comprehensive education in computer science fundamentals, software engineering principles, and modern development practices.
+            Focused studies in core CS topics and practical software engineering.
           </p>
         </motion.div>
 
@@ -55,7 +55,7 @@ export function Education() {
               <div className="h-px flex-1 bg-white/10" />
             </div>
 
-            <h3 className="text-lg font-bold text-white mb-2">Bachelor of Science in Computer Science & Engineering</h3>
+            <h3 className="text-lg font-bold text-white mb-2">B.Sc. in Computer Science & Engineering</h3>
             <div className="text-zinc-400 text-sm mb-4">University of Business and Technology</div>
 
             <div className="flex items-center gap-3 text-zinc-400 text-sm mb-2">
@@ -69,7 +69,7 @@ export function Education() {
             </div>
 
             <p className="mt-4 text-zinc-300 text-sm">
-              Pursuing a comprehensive education in computer science fundamentals, software engineering principles, and modern development practices. The program combines theoretical knowledge with practical application, preparing me for the evolving tech industry.
+              Coursework combined with practical projects to prepare for real-world development.
             </p>
           </motion.div>
 

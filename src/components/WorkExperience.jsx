@@ -12,12 +12,11 @@ const workExperiences = [
     employmentType: "Internship",
     location: "Remote",
     years: "April 2024 – July 2024",
-    summary: "Contributed to frontend features and UI polish across a compact delivery cycle, working with React and modern development tools to enhance user experience and application performance.",
-    skills: ["React", "TypeScript", "Tailwind CSS", "Git", "Figma"],
+    summary: "Worked on UI features and performance improvements for a React app.",
+    skills: ["React", "TypeScript", "Tailwind CSS"],
     achievements: [
-      "Built 3 responsive components used across the main application",
-      "Improved page load speed by 15% through code optimization",
-      "Collaborated with design team on 5+ UI/UX improvements"
+      "Built responsive components used across the app",
+      "Improved page load performance"
     ],
     projects: 8
   },
@@ -28,13 +27,11 @@ const workExperiences = [
     employmentType: "Freelance",
     location: "Remote",
     years: "June 2021 – April 2024",
-    summary: "Delivered client websites and custom components, shipping 20+ projects end-to-end with focus on performance and user experience. Specialized in modern web technologies and SEO optimization.",
-    skills: ["JavaScript", "React", "Node.js", "WordPress", "SEO", "UI/UX Design"],
+    summary: "Built websites and components for clients, delivering reliable designs and performance.",
+    skills: ["JavaScript", "React", "Node.js"],
     achievements: [
-      "Successfully delivered 20+ client projects on time and budget",
-      "Achieved 98% client satisfaction rate with positive testimonials",
-      "Increased client website traffic by average 40% through SEO optimization",
-      "Built custom e-commerce solutions generating $50K+ in client revenue"
+      "Delivered 20+ client projects",
+      "Improved client site performance and conversions"
     ],
     projects: 22
   },
@@ -45,13 +42,11 @@ const workExperiences = [
     employmentType: "Full-time",
     location: "Gjilan",
     years: "June 2019 – August 2020",
-    summary: "Managed IT operations and infrastructure; coordinated tooling and support for teams while ensuring system reliability and security. Led technical initiatives and cross-department collaboration.",
-    skills: ["System Administration", "Network Security", "Team Leadership", "Project Management", "Technical Support"],
+    summary: "Oversaw IT operations and infrastructure, improving reliability and processes.",
+    skills: ["System Admin", "Network Security", "Project Management"],
     achievements: [
-      "Reduced system downtime by 60% through proactive monitoring",
-      "Led IT infrastructure upgrade serving 50+ employees",
-      "Implemented security protocols reducing vulnerabilities by 80%",
-      "Managed team of 4 IT specialists and coordinated cross-department projects"
+      "Reduced system downtime",
+      "Led infrastructure upgrades"
     ],
     projects: 12
   }

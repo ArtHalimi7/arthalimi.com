@@ -5,37 +5,22 @@ const services = [
   {
     icon: Code,
     title: 'Frontend Development',
-    description: 'Modern, responsive UIs with React, Next.js, and TailwindCSS.',
-    capabilities: [
-      'ReactJS',
-      'NextJS',
-      'TailwindCSS',
-      'ThreeJS',
-    ],
+    description: 'Modern, responsive UIs using React and Tailwind.',
+    capabilities: ['React', 'Next.js', 'Tailwind'],
   accent: 'bg-[#b71c1c]/80',
   },
   {
     icon: Zap,
     title: 'Backend Development',
-    description: 'Robust APIs and databases with Node.js, Express, and MongoDB.',
-    capabilities: [
-      'NodeJS',
-      'ExpressJS',
-      'MongoDB',
-      'MySQL',
-    ],
+    description: 'APIs and data services using Node and Express.',
+    capabilities: ['Node.js', 'Express', 'MongoDB'],
   accent: 'bg-[#b71c1c]/40',
   },
   {
     icon: Palette,
     title: 'Web Tools & Workflow',
-    description: 'Efficient dev workflow with Git, Vite, and modern tooling.',
-    capabilities: [
-      'Git & GitHub',
-      'Vite',
-      'VS Code',
-      'Chrome DevTools',
-    ],
+    description: 'Tooling and workflow to ship reliably and fast.',
+    capabilities: ['Git', 'Vite', 'VS Code'],
   accent: 'bg-[#b71c1c]/80',
   },
 ];
