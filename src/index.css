@@ -405,24 +405,3 @@ th {
 /* hidden/visible helpers */
 .scroll-top.opacity-0 { opacity: 0; }
 .scroll-top.opacity-100 { opacity: 1; }
-
-
-/* Scroll progress bar */
-.scroll-progress-rail {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  z-index: 70;
-  pointer-events: none;
-}
-.scroll-progress-bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #ff6b6b, #b71c1c);
-  box-shadow: 0 4px 18px rgba(183,28,28,0.18);
-  transition: width 160ms ease-out;
-  transform-origin: left center;
-}
