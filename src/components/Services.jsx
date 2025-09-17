@@ -1,27 +1,29 @@
 import { motion } from 'framer-motion';
 import { Code, Palette, Zap, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
+// Define services with translation keys for title/description so we can localize at render-time
 const services = [
   {
     icon: Code,
-    title: 'Frontend Development',
-    description: 'Modern, responsive UIs using React and Tailwind.',
+    titleKey: 'services.frontend.title',
+    descriptionKey: 'services.frontend.description',
     capabilities: ['React', 'Next.js', 'Tailwind'],
-  accent: 'bg-[#b71c1c]/80',
+    accent: 'bg-[#b71c1c]/80',
   },
   {
     icon: Zap,
-    title: 'Backend Development',
-    description: 'APIs and data services using Node and Express.',
+    titleKey: 'services.backend.title',
+    descriptionKey: 'services.backend.description',
     capabilities: ['Node.js', 'Express', 'MongoDB'],
-  accent: 'bg-[#b71c1c]/40',
+    accent: 'bg-[#b71c1c]/40',
   },
   {
     icon: Palette,
-    title: 'Web Tools & Workflow',
-    description: 'Tooling and workflow to ship reliably and fast.',
+    titleKey: 'services.tools.title',
+    descriptionKey: 'services.tools.description',
     capabilities: ['Git', 'Vite', 'VS Code'],
-  accent: 'bg-[#b71c1c]/80',
+    accent: 'bg-[#b71c1c]/80',
   },
 ];
 
@@ -31,6 +33,7 @@ function GridLines() {
 
 function ServiceCard({ service, index }) {
   const Icon = service.icon;
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -50,7 +53,7 @@ function ServiceCard({ service, index }) {
       </div>
       <div className="flex-1 flex flex-col">
         <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-medium mb-2">
-          Key Capabilities
+          {t('services_keyCapabilities')}
         </span>
         <ul className="list-disc pl-5 text-zinc-200 text-sm space-y-1 mt-1">
           {service.capabilities.map((cap, i) => (
@@ -63,6 +66,15 @@ function ServiceCard({ service, index }) {
 }
 
 export function ServicesSection() {
+  const { t } = useTranslation();
+
+  // Map services to localized versions for rendering
+  const localizedServices = services.map((s) => ({
+    ...s,
+    title: t(s.titleKey),
+    description: t(s.descriptionKey),
+  }));
+
   return (
     <section id="services" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
       <GridLines />
@@ -78,29 +90,29 @@ export function ServicesSection() {
             <Code className="w-6 h-6 text-[#B71C1C]" />
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-              My Services
+              {t('services_heading')}
             </span>
           </div>
           <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-white mb-8">
-            <span className="block">What</span>
-            <span className="block ml-16">I Do</span>
+            <span className="block">{t('services_title_part1')}</span>
+            <span className="block ml-16">{t('services_title_part2')}</span>
           </h1>
           <div className="flex items-center gap-3 max-w-3xl">
             <span className="text-xl text-[#B71C1C]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Elevate your web presence
+              {t('services_sub')}
             </span>
           </div>
           <p className="mt-8 max-w-2xl text-zinc-300 leading-relaxed">
-            A comprehensive suite of services to help you build, launch, and grow your digital products with modern web technologies.
+            {t('services_lead')}
           </p>
         </motion.div>
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <ServiceCard key={service.title} service={service} index={index} />
+          {localizedServices.map((service, index) => (
+            <ServiceCard key={service.titleKey} service={service} index={index} />
           ))}
         </div>
 
@@ -114,7 +126,7 @@ export function ServicesSection() {
           <div className="flex items-center gap-3 mb-6 justify-center">
             <div className="h-px flex-1 bg-white/10 max-w-32" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Ready to start your project?
+              {t('services_cta_sub')}
             </span>
             <div className="h-px flex-1 bg-white/10 max-w-32" />
           </div>
@@ -122,7 +134,7 @@ export function ServicesSection() {
             href="#contact"
             className="inline-flex items-center gap-3 bg-[#B71C1C] text-white px-8 py-4 font-medium hover:bg-[#8B1515] transition-colors duration-200"
           >
-            <span>Start a Project</span>
+            <span>{t('services_cta')}</span>
             <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>

@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Code, ArrowRight } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 import illyonImg from "../assets/illyon.png";
 import zahlxImg from "../assets/zahlx.png";
 import andiImg from "../assets/andi.png";
@@ -10,98 +11,83 @@ import arsaImg from "../assets/arsa.png";
 const projects = [
   {
     id: 1,
-    title: "Illyon",
-    category: "Ecommerce Platform",
+    titleKey: 'projects.illyon.title',
+    categoryKey: 'projects.illyon.category',
     image: illyonImg,
-    role: "Full-Stack Developer",
-    year: "2025",
-    description:
-      "Illyon is a robust ecommerce platform designed for seamless online shopping experiences. It features advanced product catalog management, secure user authentication, shopping cart, order tracking, and integrated payment gateways. The platform supports promotional campaigns, product reviews, and real-time inventory updates, making it ideal for businesses looking to scale online sales.",
-    tech: ["React", "Node.js", "Express", "MongoDB", "Stripe", "TailwindCSS"],
-    features: [
-      "Product Catalog & Search",
-      "User Authentication & Profiles",
-      "Shopping Cart & Checkout",
-      "Order Tracking",
-      "Integrated Payments",
-      "Promotions & Reviews",
-      "Admin Dashboard",
+    roleKey: 'projects.illyon.role',
+    year: '2025',
+    descriptionKey: 'projects.illyon.description',
+    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'Stripe', 'TailwindCSS'],
+    featuresKeys: [
+      'projects.illyon.features.catalog',
+      'projects.illyon.features.auth',
+      'projects.illyon.features.cart',
+      'projects.illyon.features.orderTracking',
+      'projects.illyon.features.payments',
+      'projects.illyon.features.promotions',
+      'projects.illyon.features.admin',
     ],
-    impact:
-      "Enabled hundreds of businesses to launch online stores and increased sales conversion rates.",
-    link: "https://illyon.com",
+    impactKey: 'projects.illyon.impact',
+    link: 'https://illyon.com',
   },
   {
     id: 2,
-    title: "ZahlX",
-    category: "AI Business Platform",
+    titleKey: 'projects.zahlx.title',
+    categoryKey: 'projects.zahlx.category',
     image: zahlxImg,
-    role: "Lead Developer",
-    year: "2025",
-    description:
-      "ZahlX is an AI-powered business management platform that streamlines operations for SMEs. It offers intelligent analytics, automated invoicing, expense tracking, and predictive insights. ZahlX integrates with popular accounting tools and provides a dashboard for monitoring KPIs, employee performance, and financial health. The AI assistant helps with decision-making and workflow automation.",
-    tech: [
-      "React",
-      "Node.js",
-      "Express",
-      "MongoDB",
-      "OpenAI API",
-      "TailwindCSS",
+    roleKey: 'projects.zahlx.role',
+    year: '2025',
+    descriptionKey: 'projects.zahlx.description',
+    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'OpenAI API', 'TailwindCSS'],
+    featuresKeys: [
+      'projects.zahlx.features.analytics',
+      'projects.zahlx.features.invoicing',
+      'projects.zahlx.features.expense',
+      'projects.zahlx.features.kpi',
+      'projects.zahlx.features.performance',
+      'projects.zahlx.features.automation',
+      'projects.zahlx.features.integrations',
     ],
-    features: [
-      "AI Analytics & Insights",
-      "Automated Invoicing",
-      "Expense Tracking",
-      "KPI Dashboard",
-      "Employee Performance Monitoring",
-      "Workflow Automation",
-      "Accounting Integrations",
-    ],
-    impact:
-      "Helped businesses save time and money by automating management tasks and providing actionable insights.",
-    link: "https://zahlx.com",
+    impactKey: 'projects.zahlx.impact',
+    link: 'https://zahlx.com',
   },
   {
     id: 3,
-    title: "Andi Shkodra",
-    category: "Political Campaign Website",
+    titleKey: 'projects.andi.title',
+    categoryKey: 'projects.andi.category',
     image: andiImg,
-    role: "Frontend Developer",
-    year: "2025",
-    description:
-      "A modern campaign website for a municipal assembly candidate, Andi. The site features candidate biography, campaign goals, news updates, event calendar, and volunteer sign-up forms. It integrates social media feeds and donation processing, providing a central hub for supporters and constituents to engage with the campaign.",
-    tech: ["React", "TailwindCSS", "Vite", "Framer Motion"],
-    features: [
-      "Candidate Profile",
-      "Campaign Goals",
-      "News & Events",
-      "Volunteer Sign-Up",
-      "Donation Integration",
-      "Social Media Feeds",
+    roleKey: 'projects.andi.role',
+    year: '2025',
+    descriptionKey: 'projects.andi.description',
+    tech: ['React', 'TailwindCSS', 'Vite', 'Framer Motion'],
+    featuresKeys: [
+      'projects.andi.features.profile',
+      'projects.andi.features.goals',
+      'projects.andi.features.news',
+      'projects.andi.features.volunteer',
+      'projects.andi.features.donations',
+      'projects.andi.features.social',
     ],
-    impact:
-      "Boosted campaign engagement and donations through a user-friendly, informative platform.",
-    link: "https://andi.com",
+    impactKey: 'projects.andi.impact',
+    link: 'https://andi.com',
   },
   {
     id: 4,
-    title: "Arsa Construction Switzerland",
-    category: "Construction Company Website",
+    titleKey: 'projects.arsa.title',
+    categoryKey: 'projects.arsa.category',
     image: arsaImg,
-    role: "Frontend Developer",
-    year: "2025",
-    description:
-      "Arsa is a professional website for a construction company based in Switzerland, specializing in drywall installation and other construction services. The site showcases completed projects, service offerings, client testimonials, and contact forms. It features a gallery, service request forms, and multilingual support for Swiss and international clients.",
-    tech: ["React", "TailwindCSS", "Vite", "Framer Motion"],
-    features: [
-      "Project Gallery",
-      "Service Offerings",
-      "Client Testimonials",
-      "Contact & Service Request Forms",
+    roleKey: 'projects.arsa.role',
+    year: '2025',
+    descriptionKey: 'projects.arsa.description',
+    tech: ['React', 'TailwindCSS', 'Vite', 'Framer Motion'],
+    featuresKeys: [
+      'projects.arsa.features.gallery',
+      'projects.arsa.features.services',
+      'projects.arsa.features.testimonials',
+      'projects.arsa.features.contact',
     ],
-    impact:
-      "Helped Arsa reach new clients and showcase their expertise in Swiss construction.",
-    link: "https://arsa.com",
+    impactKey: 'projects.arsa.impact',
+    link: 'https://arsa.com',
   },
 ];
 
@@ -114,6 +100,7 @@ function GridLines() {
 
 
 function ProjectCard({ project, index }) {
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -131,13 +118,13 @@ function ProjectCard({ project, index }) {
       <div className="flex-1 flex flex-col p-6">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-            {project.category}
+            {t(project.categoryKey)}
           </span>
           <div className="h-px flex-1 bg-white/10" />
           <span className="text-xs text-zinc-500">{project.year}</span>
         </div>
-        <h2 className="text-xl font-bold text-white mb-1 truncate">{project.title}</h2>
-        <span className="text-zinc-400 text-xs font-medium mb-2 truncate">{project.role}</span>
+        <h2 className="text-xl font-bold text-white mb-1 truncate">{t(project.titleKey)}</h2>
+        <span className="text-zinc-400 text-xs font-medium mb-2 truncate">{t(project.roleKey)}</span>
         <div className="flex flex-wrap gap-1 mb-2">
           {project.tech.slice(0, 3).map((tech, i) => (
             <span
@@ -151,7 +138,7 @@ function ProjectCard({ project, index }) {
             <span className="text-xs text-zinc-400">+{project.tech.length - 3}</span>
           )}
         </div>
-        <p className="text-zinc-300 text-sm mb-3 line-clamp-3">{project.description}</p>
+        <p className="text-zinc-300 text-sm mb-3 line-clamp-3">{t(project.descriptionKey)}</p>
         <div className="flex-1" />
         <div className="flex justify-center mt-2">
             <a
@@ -160,7 +147,7 @@ function ProjectCard({ project, index }) {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-[#B71C1C] text-white px-8 py-3 font-medium text-base rounded-none hover:bg-[#8B1515] transition-colors duration-200"
             >
-              <span>View Project</span>
+              <span>{t('projects_viewProject')}</span>
               <ArrowRight className="w-5 h-5" />
             </a>
         </div>
@@ -170,6 +157,8 @@ function ProjectCard({ project, index }) {
 }
 
 export function Projects() {
+  const { t } = useTranslation();
+
   return (
     <section id="projects" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
       <GridLines />
@@ -185,22 +174,22 @@ export function Projects() {
             <Code className="w-6 h-6 text-[#B71C1C]" />
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-              Project Portfolio
+              {t('projects_heading')}
             </span>
           </div>
           <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-white mb-8">
-            <span className="block">Featured</span>
-            <span className="block ml-16">Projects</span>
+            <span className="block">{t('projects_title_part1')}</span>
+            <span className="block ml-16">{t('projects_title_part2')}</span>
           </h1>
           <div className="flex items-center gap-3 max-w-3xl">
             <span className="text-xl text-[#B71C1C]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Innovative Solutions & Creative Work
+              {t('projects_sub')}
             </span>
           </div>
           <p className="mt-8 max-w-2xl text-zinc-300 leading-relaxed">
-            Explore a curated selection of my most impactful projects, highlighting technical expertise, creative problem-solving, and real-world results.
+            {t('projects_lead')}
           </p>
         </motion.div>
 
