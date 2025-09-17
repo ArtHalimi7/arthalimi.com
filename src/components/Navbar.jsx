@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
 export default function Navbar({ formatted }) {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [time, setTime] = useState(formatted || "");
   const [active, setActive] = useState('about');
@@ -74,7 +74,7 @@ export default function Navbar({ formatted }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14a4 4 0 100-8 4 4 0 000 8z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 20v-1a4 4 0 014-4h4a4 4 0 014 4v1" />
               </svg>
-              <span className="pl-1">About</span>
+              <span className="pl-1">{t('nav_about')}</span>
               {active === 'about' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
@@ -82,7 +82,7 @@ export default function Navbar({ formatted }) {
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-zinc-300 ml-1">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v4a1 1 0 001 1h3v4a1 1 0 001 1h8a1 1 0 001-1v-4h3a1 1 0 001-1V7M8 3h8v4H8V3z" />
               </svg>
-              <span className="pl-1">Work</span>
+              <span className="pl-1">{t('nav_work')}</span>
               {active === 'work' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
@@ -91,7 +91,7 @@ export default function Navbar({ formatted }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l6.16-3.422M12 14v7" />
               </svg>
-              <span className="pl-1">Education</span>
+              <span className="pl-1">{t('nav_education')}</span>
               {active === 'education' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
@@ -100,7 +100,7 @@ export default function Navbar({ formatted }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7h18M5 7v11a2 2 0 002 2h10a2 2 0 002-2V7" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10h6v6H9z" />
               </svg>
-              <span className="pl-1">Projects</span>
+              <span className="pl-1">{t('nav_projects')}</span>
               {active === 'projects' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
@@ -109,7 +109,7 @@ export default function Navbar({ formatted }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.105 0-2 .672-2 1.5S10.895 11 12 11s2-.672 2-1.5S13.105 8 12 8z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6" />
               </svg>
-              <span className="pl-1">Services</span>
+              <span className="pl-1">{t('nav_services')}</span>
               {active === 'services' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
@@ -118,7 +118,7 @@ export default function Navbar({ formatted }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 8V7a2 2 0 00-2-2h-3l-2-3H10L8 5H5a2 2 0 00-2 2v1" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 11h10v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6z" />
               </svg>
-              <span className="pl-1">Contact</span>
+              <span className="pl-1">{t('nav_contact')}</span>
               {active === 'contact' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
           </div>
@@ -132,32 +132,32 @@ export default function Navbar({ formatted }) {
 
           <nav className="hidden gap-8 text-xs uppercase tracking-[0.2em] text-zinc-400 md:flex">
               <a href="#about" className={`relative hover:text-white ${active === 'about' ? 'text-white' : ''}`}>
-                About
+                {t('nav_about')}
                 {active === 'about' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
               </a>
 
               <a href="#work" className={`relative hover:text-white ${active === 'work' ? 'text-white' : ''}`}>
-                Work
+                {t('nav_work')}
                 {active === 'work' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
               </a>
 
               <a href="#education" className={`relative hover:text-white ${active === 'education' ? 'text-white' : ''}`}>
-                Education
+                {t('nav_education')}
                 {active === 'education' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
               </a>
 
               <a href="#projects" className={`relative hover:text-white ${active === 'projects' ? 'text-white' : ''}`}>
-                Projects
+                {t('nav_projects')}
                 {active === 'projects' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
               </a>
 
               <a href="#services" className={`relative hover:text-white ${active === 'services' ? 'text-white' : ''}`}>
-                Services
+                {t('nav_services')}
                 {active === 'services' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
               </a>
 
               <a href="#contact" className={`relative hover:text-white ${active === 'contact' ? 'text-white' : ''}`}>
-                Contact
+                {t('nav_contact')}
                 {active === 'contact' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
               </a>
             </nav>
