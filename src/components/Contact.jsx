@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import { Mail, MapPin, Phone, User, FileText, CheckCircle, Clock, Zap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 function InputField({ label, name, type = 'text', required = false, icon: Icon, placeholder, value, onChange }) {
   return (
@@ -37,6 +38,7 @@ function GridLines() {
 function LivePreview({ formData, isTyping }) {
   const [displayText, setDisplayText] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (formData.message) {
@@ -66,7 +68,7 @@ function LivePreview({ formData, isTyping }) {
           {/* Form Progress */}
           <div className="p-4 bg-[#18191A] border border-white/10 rounded-lg">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">Form Progress</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">{t('contact.formProgress')}</span>
               <span className={`text-sm font-medium ${getStatusColor()}`}>{completionPercentage()}%</span>
             </div>
             <div className="w-full bg-[#232425] rounded-full h-2">
@@ -82,7 +84,7 @@ function LivePreview({ formData, isTyping }) {
                 <Clock className="w-4 h-4 text-zinc-500" />
               )}
               <span className="text-xs text-zinc-400">
-                {completionPercentage() === 100 ? 'Ready to send!' : 'Fill in required fields'}
+                {completionPercentage() === 100 ? t('contact.readyToSend') : t('contact.fillRequired')}
               </span>
             </div>
           </div>
@@ -103,19 +105,19 @@ function LivePreview({ formData, isTyping }) {
             <div className={`min-h-[200px] p-3 bg-[#232425] rounded-lg border border-white/5 transition-all duration-300 ${isAnimating ? 'scale-[1.02] border-[#B71C1C]/20' : ''}`}>
               {formData.name && (
                 <div className="mb-2">
-                  <span className="text-xs text-zinc-500">From:</span>
+                  <span className="text-xs text-zinc-500">{t('contact.from')}</span>
                   <span className="text-sm text-zinc-100 ml-2">{formData.name}</span>
                 </div>
               )}
               {formData.email && (
                 <div className="mb-2">
-                  <span className="text-xs text-zinc-500">Email:</span>
+                  <span className="text-xs text-zinc-500">{t('contact.emailLabel')}</span>
                   <span className="text-sm text-zinc-100 ml-2">{formData.email}</span>
                 </div>
               )}
               {formData.subject && (
                 <div className="mb-3">
-                  <span className="text-xs text-zinc-500">Subject:</span>
+                  <span className="text-xs text-zinc-500">{t('contact.subjectLabel')}</span>
                   <span className="text-sm text-zinc-100 ml-2">{formData.subject}</span>
                 </div>
               )}
@@ -126,12 +128,12 @@ function LivePreview({ formData, isTyping }) {
                   </p>
                 ) : (
                   <p className="text-xs text-zinc-500 italic">
-                    Your message will appear here as you type...
+                    {t('contact.messagePlaceholder')}
                   </p>
                 )}
                 {formData.message && (
                   <div className="mt-2 text-xs text-zinc-500">
-                    {formData.message.length} characters, ~{Math.ceil(formData.message.split(' ').length / 200)} min read
+                    {formData.message.length} {t('contact.characters')}, ~{Math.ceil(formData.message.split(' ').length / 200)} {t('contact.minRead')}
                   </div>
                 )}
               </div>
@@ -140,7 +142,7 @@ function LivePreview({ formData, isTyping }) {
 
           {/* Contact Info */}
           <div className="p-4 bg-[#18191A] border border-white/10 rounded-lg">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 block mb-3">Contact Info</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 block mb-3">{t('contact.infoHeading')}</span>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[#B71C1C]" />
@@ -159,10 +161,10 @@ function LivePreview({ formData, isTyping }) {
             <div className="mt-4 pt-3 border-t border-white/10">
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-3 h-3 text-green-400" />
-                <span className="text-xs text-green-400">Usually responds within 24 hours</span>
+                <span className="text-xs text-green-400">{t('contact.respondsWithin')}</span>
               </div>
               <div className="text-xs text-zinc-500">
-                Available Mon-Fri, 9AM-6PM (CET)
+                {t('contact.availableHours')}
               </div>
             </div>
           </div>
@@ -173,6 +175,7 @@ function LivePreview({ formData, isTyping }) {
 }
 
 export default function Contact() {
+  const { t } = useTranslation();
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(null);
@@ -227,22 +230,22 @@ export default function Contact() {
           <div className="flex items-center gap-3 mb-6">
             <Mail className="w-6 h-6 text-[#B71C1C]" />
             <div className="h-px flex-1 bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">Contact</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">{t('contact.headingSmall')}</span>
           </div>
 
           <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-white mb-8">
-            <span className="block">Contact</span>
-            <span className="block ml-16">Me</span>
+            <span className="block">{t('contact.title1')}</span>
+            <span className="block ml-16">{t('contact.title2')}</span>
           </h1>
           <div className="flex items-center gap-3 max-w-3xl">
             <span className="text-xl text-[#B71C1C]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Let's connect and build something great together!
+              {t('contact.tagline')}
             </span>
           </div>
 
-          <p className="mt-4 max-w-2xl text-zinc-300">If you'd like to work together or just say hi, drop a message — I usually reply within a day or two.</p>
+          <p className="mt-4 max-w-2xl text-zinc-300">{t('contact.lead')}</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 items-start">
@@ -251,29 +254,29 @@ export default function Contact() {
              <div className="p-6 bg-[#232425] border border-white/10 rounded-lg flex flex-col flex-1 min-h-[610px] pb-16">
               <form onSubmit={handleSubmit} className="space-y-4 flex flex-col h-full flex-1" id="contact-form">
                 <InputField 
-                  label="Your name" 
+                  label={t('contact.inputName')} 
                   name="name" 
                   required 
                   icon={User} 
-                  placeholder="John Doe"
+                  placeholder={t('contact.placeholderName')}
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                 />
                 <InputField 
-                  label="Your email" 
+                  label={t('contact.inputEmail')} 
                   name="email" 
                   type="email" 
                   required 
                   icon={Mail} 
-                  placeholder="johndoe@email.com"
+                  placeholder={t('contact.placeholderEmail')}
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
                 />
                 <InputField 
-                  label="Subject" 
+                  label={t('contact.inputSubject')} 
                   name="subject" 
                   icon={FileText} 
-                  placeholder="Subject (optional)"
+                  placeholder={t('contact.placeholderSubject')}
                   value={formData.subject}
                   onChange={(e) => handleInputChange('subject', e.target.value)}
                 />
@@ -290,7 +293,7 @@ export default function Contact() {
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
                       className={`w-full mt-2 bg-[#18191A] border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] pl-10 placeholder:text-zinc-500 transition-all duration-200 ${formData.message ? 'border-[#B71C1C]/30' : ''}`}
-                      placeholder="Tell me about your project..."
+                      placeholder={t('contact.placeholderMessage')}
                       required
                     />
                   </div>
@@ -302,24 +305,24 @@ export default function Contact() {
                     disabled={sending}
                     className="inline-flex items-center rounded-xl bg-[#B71C1C] px-5 py-3 font-medium text-white shadow-sm hover:brightness-95 hover:bg-[#8B1515] disabled:opacity-60 transition-all duration-200"
                   >
-                    {sending ? 'Sending...' : 'Send message'}
+                    {sending ? t('contact.sending') : t('contact.send')}
                   </button>
                   <button
                     type="button"
                     onClick={() => setFormData({ name: '', email: '', subject: '', message: '' })}
                     className="inline-flex items-center rounded-xl px-4 py-2 ring-1 ring-white/15 hover:bg-[#2a2b2c] transition-all duration-200"
                   >
-                    Reset
+                    {t('contact.reset')}
                   </button>
                 </div>
                 {sent && (
                   <div className="text-green-500 mt-2 flex items-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    Message sent successfully!
+                    {t('contact.sentSuccess')}
                   </div>
                 )}
                 {error && (
-                  <div className="text-red-500 mt-2">{error}</div>
+                  <div className="text-red-500 mt-2">{t('contact.sendError')}</div>
                 )}
               </form>
             </div>

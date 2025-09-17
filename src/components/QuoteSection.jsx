@@ -50,7 +50,7 @@ export default function QuoteSection() {
           <img 
             src={einsteinImg}
             alt="Albert Einstein"
-            className="w-[140px] md:w-[200px] max-w-full h-auto object-contain animate-float bg-transparent border-none shadow-none rounded-none"
+            className="w-[140px] md:w-[200px] max-w-full h-auto object-contain  bg-transparent border-none shadow-none rounded-none"
             style={{background: 'transparent', minWidth: '60px'}}
           />
         </div>
@@ -61,17 +61,6 @@ export default function QuoteSection() {
           <path d="M0,30 Q360,0 720,30 T1440,30 V60 H0 Z" fill="#dadadb" />
         </svg>
       </div>
-      {/* Floating animation keyframes */}
-      <style>{`
-        @keyframes float {
-          0% { transform: translateY(0); }
-          50% { transform: translateY(-18px); }
-          100% { transform: translateY(0); }
-        }
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 }

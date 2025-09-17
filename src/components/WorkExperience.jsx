@@ -5,49 +5,62 @@ import { Briefcase, ArrowRight } from 'lucide-react';
 import { ExperienceCard } from './ui/experience-card';
 import { InteractiveStats } from './ui/interactive-stats';
 
+// Data uses translation keys; resolved with useTranslation inside the component
 const workExperiences = [
   {
     id: 1,
-    role: "Frontend Developer Intern",
-    company: "StarLabs",
-    employmentType: "Internship",
-    location: "Remote",
-    years: "April 2024 – July 2024",
-    summary: "Worked on UI features and performance improvements for a React app.",
-    skills: ["React", "TypeScript", "Tailwind CSS"],
-    achievements: [
-      "Built responsive components used across the app",
-      "Improved page load performance"
+    roleKey: 'work.experiences.1.role',
+    companyKey: 'work.experiences.1.company',
+    employmentTypeKey: 'work.experiences.1.employmentType',
+    locationKey: 'work.experiences.1.location',
+    yearsKey: 'work.experiences.1.years',
+    summaryKey: 'work.experiences.1.summary',
+    skillsKeys: [
+      'work.experiences.1.skills.react',
+      'work.experiences.1.skills.typescript',
+      'work.experiences.1.skills.tailwind'
+    ],
+    achievementsKeys: [
+      'work.experiences.1.achievements.1',
+      'work.experiences.1.achievements.2'
     ],
     projects: 8
   },
   {
     id: 2,
-    role: "Web Developer",
-    company: "Freelance",
-    employmentType: "Freelance",
-    location: "Remote",
-    years: "June 2021 – April 2024",
-    summary: "Built websites and components for clients, delivering reliable designs and performance.",
-    skills: ["JavaScript", "React", "Node.js"],
-    achievements: [
-      "Delivered 20+ client projects",
-      "Improved client site performance and conversions"
+    roleKey: 'work.experiences.2.role',
+    companyKey: 'work.experiences.2.company',
+    employmentTypeKey: 'work.experiences.2.employmentType',
+    locationKey: 'work.experiences.2.location',
+    yearsKey: 'work.experiences.2.years',
+    summaryKey: 'work.experiences.2.summary',
+    skillsKeys: [
+      'work.experiences.2.skills.javascript',
+      'work.experiences.2.skills.react',
+      'work.experiences.2.skills.node'
+    ],
+    achievementsKeys: [
+      'work.experiences.2.achievements.1',
+      'work.experiences.2.achievements.2'
     ],
     projects: 22
   },
   {
     id: 3,
-    role: "IT Manager",
-    company: "BlackSn0w",
-    employmentType: "Full-time",
-    location: "Gjilan",
-    years: "June 2019 – August 2020",
-    summary: "Oversaw IT operations and infrastructure, improving reliability and processes.",
-    skills: ["System Admin", "Network Security", "Project Management"],
-    achievements: [
-      "Reduced system downtime",
-      "Led infrastructure upgrades"
+    roleKey: 'work.experiences.3.role',
+    companyKey: 'work.experiences.3.company',
+    employmentTypeKey: 'work.experiences.3.employmentType',
+    locationKey: 'work.experiences.3.location',
+    yearsKey: 'work.experiences.3.years',
+    summaryKey: 'work.experiences.3.summary',
+    skillsKeys: [
+      'work.experiences.3.skills.sysadmin',
+      'work.experiences.3.skills.network',
+      'work.experiences.3.skills.pm'
+    ],
+    achievementsKeys: [
+      'work.experiences.3.achievements.1',
+      'work.experiences.3.achievements.2'
     ],
     projects: 12
   }
@@ -110,21 +123,32 @@ export function WorkExperiences() {
 
         {/* Experience Cards */}
         <div className="space-y-0">
-          {workExperiences.map((experience, index) => (
-            <ExperienceCard
-              key={experience.id}
-              role={experience.role}
-              company={experience.company}
-              employmentType={experience.employmentType}
-              location={experience.location}
-              years={experience.years}
-              summary={experience.summary}
-              skills={experience.skills}
-              achievements={experience.achievements}
-              projects={experience.projects}
-              index={index}
-            />
-          ))}
+          {workExperiences.map((experience, index) => {
+            const role = t(experience.roleKey);
+            const company = t(experience.companyKey);
+            const employmentType = t(experience.employmentTypeKey);
+            const location = t(experience.locationKey);
+            const years = t(experience.yearsKey);
+            const summary = t(experience.summaryKey);
+            const skills = experience.skillsKeys.map((k) => t(k));
+            const achievements = experience.achievementsKeys.map((k) => t(k));
+
+            return (
+              <ExperienceCard
+                key={experience.id}
+                role={role}
+                company={company}
+                employmentType={employmentType}
+                location={location}
+                years={years}
+                summary={summary}
+                skills={skills}
+                achievements={achievements}
+                projects={experience.projects}
+                index={index}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

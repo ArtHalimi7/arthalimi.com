@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Clock, Star, Target, Code2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @typedef {Object} InteractiveStatsProps
@@ -15,6 +16,7 @@ import { TrendingUp, Clock, Star, Target, Code2 } from 'lucide-react';
  * @param {InteractiveStatsProps} props
  */
 function InteractiveStats({ totalYears, totalProjects, satisfaction, currentStreak }) {
+  const { t } = useTranslation();
   const [animatedValues, setAnimatedValues] = useState({
     years: 0,
     projects: 0,
@@ -40,28 +42,28 @@ function InteractiveStats({ totalYears, totalProjects, satisfaction, currentStre
       icon: Clock,
       value: animatedValues.years,
       suffix: '+',
-      label: 'Years Experience',
+      labelKey: 'stats.years',
       delay: 0
     },
     {
       icon: Target,
       value: animatedValues.projects,
       suffix: '+',
-      label: 'Projects Completed',
+      labelKey: 'stats.projects',
       delay: 0.1
     },
     {
       icon: Star,
       value: animatedValues.satisfaction,
       suffix: '%',
-      label: 'Client Satisfaction',
+      labelKey: 'stats.satisfaction',
       delay: 0.2
     },
     {
       icon: Code2,
       value: animatedValues.technologies,
       suffix: '+',
-      label: 'Technologies Mastered',
+      labelKey: 'stats.technologies',
       delay: 0.3
     }
   ];
@@ -72,8 +74,8 @@ function InteractiveStats({ totalYears, totalProjects, satisfaction, currentStre
         const Icon = stat.icon;
         
         return (
-          <motion.div
-            key={stat.label}
+            <motion.div
+            key={stat.labelKey}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: stat.delay }}
@@ -107,7 +109,7 @@ function InteractiveStats({ totalYears, totalProjects, satisfaction, currentStre
               <div className="flex items-center gap-2 w-full min-w-0">
                 <div className="h-px flex-1 bg-white/10" />
                 <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-medium text-center break-words max-w-full w-full">
-                  {stat.label}
+                  {t(stat.labelKey)}
                 </span>
                 <div className="h-px flex-1 bg-white/10" />
               </div>
