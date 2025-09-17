@@ -8,12 +8,15 @@ import Services from './pages/Services';
 import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
 import CustomScrollbar from './components/CustomScrollbar';
+import ScrollTop from './components/ScrollTop';
+import ScrollProgress from './components/ScrollProgress';
 
 const App = () => {
   
   return (
     <main className='background1'>
       <Router>
+        <ScrollProgress />
         <Navbar />
         <CustomScrollbar />
         <Routes>
@@ -22,6 +25,7 @@ const App = () => {
           <Route path="/services" element={<Services />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ScrollTop />
       </Router>
     </main>
   );

@@ -379,3 +379,50 @@ th {
   height: 59px;
   z-index: 9999;
 }
+
+/* Scroll-to-top button */
+.scroll-top {
+  position: fixed;
+  right: 20px;
+  bottom: 28px;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg,#b71c1c,#981313);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(183,28,28,0.18), 0 2px 6px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease, background 160ms ease, transform 160ms ease;
+  cursor: pointer;
+  z-index: 60;
+}
+.scroll-top:hover { transform: translateY(-4px) scale(1.02); }
+.scroll-top svg { display: block; }
+
+/* hidden/visible helpers */
+.scroll-top.opacity-0 { opacity: 0; }
+.scroll-top.opacity-100 { opacity: 1; }
+
+
+/* Scroll progress bar */
+.scroll-progress-rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  z-index: 70;
+  pointer-events: none;
+}
+.scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff6b6b, #b71c1c);
+  box-shadow: 0 4px 18px rgba(183,28,28,0.18);
+  transition: width 160ms ease-out;
+  transform-origin: left center;
+}
