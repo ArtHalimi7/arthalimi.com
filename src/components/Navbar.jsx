@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useTranslation } from 'react-i18next';
 
 export default function Navbar({ formatted }) {
@@ -6,6 +6,38 @@ export default function Navbar({ formatted }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [time, setTime] = useState(formatted || "");
   const [active, setActive] = useState('about');
+  const [langOpenDesktop, setLangOpenDesktop] = useState(false);
+  const [langOpenMobile, setLangOpenMobile] = useState(false);
+  const langRefDesktop = useRef(null);
+  const langRefMobile = useRef(null);
+
+  // Helper to get flag image URL for a language code
+  const getFlagUrl = (lang) => {
+    switch (lang) {
+      case 'en':
+        return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png';
+      case 'sq':
+        return 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png';
+      case 'de':
+        return 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png';
+      default:
+        return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png';
+    }
+  };
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (langRefDesktop.current && !langRefDesktop.current.contains(e.target)) {
+        setLangOpenDesktop(false);
+      }
+      if (langRefMobile.current && !langRefMobile.current.contains(e.target)) {
+        setLangOpenMobile(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
 
   useEffect(() => {
     // Update live time display to HH:MM (no seconds).
@@ -52,7 +84,7 @@ export default function Navbar({ formatted }) {
         onClick={() => setSidebarOpen(false)}
       >
         <nav
-          className={`fixed right-0 top-0 h-full w-64 bg-[#232425]/90 backdrop-blur-lg shadow-2xl p-8 flex flex-col gap-6 transition-transform duration-300 border-l border-[#B71C1C]/30 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
+          className={`fixed right-0 top-0 h-full w-64 bg-[#232425] backdrop-blur-lg shadow-2xl p-8 flex flex-col gap-6 transition-transform duration-300 border-l border-[#B71C1C]/30 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
           onClick={e => e.stopPropagation()}
         >
           {/* Decorative lines */}
@@ -69,58 +101,66 @@ export default function Navbar({ formatted }) {
           <div className="my-4 h-px w-full bg-white/10" />
 
           <div className="flex flex-1 flex-col items-start justify-start gap-4">
-            <a href="#about" className={`flex items-center gap-3 text-lg font-semibold transition w-full ${active === 'about' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-zinc-300 ml-1">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14a4 4 0 100-8 4 4 0 000 8z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 20v-1a4 4 0 014-4h4a4 4 0 014 4v1" />
-              </svg>
+            <a href="#about" className={`text-lg font-semibold transition w-full ${active === 'about' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
               <span className="pl-1">{t('nav_about')}</span>
               {active === 'about' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
-            <a href="#work" className={`flex items-center gap-3 text-lg font-semibold transition w-full ${active === 'work' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-zinc-300 ml-1">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v4a1 1 0 001 1h3v4a1 1 0 001 1h8a1 1 0 001-1v-4h3a1 1 0 001-1V7M8 3h8v4H8V3z" />
-              </svg>
+            <a href="#work" className={`text-lg font-semibold transition w-full ${active === 'work' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
               <span className="pl-1">{t('nav_work')}</span>
               {active === 'work' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
-            <a href="#education" className={`flex items-center gap-3 text-lg font-semibold transition w-full ${active === 'education' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-zinc-300 ml-1">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l6.16-3.422M12 14v7" />
-              </svg>
+            <a href="#education" className={`text-lg font-semibold transition w-full ${active === 'education' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
               <span className="pl-1">{t('nav_education')}</span>
               {active === 'education' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
-            <a href="#projects" className={`flex items-center gap-3 text-lg font-semibold transition w-full ${active === 'projects' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-zinc-300 ml-1">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7h18M5 7v11a2 2 0 002 2h10a2 2 0 002-2V7" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10h6v6H9z" />
-              </svg>
+            <a href="#projects" className={`text-lg font-semibold transition w-full ${active === 'projects' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
               <span className="pl-1">{t('nav_projects')}</span>
               {active === 'projects' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
-            <a href="#services" className={`flex items-center gap-3 text-lg font-semibold transition w-full ${active === 'services' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-zinc-300 ml-1">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.105 0-2 .672-2 1.5S10.895 11 12 11s2-.672 2-1.5S13.105 8 12 8z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6" />
-              </svg>
+            <a href="#services" className={`text-lg font-semibold transition w-full ${active === 'services' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
               <span className="pl-1">{t('nav_services')}</span>
               {active === 'services' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
 
-            <a href="#contact" className={`flex items-center gap-3 text-lg font-semibold transition w-full ${active === 'contact' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-zinc-300 ml-1">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 8V7a2 2 0 00-2-2h-3l-2-3H10L8 5H5a2 2 0 00-2 2v1" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 11h10v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6z" />
-              </svg>
+            <a href="#contact" className={`text-lg font-semibold transition w-full ${active === 'contact' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
               <span className="pl-1">{t('nav_contact')}</span>
               {active === 'contact' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
             </a>
+
+
+            {/* Language dropdown in mobile sidebar */}
+            <div className="mt-4 relative flex justify-center" ref={langRefMobile}>
+              <button
+                onClick={() => setLangOpenMobile((s) => !s)}
+                className="inline-flex items-center gap-2 rounded-full bg-white/5 p-1 focus:outline-none focus:ring-2 focus:ring-white/20"
+                aria-haspopup="true"
+                aria-expanded={langOpenMobile}
+                aria-label="Select language"
+              >
+                <img src={getFlagUrl(i18n.language)} alt={i18n.language} className="h-10 w-10 object-cover rounded-full shadow-2xl transition-transform transform hover:scale-110" />
+              </button>
+
+              {langOpenMobile && (
+                <div className="mt-2 w-44 rounded-md bg-[#232425] p-2 shadow-2xl border border-white/10">
+                  <button className="flex items-center gap-2 w-full px-2 py-1 rounded hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('en'); setLangOpenMobile(false); }}>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png" alt="EN" className="h-8 w-8 object-cover rounded-full shadow-sm" />
+                    <span className="text-sm">English</span>
+                  </button>
+                  <button className="flex items-center gap-2 w-full px-2 py-1 rounded hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('sq'); setLangOpenMobile(false); }}>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png" alt="SQ" className="h-8 w-8 object-cover rounded-full shadow-sm" />
+                    <span className="text-sm">Shqip</span>
+                  </button>
+                  <button className="flex items-center gap-2 w-full px-2 py-1 rounded hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('de'); setLangOpenMobile(false); }}>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png" alt="DE" className="h-8 w-8 object-cover rounded-full shadow-sm" />
+                    <span className="text-sm">Deutsch</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </nav>
       </div>
@@ -166,23 +206,39 @@ export default function Navbar({ formatted }) {
           <div className="flex items-center gap-3">
             <div className="hidden md:flex md:items-center md:gap-2">
               <span className="hidden md:block text-[10px] tracking-widest text-zinc-500 md:text-xs">{time}</span>
-              {/* Language selector */}
-              <div className="inline-flex rounded-md bg-white/5 p-1">
+              {/* Language dropdown (desktop) */}
+              <div className="relative" ref={langRefDesktop}>
                 <button
-                  onClick={() => i18n.changeLanguage('en')}
-                  className={`px-2 py-0.5 text-[10px] ${i18n.language === 'en' ? 'bg-white/10 font-semibold' : 'hover:bg-white/5'}`}
-                  title="English"
-                >EN</button>
-                <button
-                  onClick={() => i18n.changeLanguage('sq')}
-                  className={`px-2 py-0.5 text-[10px] ${i18n.language === 'sq' ? 'bg-white/10 font-semibold' : 'hover:bg-white/5'}`}
-                  title="Shqip"
-                >SQ</button>
-                <button
-                  onClick={() => i18n.changeLanguage('de')}
-                  className={`px-2 py-0.5 text-[10px] ${i18n.language === 'de' ? 'bg-white/10 font-semibold' : 'hover:bg-white/5'}`}
-                  title="Deutsch"
-                >DE</button>
+                  onClick={() => setLangOpenDesktop((s) => !s)}
+                  className="inline-flex items-center gap-2 rounded-full bg-white/5 p-1 focus:outline-none focus:ring-2 focus:ring-white/20"
+                  aria-haspopup="true"
+                  aria-expanded={langOpenDesktop}
+                  aria-label="Select language"
+                >
+                  <img src={getFlagUrl(i18n.language)} alt={i18n.language} className="h-7 w-7 object-cover rounded-full shadow-2xl transition-transform transform hover:scale-110" />
+                </button>
+                  {langOpenDesktop && (
+                    <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 w-48 rounded-lg bg-[#202226] p-3 shadow-2xl ring-1 ring-white/10 divide-y divide-white/5 origin-top transform transition-all duration-150">
+                      <div className="py-1">
+                        <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('en'); setLangOpenDesktop(false); }}>
+                          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png" alt="EN" className="h-8 w-8 object-cover rounded-full shadow-sm" />
+                          <span className="text-sm font-medium">English</span>
+                        </button>
+                      </div>
+                      <div className="py-1">
+                        <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('sq'); setLangOpenDesktop(false); }}>
+                          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png" alt="SQ" className="h-8 w-8 object-cover rounded-full shadow-sm" />
+                          <span className="text-sm font-medium">Shqip</span>
+                        </button>
+                      </div>
+                      <div className="py-1">
+                        <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('de'); setLangOpenDesktop(false); }}>
+                          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png" alt="DE" className="h-8 w-8 object-cover rounded-full shadow-sm" />
+                          <span className="text-sm font-medium">Deutsch</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
               </div>
             </div>
 

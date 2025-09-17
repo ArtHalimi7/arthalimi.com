@@ -743,15 +743,33 @@ const resources = {
   },
 };
 
+// Try to load saved language from localStorage, fall back to 'en'
+let savedLang = 'en';
+try {
+  const v = localStorage.getItem('preferredLanguage');
+  if (v) savedLang = v;
+} catch (e) {
+  // ignore localStorage errors (e.g., SSR or blocked storage)
+}
+
 i18n.use(initReactI18next).init({
   resources,
-  lng: 'en',
+  lng: savedLang,
   fallbackLng: 'en',
   keySeparator: false, // allow keys with dots
   nsSeparator: false,
   interpolation: {
     escapeValue: false,
   },
+});
+
+// Persist language changes to localStorage so selection survives reloads
+i18n.on && i18n.on('languageChanged', (lng) => {
+  try {
+    localStorage.setItem('preferredLanguage', lng);
+  } catch (e) {
+    // ignore
+  }
 });
 
 export default i18n;
