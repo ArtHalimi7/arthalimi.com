@@ -190,6 +190,62 @@ img {
   transform: translateY(0);
 }
 
+/* Sidebar item staggered slide/fade */
+.nav-sidebar-item {
+  opacity: 0;
+  transform: translateX(10px);
+  animation: slideFadeIn 320ms ease forwards;
+  padding: 6px 4px;
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Close button subtle pop */
+.close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+.close-btn:active {
+  transform: scale(0.95) rotate(-10deg);
+}
+
+/* Language bar for sidebar */
+.lang-bar {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.lang-pill {
+  color: white;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.lang-pill:focus {
+  outline: 2px solid rgba(255,255,255,0.12);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.lang-pill img {
+  flex-shrink: 0;
+}
+
+/* When header is sticky, add subtle backdrop and blur so content scrolls under */
+.sidebar-sticky {
+  backdrop-filter: blur(4px);
+  background: linear-gradient(180deg, rgba(31,31,31,0.6), rgba(22,22,22,0.4));
+}
+
 @keyframes fadeInUp {
   0% {
     opacity: 0;

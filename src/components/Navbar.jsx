@@ -76,6 +76,15 @@ export default function Navbar({ formatted }) {
 
     return () => observer.disconnect();
   }, []);
+  const menuItems = [
+    { id: 'about', label: t('nav_about') },
+    { id: 'work', label: t('nav_work') },
+    { id: 'education', label: t('nav_education') },
+    { id: 'projects', label: t('nav_projects') },
+    { id: 'services', label: t('nav_services') },
+    { id: 'contact', label: t('nav_contact') },
+  ];
+
   return (
     <>
       {/* MOBILE SIDEBAR */}
@@ -84,8 +93,9 @@ export default function Navbar({ formatted }) {
         onClick={() => setSidebarOpen(false)}
       >
         <nav
-          className={`fixed right-0 top-0 h-full w-64 bg-[#232425] backdrop-blur-lg shadow-2xl p-8 flex flex-col gap-6 transition-transform duration-300 border-l border-[#B71C1C]/30 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
+          className={`fixed left-0 top-0 h-full w-64 bg-gradient-to-b from-[#1f1f1f]/80 to-[#161616] backdrop-blur-md shadow-2xl p-4 flex flex-col gap-4 overflow-y-hidden pb-6 transition-transform duration-400 border-r border-[#B71C1C]/20 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
           onClick={e => e.stopPropagation()}
+          aria-hidden={!sidebarOpen}
         >
           {/* Decorative lines */}
           <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
@@ -93,73 +103,73 @@ export default function Navbar({ formatted }) {
           <span className="absolute left-0 right-0 top-0 h-px bg-white/10" />
           <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
 
-          <div className="flex items-center justify-between">
-            <div className="text-white font-semibold tracking-wider">&lt;Art.dev/&gt;</div>
-            <button className="text-zinc-400 text-3xl hover:text-[#b9310f]" onClick={() => setSidebarOpen(false)} aria-label="Close sidebar">&times;</button>
+          <div className="flex items-center justify-between sticky top-0 z-20 py-2 bg-transparent sidebar-sticky">
+            <div className="flex items-center gap-2">
+              <img src="/src/assets/Alogo.png" alt="Profile" className="h-12 w-12 rounded-full object-cover shadow-inner" />
+              <div>
+                <div className="text-white font-semibold">Art Halimi</div>
+                <div className="text-sm text-zinc-400">Full Stack Dev</div>
+              </div>
+            </div>
+            <button
+              className="close-btn text-zinc-300 text-2xl p-1 rounded-md hover:bg-white/5 transition-transform duration-200"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <span aria-hidden>×</span>
+            </button>
           </div>
 
-          <div className="my-4 h-px w-full bg-white/10" />
+          <div className="my-2 h-px w-full bg-white/6" />
 
-          <div className="flex flex-1 flex-col items-start justify-start gap-4">
-            <a href="#about" className={`text-lg font-semibold transition w-full ${active === 'about' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <span className="pl-1">{t('nav_about')}</span>
-              {active === 'about' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
-            </a>
+          <div className="relative flex-1 w-full">
+            {/* Centered language selector (vertically centered) */}
+            <div className="absolute left-0 right-0 top-1/2 transform -translate-y-1/2 flex justify-center z-10">
+              <div className="lang-bar inline-flex items-center gap-3 bg-white/3 rounded-full p-1 shadow-sm" ref={langRefMobile} role="tablist" aria-label="Language selector">
+                <button
+                  className={`lang-pill inline-flex items-center gap-2 px-3 py-1 rounded-full ${i18n.language === 'en' ? 'bg-white/10 scale-105' : 'bg-transparent'}`}
+                  onClick={() => { i18n.changeLanguage('en'); setLangOpenMobile(false); }}
+                  role="tab"
+                  aria-selected={i18n.language === 'en'}
+                >
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png" alt="EN" className="h-5 w-5 rounded-full" />
+                  <span className="text-xs font-semibold">EN</span>
+                </button>
+                <button
+                  className={`lang-pill inline-flex items-center gap-2 px-3 py-1 rounded-full ${i18n.language === 'sq' ? 'bg-white/10 scale-105' : 'bg-transparent'}`}
+                  onClick={() => { i18n.changeLanguage('sq'); setLangOpenMobile(false); }}
+                  role="tab"
+                  aria-selected={i18n.language === 'sq'}
+                >
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png" alt="SQ" className="h-5 w-5 rounded-full" />
+                  <span className="text-xs font-semibold">SQ</span>
+                </button>
+                <button
+                  className={`lang-pill inline-flex items-center gap-2 px-3 py-1 rounded-full ${i18n.language === 'de' ? 'bg-white/10 scale-105' : 'bg-transparent'}`}
+                  onClick={() => { i18n.changeLanguage('de'); setLangOpenMobile(false); }}
+                  role="tab"
+                  aria-selected={i18n.language === 'de'}
+                >
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png" alt="DE" className="h-5 w-5 rounded-full" />
+                  <span className="text-xs font-semibold">DE</span>
+                </button>
+              </div>
+            </div>
 
-            <a href="#work" className={`text-lg font-semibold transition w-full ${active === 'work' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <span className="pl-1">{t('nav_work')}</span>
-              {active === 'work' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
-            </a>
-
-            <a href="#education" className={`text-lg font-semibold transition w-full ${active === 'education' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <span className="pl-1">{t('nav_education')}</span>
-              {active === 'education' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
-            </a>
-
-            <a href="#projects" className={`text-lg font-semibold transition w-full ${active === 'projects' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <span className="pl-1">{t('nav_projects')}</span>
-              {active === 'projects' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
-            </a>
-
-            <a href="#services" className={`text-lg font-semibold transition w-full ${active === 'services' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <span className="pl-1">{t('nav_services')}</span>
-              {active === 'services' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
-            </a>
-
-            <a href="#contact" className={`text-lg font-semibold transition w-full ${active === 'contact' ? 'text-white' : 'text-zinc-100 hover:text-[#B6862C]'}`}>
-              <span className="pl-1">{t('nav_contact')}</span>
-              {active === 'contact' && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
-            </a>
-
-
-            {/* Language dropdown in mobile sidebar */}
-            <div className="mt-4 relative flex justify-center" ref={langRefMobile}>
-              <button
-                onClick={() => setLangOpenMobile((s) => !s)}
-                className="inline-flex items-center gap-2 rounded-full bg-white/5 p-1 focus:outline-none focus:ring-2 focus:ring-white/20"
-                aria-haspopup="true"
-                aria-expanded={langOpenMobile}
-                aria-label="Select language"
-              >
-                <img src={getFlagUrl(i18n.language)} alt={i18n.language} className="h-10 w-10 object-cover rounded-full shadow-2xl transition-transform transform hover:scale-110" />
-              </button>
-
-              {langOpenMobile && (
-                <div className="mt-2 w-44 rounded-md bg-[#232425] p-2 shadow-2xl border border-white/10">
-                  <button className="flex items-center gap-2 w-full px-2 py-1 rounded hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('en'); setLangOpenMobile(false); }}>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png" alt="EN" className="h-8 w-8 object-cover rounded-full shadow-sm" />
-                    <span className="text-sm">English</span>
-                  </button>
-                  <button className="flex items-center gap-2 w-full px-2 py-1 rounded hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('sq'); setLangOpenMobile(false); }}>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png" alt="SQ" className="h-8 w-8 object-cover rounded-full shadow-sm" />
-                    <span className="text-sm">Shqip</span>
-                  </button>
-                  <button className="flex items-center gap-2 w-full px-2 py-1 rounded hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('de'); setLangOpenMobile(false); }}>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png" alt="DE" className="h-8 w-8 object-cover rounded-full shadow-sm" />
-                    <span className="text-sm">Deutsch</span>
-                  </button>
-                </div>
-              )}
+            {/* Menu (scrollable) */}
+            <div className="flex flex-col gap-2 pt-2 pb-6 overflow-y-auto max-h-[calc(100vh-140px)] z-0">
+              {menuItems.map((item, idx) => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`w-full text-lg font-semibold flex items-center justify-between transition-colors duration-200 nav-sidebar-item ${active === item.id ? 'text-white' : 'text-zinc-200 hover:text-[#B6862C]'}`}
+                  style={{ animationDelay: `${idx * 80}ms` }}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <span className="pl-1">{item.label}</span>
+                  {active === item.id && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
+                </a>
+              ))}
             </div>
           </div>
         </nav>
@@ -168,7 +178,10 @@ export default function Navbar({ formatted }) {
       {/* HEADER */}
       <header className="sticky top-0 z-40 bg-[#18191A] border-b border-white/10">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <a href="#" className="font-semibold tracking-wider text-white">&lt;Art.dev/&gt;</a>
+          <a href="#" className="inline-flex items-center gap-2">
+            <img src="/src/assets/Alogo.png" alt="Alogo" className="h-8 w-8 object-contain" />
+            <span className="text-white font-semibold">Art Halimi</span>
+          </a>
 
           <nav className="hidden gap-8 text-xs uppercase tracking-[0.2em] text-zinc-400 md:flex">
               <a href="#about" className={`relative hover:text-white ${active === 'about' ? 'text-white' : ''}`}>
