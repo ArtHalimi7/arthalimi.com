@@ -1,10 +1,10 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import profilePic from '../assets/profile.png';
+import windowBg from '../assets/window.png';
 
 export default function HeroWithGridLines() {
   const [time, setTime] = useState(new Date());
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   useEffect(() => {
     const id = setInterval(() => setTime(new Date()), 30000);
     return () => clearInterval(id);
@@ -37,15 +37,20 @@ export default function HeroWithGridLines() {
         </h1>
 
         <div className="mt-10 grid items-start gap-12 lg:grid-cols-2">
-          {/* Portrait */}
+          {/* Animated Code Snippet */}
           <div className="group relative">
             <div className="absolute -inset-4 rounded-3xl" />
-            <div className="relative aspect-[4/3] overflow-hidden">
+            <div className="relative aspect-[4/3] overflow-hidden flex items-center justify-center">
               <img
-                className="h-full w-full object-contain opacity-95"
-                src={profilePic}
-                alt="Portrait"
+                src={windowBg}
+                alt="window background"
+                className="absolute inset-0 h-full w-full object-cover opacity-100 transform scale-[1.8] sm:scale-[1.5] md:scale-[1.75] md:-translate-x-6 md:-translate-y-4"
               />
+              <div className="absolute inset-0 flex items-start justify-start pt-12 sm:pt-20 md:pt-28 pl-12 sm:pl-8 md:pl-16 pointer-events-auto">
+                <div className="w-full max-w-[320px] sm:max-w-[360px] h-[200px] sm:h-[220px] overflow-hidden">
+                  <AnimatedCodeSnippet />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -96,3 +101,109 @@ function Lines() {
     </div>
   );
 }
+
+// Animated code snippet component (gray background, red highlights, typing animation)
+function AnimatedCodeSnippet() {
+  // Code content as an array of lines (easy to edit)
+  const lines = [
+    'function greet(name) {',
+    "  if (!name) {",
+    "    return 'Hello, World!';",
+    '  }',
+    "  return `Hello, ${name}!`;",
+    '}',
+    '',
+    'console.log(greet("Art"));',
+  ];
+
+  const fullText = lines.join('\n');
+
+  // Configurable timings
+  const TYPING_DELAY = 45; // ms per char
+  const ERASING_DELAY = 25; // ms per char when erasing
+  const PAUSE_AT_END = 1200; // pause after finishing typing
+  const PAUSE_AT_START = 600; // pause after erasing
+
+  const [pos, setPos] = useState(0);
+  const [direction, setDirection] = useState(1); // 1 = typing, -1 = erasing
+  const timerRef = useRef(null);
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  // Typing / erasing loop
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    if (direction === 1) {
+      if (pos < fullText.length) {
+        timerRef.current = window.setTimeout(() => setPos((p) => p + 1), TYPING_DELAY);
+      } else {
+        timerRef.current = window.setTimeout(() => setDirection(-1), PAUSE_AT_END);
+      }
+    } else {
+      if (pos > 0) {
+        timerRef.current = window.setTimeout(() => setPos((p) => p - 1), ERASING_DELAY);
+      } else {
+        timerRef.current = window.setTimeout(() => setDirection(1), PAUSE_AT_START);
+      }
+    }
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [pos, direction, fullText.length]);
+
+  // Tokenize the visible text and return React nodes with Tailwind classes.
+  // This avoids dangerouslySetInnerHTML and is easier to reason about.
+  const renderHighlighted = (s) => {
+    if (!s) return null;
+
+    // Split into tokens: keywords, strings, braces, or other text
+    const tokenRegex = /(\b(?:function|return|if|console|log)\b)|('[^']*'|"[^"]*")|(\{|\})/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = tokenRegex.exec(s)) !== null) {
+      const index = match.index;
+      if (index > lastIndex) {
+        parts.push({ text: s.slice(lastIndex, index), type: 'plain' });
+      }
+      if (match[1]) parts.push({ text: match[1], type: 'keyword' });
+      else if (match[2]) parts.push({ text: match[2], type: 'string' });
+      else if (match[3]) parts.push({ text: match[3], type: 'brace' });
+      lastIndex = index + match[0].length;
+    }
+    if (lastIndex < s.length) parts.push({ text: s.slice(lastIndex), type: 'plain' });
+
+    return parts.map((p, i) => {
+      if (p.type === 'keyword') return (
+        <span key={i} className="text-[#ff4444] font-semibold">{p.text}</span>
+      );
+      if (p.type === 'string') return (
+        <span key={i} className="text-gray-300">{p.text}</span>
+      );
+      if (p.type === 'brace') return (
+        <span key={i} className="text-[#ff6b6b]">{p.text}</span>
+      );
+      return <span key={i}>{p.text}</span>;
+    });
+  };
+
+  const visible = fullText.slice(0, pos);
+
+  return (
+    <div aria-live="polite" className="bg-transparent rounded-2xl p-2 text-[0.95rem] leading-relaxed w-full text-gray-200 font-mono whitespace-pre-wrap select-text">
+      <div>{renderHighlighted(visible)}</div>
+      <span className={`ml-1 ${direction === 1 && pos < fullText.length ? 'animate-pulse' : 'opacity-80'}`} style={{ color: '#ff4444' }}>
+        |
+      </span>
+    </div>
+  );
+}
+
