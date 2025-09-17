@@ -1,5 +1,6 @@
 
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import highlightImg from "../assets/highlight.png";
 
 function Lines() {
@@ -17,6 +18,7 @@ function Lines() {
 }
 
 function HighlightSection() {
+  const { t } = useTranslation();
   return (
     <section
       className="relative border-t border-white/10 overflow-hidden py-6 md:py-8 min-h-[100px] md:min-h-[90px] bg-[#dadadb]"
@@ -36,9 +38,9 @@ function HighlightSection() {
   <div className="max-w-4xl mx-auto px-3 flex flex-col md:flex-row items-center justify-between gap-6 relative z-20">
         {/* Left: Text Content */}
         <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left gap-3">
-          <h2 className="text-xl md:text-2xl font-extrabold text-zinc-900 tracking-tight">Let’s Build Something Great Together</h2>
-          <p className="text-zinc-700 text-sm md:text-base max-w-2xl font-medium">Ready to take your digital presence to the next level? I’m passionate about crafting modern, impactful web experiences. Let’s connect and create something exceptional!</p>
-          <a href="#contact" className="inline-flex items-center gap-2 bg-[#B71C1C] text-white px-5 py-2.5 font-semibold rounded transition hover:bg-[#8B1515] text-sm md:text-base shadow-md">Contact Me</a>
+          <h2 className="text-xl md:text-2xl font-extrabold text-zinc-900 tracking-tight">{t('highlight_heading')}</h2>
+          <p className="text-zinc-700 text-sm md:text-base max-w-2xl font-medium">{t('highlight_lead')}</p>
+          <a href="#contact" className="inline-flex items-center gap-2 bg-[#B71C1C] text-white px-5 py-2.5 font-semibold rounded transition hover:bg-[#8B1515] text-sm md:text-base shadow-md">{t('highlight_cta')}</a>
         </div>
         {/* Right: Image with floating animation, no background or border */}
         <div className="flex-1 flex justify-center md:justify-end items-center">

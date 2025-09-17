@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Briefcase, ArrowRight } from 'lucide-react';
 import { ExperienceCard } from './ui/experience-card';
@@ -60,6 +61,7 @@ function GridLines() {
 }
 
 export function WorkExperiences() {
+  const { t } = useTranslation();
   return (
     <section id="work" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
       <GridLines />
@@ -76,26 +78,25 @@ export function WorkExperiences() {
             <Briefcase className="w-6 h-6 text-[#B71C1C]" />
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-              Professional Journey
+              {t('work_professionalJourney')}
             </span>
           </div>
 
           <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-white mb-8">
-            <span className="block">Work</span>
-            <span className="block ml-16">Experiences</span>
+            <span className="block">{t('work_heading_part1')}</span>
+            <span className="block ml-16">{t('work_heading_part2')}</span>
           </h1>
           
           <div className="flex items-center gap-3 max-w-3xl">
             <span className="text-xl text-[#B71C1C]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Professional Snapshot
+              {t('work_snapshot_label')}
             </span>
           </div>
           
           <p className="mt-8 max-w-2xl text-zinc-300 leading-relaxed">
-            Click on any experience to explore detailed achievements, technologies used, 
-            and key project highlights from my professional journey.
+            {t('work_intro')}
           </p>
         </motion.div>
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import einsteinImg from "../assets/quote.png";
 
 function Lines() {
@@ -14,6 +15,8 @@ function Lines() {
 }
 
 export default function QuoteSection() {
+  const { t } = useTranslation();
+
   return (
     <section
       className="relative overflow-hidden border-t border-white/10 py-6 md:py-8 min-h-[100px] md:min-h-[90px] bg-[#dadadb]"
@@ -35,11 +38,11 @@ export default function QuoteSection() {
         <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left gap-3">
           <svg className="w-12 h-12 text-[#B71C1C]/60 mb-1" fill="none" viewBox="0 0 64 64"><text x="0" y="48" fontSize="64" fontWeight="bold" fill="currentColor">“</text></svg>
           <blockquote className="text-xl md:text-2xl font-bold text-zinc-900 leading-snug drop-shadow-sm">
-            "Creativity is intelligence having fun."
+            {t('quote_text')}
           </blockquote>
           <div className="flex flex-col items-center md:items-start gap-1 mt-1">
-            <span className="text-base font-semibold text-[#B71C1C] tracking-wide">— Albert Einstein</span>
-            <span className="text-zinc-600 text-xs">Inspiration for every project</span>
+            <span className="text-base font-semibold text-[#B71C1C] tracking-wide">{t('quote_author')}</span>
+            <span className="text-zinc-600 text-xs">{t('quote_sub')}</span>
           </div>
         </div>
         {/* Einstein image on right, smaller and clipped */}

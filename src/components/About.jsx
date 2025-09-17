@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { 
   User, 
@@ -119,37 +120,38 @@ function GridLines() {
 
 export function AboutMe() {
   const [isStoryExpanded, setIsStoryExpanded] = useState(false);
+  const { t } = useTranslation();
 
   const contactInfo = [
     {
       icon: MapPin,
-      label: 'Location',
+      label: t('about_contact_location'),
       value: 'Prishtina, Kosovo'
     },
     {
       icon: Phone,
-      label: 'Phone',
+      label: t('about_contact_phone'),
       value: '',
       href: 'tel:'
     },
     {
       icon: Mail,
-      label: 'Email',
+      label: t('about_contact_email'),
       value: 'arthalimi989@gmail.com',
       href: 'mailto:arthalimi989@gmail.com'
     },
     {
       icon: Globe,
-      label: 'Website',
+      label: t('about_contact_website'),
       value: 'arthalimi.netlify.app',
       href: 'https://arthalimi.netlify.app'
     }
   ];
 
   const languages = [
-    { language: 'Albanian', proficiency: 'Native proficiency', level: 5 },
-    { language: 'English', proficiency: 'Advanced proficiency', level: 4 },
-    { language: 'German', proficiency: 'Intermediate proficiency', level: 3 }
+    { language: t('about_lang_albanian'), proficiency: t('about_lang_prof_native'), level: 5 },
+    { language: t('about_lang_english'), proficiency: t('about_lang_prof_advanced'), level: 4 },
+    { language: t('about_lang_german'), proficiency: t('about_lang_prof_intermediate'), level: 3 }
   ];
 
   return (
@@ -168,24 +170,24 @@ export function AboutMe() {
             <User className="w-6 h-6 text-[#B71C1C]" />
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-              Personal Profile
+              {t('about_personalProfile')}
             </span>
           </div>
 
           <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-white mb-8">
-            <span className="block">About</span>
-            <span className="block ml-16">Me</span>
+            <span className="block">{t('about_titleAbout')}</span>
+            <span className="block ml-16">{t('about_titleMe')}</span>
           </h1>
           
           <div className="flex items-center gap-3 max-w-3xl">
             <span className="text-xl text-[#B71C1C]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              Get to know the person behind the code
+              {t('about_subtitle')}
             </span>
           </div>
           <p className="mt-8 max-w-2xl text-zinc-300 leading-relaxed">
-            Explore a curated selection of my most impactful projects, highlighting technical expertise, creative problem-solving, and real-world results.
+            {t('about_lead')}
           </p>
         </motion.div>
 
@@ -210,7 +212,7 @@ export function AboutMe() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-                  My Story
+                  {t('about_myStory')}
                 </span>
                 <div className="h-px flex-1 bg-white/10" />
               </div>
@@ -224,10 +226,9 @@ export function AboutMe() {
               </motion.div>
             </div>
 
-            <div className="space-y-4 text-zinc-300 leading-relaxed">
+              <div className="space-y-4 text-zinc-300 leading-relaxed">
               <p>
-                I'm a dedicated Web Developer with experience in managing IT operations and developing dynamic web applications. 
-                My journey started with a passion for technology and has evolved into expertise in full-stack development.
+                {t('about_storyIntro')}
               </p>
               
               {isStoryExpanded && (
@@ -239,13 +240,11 @@ export function AboutMe() {
                   className="space-y-4"
                 >
                   <p>
-                    Proficient in ReactJS, NodeJS, and TailwindCSS, I have a strong background in both frontend and backend development. 
-                    I'm known for creating customized technology solutions and improving user experiences through innovative approaches.
+                    {t('about_storyP1')}
                   </p>
                   
                   <p>
-                    Currently seeking to leverage my skills and knowledge in a challenging role where I can continue growing and 
-                    contributing to meaningful projects that make a difference.
+                    {t('about_storyP2')}
                   </p>
                 </motion.div>
               )}
@@ -274,7 +273,7 @@ export function AboutMe() {
             <div className="relative bg-[#232425] p-8">
               <div className="flex items-center gap-3 mb-6">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-                  Contact Information
+                  {t('about_contactHeading')}
                 </span>
                 <div className="h-px flex-1 bg-white/10" />
               </div>
@@ -312,7 +311,7 @@ export function AboutMe() {
               <div className="flex items-center gap-3 mb-6">
                 <Languages className="w-4 h-4 text-[#B71C1C]" />
                 <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-                  Languages
+                  {t('about_languagesHeading')}
                 </span>
                 <div className="h-px flex-1 bg-white/10" />
               </div>
