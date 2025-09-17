@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 export default function Navbar({ formatted }) {
+  const { i18n } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [time, setTime] = useState(formatted || "");
   const [active, setActive] = useState('about');
@@ -161,8 +163,29 @@ export default function Navbar({ formatted }) {
             </nav>
 
           {/* Time on desktop, menu icon on mobile */}
-          <div className="flex items-center">
-            <span className="hidden md:block text-[10px] tracking-widest text-zinc-500 md:text-xs">{time}</span>
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex md:items-center md:gap-2">
+              <span className="hidden md:block text-[10px] tracking-widest text-zinc-500 md:text-xs">{time}</span>
+              {/* Language selector */}
+              <div className="inline-flex rounded-md bg-white/5 p-1">
+                <button
+                  onClick={() => i18n.changeLanguage('en')}
+                  className={`px-2 py-0.5 text-[10px] ${i18n.language === 'en' ? 'bg-white/10 font-semibold' : 'hover:bg-white/5'}`}
+                  title="English"
+                >EN</button>
+                <button
+                  onClick={() => i18n.changeLanguage('sq')}
+                  className={`px-2 py-0.5 text-[10px] ${i18n.language === 'sq' ? 'bg-white/10 font-semibold' : 'hover:bg-white/5'}`}
+                  title="Shqip"
+                >SQ</button>
+                <button
+                  onClick={() => i18n.changeLanguage('de')}
+                  className={`px-2 py-0.5 text-[10px] ${i18n.language === 'de' ? 'bg-white/10 font-semibold' : 'hover:bg-white/5'}`}
+                  title="Deutsch"
+                >DE</button>
+              </div>
+            </div>
+
             <button className="md:hidden text-[#d10000] text-2xl ml-2" onClick={() => setSidebarOpen(true)}>
               &#9776;
             </button>

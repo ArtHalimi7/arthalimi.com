@@ -1,9 +1,11 @@
 
 import { useEffect, useState, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import windowBg from '../assets/window.png';
 
 export default function HeroWithGridLines() {
   const [time, setTime] = useState(new Date());
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     const id = setInterval(() => setTime(new Date()), 30000);
     return () => clearInterval(id);
@@ -23,17 +25,21 @@ export default function HeroWithGridLines() {
           <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
         </div>
 
-        <h1
+        <div className="flex items-start justify-between">
+          <h1
           className="font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-[clamp(2.75rem,9vw,7.5rem)] text-[#e7e6e3] text-center pl-0 md:text-left md:pl-64"
           style={{ fontFamily: 'Space Grotesk, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Cantarell, Noto Sans, sans-serif' }}
         >
                     <p className="text-lg md:text-xl font-semibold text-zinc-100 text-center tracking-widest md:text-left">
-          Hi, I'm <span className="text-[#B71C1C]">Art Halimi</span>
-        </p>
-          <span className="block">CREATIVE</span>
-          <span className="block ml-24 md:ml-40">FULL STACK</span>
-          <span className="block">DEVELOPER</span>
-        </h1>
+            {t('hi')} <span className="text-[#B71C1C]">Art Halimi</span>
+          </p>
+            <span className="block">{t('title1')}</span>
+            <span className="block ml-24 md:ml-40 whitespace-nowrap">{t('title2')}</span>
+            <span className="block">{t('title3')}</span>
+          </h1>
+          
+          {/* close flex container */}
+        </div>
 
         <div className="mt-10 grid items-start gap-12 lg:grid-cols-2">
           {/* Animated Code Snippet */}
@@ -55,15 +61,14 @@ export default function HeroWithGridLines() {
 
           {/* Copy & CTAs */}
           <div className="relative">
-            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
               <span className="text-xl">*</span>
               <div className="h-px flex-1 bg-white/10" />
-              <span className="text-[10px] uppercase tracking-widest text-red-600">Modern Web Architect</span>
+              <span className="text-[10px] uppercase tracking-widest text-red-600">{t('role')}</span>
             </div>
 
             <p className="mt-[150px] max-w-xl text-zinc-300">
-A dedicated Full Stack Web Developer from Kosovo, specializing in React, Node.js, and modern web technologies. <br />
- I create dynamic, responsive applications that deliver exceptional user experiences.
+              {t('description')}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
@@ -71,13 +76,13 @@ A dedicated Full Stack Web Developer from Kosovo, specializing in React, Node.js
                 href="#"
                 className="inline-flex items-center rounded-xl bg-[#B71C1C] px-5 py-3 font-medium text-white shadow-sm hover:brightness-95 hover:bg-[#8B1515]"
               >
-                Get in touch
+                {t('contact')}
               </a>
               <a
                 href="#"
                 className="inline-flex items-center rounded-xl px-5 py-3 ring-1 ring-white/15 hover:bg-[#B71C1C] hover:text-white"
               >
-                See work
+                {t('seeWork')}
               </a>
             </div>
           </div>
