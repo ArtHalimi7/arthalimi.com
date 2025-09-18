@@ -153,7 +153,7 @@ const resources = {
       education_degree_title: 'B.Sc. in Computer Science & Engineering',
       education_university: 'University of Business and Technology',
       education_location: 'Prishtina, Kosovo',
-      education_years: 'October 2021 - Present • Currently Enrolled',
+      education_years: 'October 2021 - Present • Undergraduate',
       education_coursework_title: 'Relevant Coursework',
       education_achievements_title: 'Key Achievements',
       education_course_ds: 'Data Structures',
