@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 
 export default function CustomScrollbar() {
   const thumbRef = useRef(null);
@@ -67,8 +68,12 @@ export default function CustomScrollbar() {
     window.scrollTo({ top: ratio * scrollable, behavior: 'smooth' });
   };
 
-  return (
-    <div className="custom-scroll-rail" onMouseDown={onRailClick} aria-hidden>
+  const rail = (
+    <div
+      className="custom-scroll-rail fixed right-2 top-0 bottom-0 z-[99999]"
+      onMouseDown={onRailClick}
+      aria-hidden
+    >
       <div
         ref={thumbRef}
         className="custom-scroll-thumb"
@@ -77,4 +82,10 @@ export default function CustomScrollbar() {
       />
     </div>
   );
+
+  if (typeof document !== 'undefined' && document.body) {
+    return ReactDOM.createPortal(rail, document.body);
+  }
+
+  return rail;
 }

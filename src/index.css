@@ -285,6 +285,12 @@ img {
 .animate.fade-in {
   animation: fadeIn 1s ease-in-out forwards;
 }
+
+/* simple fade-in utility used for app entrance (kept short and subtle) */
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn 900ms cubic-bezier(.2,.8,.2,1) forwards;
+}
 .custom-scroll-rail {
   position: fixed;
   right: 0; /* flush to the right edge */

@@ -1,6 +1,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import windowBg from '../assets/window.png';
 
 export default function HeroWithGridLines() {
@@ -72,23 +73,34 @@ export default function HeroWithGridLines() {
                 <span className="text-[10px] uppercase tracking-widest text-red-600">{t('role')}</span>
               </div>
 
-              <p className="mt-[150px] max-w-xl text-zinc-300">
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.12, ease: 'easeOut' }}
+                className="mt-[150px] max-w-xl text-zinc-300"
+              >
                 {t('description')}
-              </p>
+              </motion.p>
 
               <div className="mt-8 flex flex-wrap gap-4">
-                <a
+                <motion.a
                   href="#contact"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.22, ease: 'easeOut' }}
                   className="inline-flex items-center rounded-xl bg-[#B71C1C] px-5 py-3 font-medium text-white shadow-sm hover:brightness-95 hover:bg-[#8B1515]"
                 >
                   {t('contact')}
-                </a>
-                <a
+                </motion.a>
+                <motion.a
                   href="#projects"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.32, ease: 'easeOut' }}
                   className="inline-flex items-center rounded-xl px-5 py-3 ring-1 ring-white/15 hover:bg-[#B71C1C] hover:text-white"
                 >
                   {t('seeWork')}
-                </a>
+                </motion.a>
               </div>
             </div>
           </AnimatedFadeUp>
@@ -99,57 +111,100 @@ export default function HeroWithGridLines() {
 }
 
 function Lines() {
-  // animate: outer frame, bottom rule, left gutter, right gutter
-  const [visible, setVisible] = useState({ frame: false, bottom: false, left: false, right: false });
-  const timers = useRef([]);
-
-  useEffect(() => {
-    // staggered delays (ms)
-    const delays = {
-      frame: 120,
-      bottom: 340,
-      left: 560,
-      right: 680,
-    };
-
-    timers.current.push(window.setTimeout(() => setVisible((v) => ({ ...v, frame: true })), delays.frame));
-    timers.current.push(window.setTimeout(() => setVisible((v) => ({ ...v, bottom: true })), delays.bottom));
-    timers.current.push(window.setTimeout(() => setVisible((v) => ({ ...v, left: true })), delays.left));
-    timers.current.push(window.setTimeout(() => setVisible((v) => ({ ...v, right: true })), delays.right));
-
-    return () => {
-      timers.current.forEach((id) => clearTimeout(id));
-      timers.current = [];
-    };
-  }, []);
-
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0">
-      {/* Outer frame (like the red guide lines in the screenshot) */}
-      <div
-        className={`absolute left-2 right-2 top-2 bottom-[50px] transition-all duration-500 ease-out transform origin-center ${
-          visible.frame ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-        }`}
-      >
-        <span
-          className={`absolute left-0 right-0 -bottom-12 h-px bg-white/10 transition-opacity duration-400 ease-out ${
-            visible.bottom ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
-      </div>
+      {/* Outer frame with pencil drawing animation */}
+      <motion.div className="absolute left-2 right-2 top-2 bottom-[50px]">
 
-      {/* Inner gutter lines */}
-      <span
-        className={`absolute top-0 bottom-0 left-10 w-px bg-white/10 transition-all duration-500 ease-out transform ${
-          visible.left ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
-        }`}
+        {/* Bottom rule with pencil drawing */}
+        <motion.span
+          className="absolute left-0 right-0 -bottom-12 h-px bg-white/10"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.6, delay: 0.5, ease: "easeInOut" }}
+          style={{ transformOrigin: "left" }}
+        />
+      </motion.div>
+
+      <motion.span
+        className="absolute top-0 bottom-0 left-10 w-px bg-white/10"
+        initial={{ scaleY: 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ duration: 1.2, delay: 0.9, ease: "easeInOut" }}
+        style={{ transformOrigin: "top" }}
       />
-      <span
-        className={`absolute top-0 bottom-0 right-10 w-px bg-white/10 transition-all duration-500 ease-out transform ${
-          visible.right ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2'
-        }`}
+      
+      {/* Right gutter - draws top to bottom with slight delay */}
+      <motion.span
+        className="absolute top-0 bottom-0 right-10 w-px bg-white/10"
+        initial={{ scaleY: 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ duration: 1.2, delay: 1.6, ease: "easeInOut" }}
+        style={{ transformOrigin: "top" }}
       />
+
+      {/* Pencil drawing effect dots */}
+      <PencilDrawingEffects />
     </div>
+  );
+}
+
+function PencilDrawingEffects() {
+  const pencilPositions = [
+    // Following the drawing path
+    { x: "8px", y: "8px", delay: 0.5 }, // Start top-left
+    { x: "50%", y: "8px", delay: 1.1 }, // Middle of top line
+    { x: "calc(100% - 8px)", y: "8px", delay: 1.7 }, // End top line
+    { x: "calc(100% - 8px)", y: "50%", delay: 2.5 }, // Middle of right line
+    { x: "calc(100% - 8px)", y: "calc(100% - 58px)", delay: 3.2 }, // End right line
+    { x: "50%", y: "calc(100% - 58px)", delay: 3.8 }, // Middle of bottom line
+    { x: "8px", y: "calc(100% - 58px)", delay: 4.4 }, // End bottom line
+    { x: "8px", y: "50%", delay: 5.0 }, // Middle of left line
+  ];
+
+  return (
+    <>
+      {pencilPositions.map((pos, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-[#B71C1C]/60 rounded-full"
+          style={{ left: pos.x, top: pos.y }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ 
+            scale: [0, 1.5, 1], 
+            opacity: [0, 1, 0.8] 
+          }}
+          transition={{ 
+            duration: 0.3, 
+            delay: pos.delay,
+            ease: "easeOut"
+          }}
+        />
+      ))}
+      
+      {/* Drawing dust/eraser particles */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={`dust-${i}`}
+          className="absolute w-0.5 h-0.5 bg-white/30 rounded-full"
+          style={{
+            left: `${20 + Math.random() * 60}%`,
+            top: `${20 + Math.random() * 60}%`,
+          }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ 
+            scale: [0, 1, 0],
+            opacity: [0, 0.6, 0],
+            y: [0, -10, -20]
+          }}
+          transition={{
+            duration: 1.5,
+            delay: 7 + Math.random() * 2,
+            ease: "easeOut"
+          }}
+        />
+      ))}
+    </>
   );
 }
 
@@ -172,23 +227,34 @@ function useStaggeredReveal(initial = false) {
 function AnimatedLineSide({ side = 'left', className = '' }) {
   const [visible, reveal] = useStaggeredReveal(false);
   useEffect(() => {
-    // small base delay depending on side
-    reveal(side === 'left' ? 520 : 700);
+    // Delayed to appear after main frame drawing
+    // make these faster: previously very long delays (ms), shorten by ~80%
+    reveal(side === 'left' ? 1400 : 1800);
   }, [side]);
 
-  const base = `${className} absolute ${side}-0 transition-all duration-500 ease-out transform ${
-    visible ? 'opacity-100 translate-x-0' : 'opacity-0 ' + (side === 'left' ? '-translate-x-2' : 'translate-x-2')
-  }`;
-  return <span className={base} aria-hidden />;
+  return (
+    <motion.span 
+      className={`${className} absolute ${side}-0`}
+      initial={{ scaleY: 0 }}
+      animate={{ scaleY: visible ? 1 : 0 }}
+      transition={{ duration: 0.9, ease: "easeInOut" }}
+      style={{ transformOrigin: "top" }}
+      aria-hidden 
+    />
+  );
 }
 
 function AnimatedLineHorizontal({ className = '', delay = 300 }) {
-  const [visible, reveal] = useStaggeredReveal(false);
-  useEffect(() => {
-    reveal(delay);
-  }, [delay]);
-
-  return <div className={`${className} transition-opacity duration-400 ease-out ${visible ? 'opacity-100' : 'opacity-0'}`} aria-hidden />;
+  return (
+    <motion.div 
+      className={className}
+      initial={{ scaleX: 0 }}
+      animate={{ scaleX: 1 }}
+      transition={{ duration: 0.45, delay: delay / 1000, ease: "easeInOut" }}
+      style={{ transformOrigin: "left" }}
+      aria-hidden 
+    />
+  );
 }
 
 // Reveal children one-by-one with a stagger

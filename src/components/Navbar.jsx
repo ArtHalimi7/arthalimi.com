@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Alogo from '../assets/Alogo.png';
 
@@ -124,9 +125,38 @@ export default function Navbar({ formatted }) {
     { id: 'contact', label: t('nav_contact') },
   ];
 
+  // Motion variants for a slightly slower, layered entrance:
+  // - headerContainer: orchestrates brand then nav group
+  // - brandContainer: staggers logo then name
+  // - navContainer: staggers nav items
+  const headerContainer = {
+    hidden: { opacity: 0, y: -8 },
+    show: { opacity: 1, y: 0, transition: { staggerChildren: 0.12, delayChildren: 0.06, ease: 'easeOut' } },
+  };
+
+  const brandContainer = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.12 } },
+  };
+
+  const brandPart = {
+    hidden: { opacity: 0, y: 6, scale: 0.98, rotate: -6 },
+    show: { opacity: 1, y: 0, scale: 1, rotate: 0, transition: { duration: 0.45, ease: 'circOut' } },
+  };
+
+  const navContainer = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.08, delayChildren: 0.04 } },
+  };
+
+  const navItem = {
+    hidden: { opacity: 0, y: 8 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  };
+
   return (
     <>
-      {/* MOBILE SIDEBAR */}
+  {/* MOBILE SIDEBAR */}
       <div
         className={`fixed inset-0 z-50 bg-[#18191A]/80 transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setSidebarOpen(false)}
@@ -196,26 +226,35 @@ export default function Navbar({ formatted }) {
             </div>
 
             {/* Menu (scrollable) */}
-            <div className="flex flex-col gap-2 pt-2 pb-6 overflow-y-auto max-h-[calc(100vh-140px)] z-0">
-              {menuItems.map((item, idx) => (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  className={`w-full text-lg font-semibold flex items-center justify-between transition-colors duration-200 nav-sidebar-item ${active === item.id ? 'text-white' : 'text-zinc-200 hover:text-[#B6862C]'}`}
-                  style={{ animationDelay: `${idx * 80}ms` }}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <span className="pl-1">{item.label}</span>
-                  {active === item.id && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
-                </a>
-              ))}
-            </div>
+            <motion.div className="flex flex-col gap-2 pt-2 pb-6 overflow-y-auto max-h-[calc(100vh-140px)] z-0"
+              variants={navContainer}
+              initial="hidden"
+              animate={sidebarOpen ? 'show' : 'hidden'}
+            >
+                {menuItems.map((item, idx) => (
+                  <motion.a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className={`w-full text-lg font-semibold flex items-center justify-between transition-colors duration-200 nav-sidebar-item ${active === item.id ? 'text-white' : 'text-zinc-200 hover:text-[#B6862C]'}`}
+                    onClick={() => setSidebarOpen(false)}
+                    variants={navItem}
+                    whileHover={{ x: 4 }}
+                  >
+                    <span className="pl-1">{item.label}</span>
+                    {active === item.id && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
+                  </motion.a>
+                ))}
+              </motion.div>
           </div>
         </nav>
       </div>
 
       {/* HEADER */}
-      <header className="sticky top-0 z-40 bg-[#18191A] border-b border-white/10">
+      <motion.header className="sticky top-0 z-40 bg-[#18191A] border-b border-white/10"
+        initial="hidden"
+        animate="show"
+        variants={headerContainer}
+      >
             {/* subtle scroll progress bar */}
             <div aria-hidden className="absolute inset-x-0 top-0 h-1 pointer-events-none">
               <div
@@ -224,42 +263,32 @@ export default function Navbar({ formatted }) {
               />
             </div>
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <a href="#" className="inline-flex items-center gap-2">
-            <img src={Alogo} alt="Alogo" className="h-8 w-8 object-contain" />
-            <span className="text-white font-semibold">Art Halimi</span>
-          </a>
+          <motion.a href="#" className="inline-flex items-center gap-2"
+            variants={brandContainer}
+            aria-label="Home"
+          >
+            <motion.img src={Alogo} alt="Alogo" className="h-8 w-8 object-contain" variants={brandPart} />
+            <motion.span className="text-white font-semibold" variants={brandPart}>Art Halimi</motion.span>
+          </motion.a>
 
-          <nav className="hidden gap-8 text-xs uppercase tracking-[0.2em] text-zinc-400 md:flex">
-              <a href="#about" className={`relative hover:text-white ${active === 'about' ? 'text-white' : ''}`}>
-                {t('nav_about')}
-                {active === 'about' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
-              </a>
-
-              <a href="#work" className={`relative hover:text-white ${active === 'work' ? 'text-white' : ''}`}>
-                {t('nav_work')}
-                {active === 'work' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
-              </a>
-
-              <a href="#education" className={`relative hover:text-white ${active === 'education' ? 'text-white' : ''}`}>
-                {t('nav_education')}
-                {active === 'education' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
-              </a>
-
-              <a href="#projects" className={`relative hover:text-white ${active === 'projects' ? 'text-white' : ''}`}>
-                {t('nav_projects')}
-                {active === 'projects' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
-              </a>
-
-              <a href="#services" className={`relative hover:text-white ${active === 'services' ? 'text-white' : ''}`}>
-                {t('nav_services')}
-                {active === 'services' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
-              </a>
-
-              <a href="#contact" className={`relative hover:text-white ${active === 'contact' ? 'text-white' : ''}`}>
-                {t('nav_contact')}
-                {active === 'contact' && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
-              </a>
-            </nav>
+          <motion.nav className="hidden gap-8 text-xs uppercase tracking-[0.2em] text-zinc-400 md:flex"
+            variants={navContainer}
+            aria-label="Primary navigation"
+          >
+              {menuItems.map((item, i) => (
+                <motion.a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`relative hover:text-white ${active === item.id ? 'text-white' : ''}`}
+                  variants={navItem}
+                  whileHover={{ y: -3, scale: 1.02 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                >
+                  {item.label}
+                  {active === item.id && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
+                </motion.a>
+              ))}
+            </motion.nav>
 
           {/* Time on desktop, menu icon on mobile */}
           <div className="flex items-center gap-3">
@@ -307,7 +336,7 @@ export default function Navbar({ formatted }) {
           </div>
         </div>
         <div className="absolute inset-x-0 bottom-0 h-px bg-white/10" />
-      </header>
+      </motion.header>
     </>
   );
 }
