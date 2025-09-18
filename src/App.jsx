@@ -9,7 +9,6 @@ import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
 import CustomScrollbar from './components/CustomScrollbar';
 import ScrollTop from './components/ScrollTop';
-import ScrollProgress from './components/ScrollProgress';
 import SplashScreen from './components/SplashScreen';
 
 const App = () => {
@@ -26,7 +25,6 @@ const App = () => {
   return (
     <main className='background1'>
       <Router>
-        <ScrollProgress />
         {console.log('[app] showSplash=', showSplash, 'appReady=', appReady)}
         {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
 
