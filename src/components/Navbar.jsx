@@ -7,7 +7,7 @@ export default function Navbar({ formatted }) {
   const { i18n, t } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [time, setTime] = useState(formatted || "");
-  const [active, setActive] = useState('about');
+  const [active, setActive] = useState('home');
   const [langOpenDesktop, setLangOpenDesktop] = useState(false);
   const [langOpenMobile, setLangOpenMobile] = useState(false);
   const langRefDesktop = useRef(null);
@@ -106,7 +106,7 @@ export default function Navbar({ formatted }) {
 
   // Track active section via IntersectionObserver
   useEffect(() => {
-    const ids = ['about', 'work', 'education', 'projects', 'services', 'contact'];
+    const ids = ['home', 'about', 'work', 'tech-stack', 'education', 'projects', 'services', 'contact'];
     const options = {
       root: null,
       // account for sticky header by shrinking the viewport
@@ -181,12 +181,13 @@ export default function Navbar({ formatted }) {
         >
           {/* Header: Logo and Name */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-            <div className="flex items-center cursor-pointer" onClick={() => { scrollToId('about'); setSidebarOpen(false); }}>
+            <div className={`flex items-center cursor-pointer ${active === 'home' ? 'text-red-600' : ''}`} onClick={() => { scrollToId('home'); setActive('home'); setSidebarOpen(false); }}>
               <img src={Alogo} alt="Alogo" className="h-8 w-8" />
               <div className="ml-3">
                 <span className="text-lg font-semibold text-white leading-tight">Art Halimi</span>
                 <div className="text-xs text-zinc-400 leading-tight">Full Stack Developer</div>
               </div>
+              {active === 'home' && <span className="absolute left-0 bottom-0 h-1 w-full bg-[#4a0f0f]" style={{height: 3, borderRadius: 2}} />}
             </div>
             <button
               className="text-zinc-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md text-xl px-2"
@@ -205,11 +206,13 @@ export default function Navbar({ formatted }) {
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToId(item.id);
+                  setActive(item.id);
                   setSidebarOpen(false);
                 }}
                 className={`block w-full text-left px-4 py-3 rounded-lg transition-colors duration-200 mb-2 relative group ${
-                  active === item.id ? 'text-red-600 bg-white/10' : 'text-zinc-200 hover:text-red-600 hover:bg-white/5'
+                  active === item.id ? 'text-red-600 bg-white/10 font-semibold' : 'text-zinc-200 hover:text-red-600 hover:bg-white/5'
                 }`}
+                aria-current={active === item.id ? 'page' : undefined}
               >
                 <span className="font-medium">{item.label}</span>
                 <span className={`absolute bottom-2 left-4 h-0.5 bg-red-600 transition-all duration-300 ${
