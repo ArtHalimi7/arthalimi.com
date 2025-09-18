@@ -1,14 +1,136 @@
-import React, { useState, useEffect } from 'react';
-import Alogo from '../assets/Alogo.png';
+import { useEffect, useState, useRef } from "react";
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import Alogo from '../assets/Alogo.png';
 
-const Navbar = () => {
+export default function Navbar({ formatted }) {
   const { i18n, t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('about');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [time, setTime] = useState(formatted || "");
+  const [active, setActive] = useState('about');
+  const [langOpenDesktop, setLangOpenDesktop] = useState(false);
+  const [langOpenMobile, setLangOpenMobile] = useState(false);
+  const langRefDesktop = useRef(null);
+  const langRefMobile = useRef(null);
 
-  // Save navlink ids and labels (keep your navlinks)
-  const navLinks = [
+  // subtle scroll progress (0..1) with smooth lerp for display
+  const scrollTargetRef = useRef(0);
+  const rafRef = useRef(null);
+  const [scrollDisplay, setScrollDisplay] = useState(0);
+
+  // Header height used for anchor offset
+  const HEADER_OFFSET = 72; // ~ h-16 + border; tweak to match your header
+
+  useEffect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const scrollTop = window.scrollY || doc.scrollTop || 0;
+      const scrollHeight = doc.scrollHeight - window.innerHeight;
+      const pct = scrollHeight > 0 ? Math.min(1, Math.max(0, scrollTop / scrollHeight)) : 0;
+      scrollTargetRef.current = pct;
+    };
+
+    // read scroll on events
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    // animate display value toward target smoothly
+    const animate = () => {
+      setScrollDisplay((prev) => {
+        const target = scrollTargetRef.current;
+        const diff = target - prev;
+        if (Math.abs(diff) < 0.0005) return target;
+        return prev + diff * 0.12; // smoothing factor
+      });
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  // Helper to get flag image URL for a language code
+  const getFlagUrl = (lang) => {
+    switch (lang) {
+      case 'en':
+        return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png';
+      case 'sq':
+        return 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png';
+      case 'de':
+        return 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png';
+      default:
+        return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png';
+    }
+  };
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (langRefDesktop.current && !langRefDesktop.current.contains(e.target)) {
+        setLangOpenDesktop(false);
+      }
+      if (langRefMobile.current && !langRefMobile.current.contains(e.target)) {
+        setLangOpenMobile(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  useEffect(() => {
+    // Update live time display to HH:MM (no seconds).
+    const tick = () => {
+      const d = new Date();
+      const hh = String(d.getHours()).padStart(2, "0");
+      const mm = String(d.getMinutes()).padStart(2, "0");
+      setTime(`${hh}:${mm}`);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Smooth-scroll with header offset
+  const scrollToId = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const top = rect.top + window.scrollY - HEADER_OFFSET;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
+  // Track active section via IntersectionObserver
+  useEffect(() => {
+    const ids = ['about', 'work', 'education', 'projects', 'services', 'contact'];
+    const options = {
+      root: null,
+      // account for sticky header by shrinking the viewport
+      rootMargin: `-${HEADER_OFFSET}px 0px -40% 0px`,
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActive(entry.target.id || '');
+        }
+      });
+    }, options);
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [HEADER_OFFSET]);
+
+  const menuItems = [
     { id: 'about', label: t('nav_about') },
     { id: 'work', label: t('nav_work') },
     { id: 'education', label: t('nav_education') },
@@ -17,222 +139,232 @@ const Navbar = () => {
     { id: 'contact', label: t('nav_contact') },
   ];
 
-  // Track active section
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '-50% 0px',
-      threshold: 0
-    };
-    const handleIntersection = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-    const observer = new window.IntersectionObserver(handleIntersection, observerOptions);
-    navLinks.forEach(link => {
-      const element = document.getElementById(link.id);
-      if (element) observer.observe(element);
-    });
-    return () => {
-      navLinks.forEach(link => {
-        const element = document.getElementById(link.id);
-        if (element) observer.unobserve(element);
-      });
-    };
-  }, [navLinks]);
+  // Motion variants
+  const headerContainer = {
+    hidden: { opacity: 0, y: -8 },
+    show: { opacity: 1, y: 0, transition: { staggerChildren: 0.12, delayChildren: 0.06, ease: 'easeOut' } },
+  };
 
-  // Scroll to section with offset
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const navbarHeight = 64; // px, adjust if needed
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({
-        top: elementPosition - navbarHeight,
-        behavior: 'smooth'
-      });
-      setIsOpen(false);
-      setActiveSection(sectionId);
-    }
+  const brandContainer = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.12 } },
+  };
+
+  const brandPart = {
+    hidden: { opacity: 0, y: 6, scale: 0.98, rotate: -6 },
+    show: { opacity: 1, y: 0, scale: 1, rotate: 0, transition: { duration: 0.45, ease: 'circOut' } },
+  };
+
+  const navContainer = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.08, delayChildren: 0.04 } },
+  };
+
+  const navItem = {
+    hidden: { opacity: 0, y: 8 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
   return (
-    <nav className="bg-[#18191A] shadow-sm fixed w-full top-0 left-0 z-50 border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo and Name */}
-          <div className="flex items-center cursor-pointer" onClick={() => scrollToSection('about')}>
-            <img src={Alogo} alt="Alogo" className="h-10 w-10 rounded-full object-cover" />
-            <div className="ml-3">
-              <span className="text-lg font-bold text-white">Art Halimi</span>
-              <div className="text-xs text-zinc-400">Full Stack Dev</div>
+    <>
+      {/* MOBILE SIDEBAR OVERLAY */}
+      <div
+        className={`fixed inset-0 z-50 bg-[#18191A]/80 transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        onClick={() => setSidebarOpen(false)}
+      >
+        <nav
+          className={`fixed left-0 top-0 h-full w-64 bg-gradient-to-b from-[#1f1f1f]/80 to-[#161616] backdrop-blur-md shadow-2xl p-4 flex flex-col gap-4 overflow-y-auto overscroll-contain pb-6 transition-transform duration-300 border-r border-[#B71C1C]/20 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+          onClick={e => e.stopPropagation()}
+          aria-hidden={!sidebarOpen}
+        >
+          {/* Decorative lines */}
+          <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
+          <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
+          <span className="absolute left-0 right-0 top-0 h-px bg-white/10" />
+          <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
+
+          <div className="flex items-center justify-between sticky top-0 z-20 py-2 bg-transparent sidebar-sticky">
+            <div className="flex items-center gap-2">
+              <img src={Alogo} alt="Profile" className="h-12 w-12 rounded-full object-cover shadow-inner" />
+              <div>
+                <div className="text-white font-semibold">Art Halimi</div>
+                <div className="text-sm text-zinc-400">Full Stack Dev</div>
+              </div>
             </div>
+            <button
+              className="close-btn text-zinc-300 text-2xl p-1 rounded-md hover:bg-white/5 transition-transform duration-200"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <span aria-hidden>×</span>
+            </button>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-4">
-              {navLinks.map(link => (
+          <div className="my-2 h-px w-full bg-white/6" />
+
+          <div className="relative flex-1 w-full">
+            {/* Centered language selector (doesn't block scroll) */}
+            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 flex justify-center z-10 pointer-events-none">
+              <div
+                className="lang-bar inline-flex items-center gap-3 bg-white/3 rounded-full p-1 shadow-sm pointer-events-auto"
+                ref={langRefMobile}
+                role="tablist"
+                aria-label="Language selector"
+              >
                 <button
-                  key={link.id}
-                  onClick={() => scrollToSection(link.id)}
-                  className={`px-3 py-2 text-sm font-medium relative group transition-colors duration-200 ${
-                    activeSection === link.id ? 'text-[#B71C1C]' : 'text-zinc-300 hover:text-white'
-                  }`}
+                  className={`lang-pill inline-flex items-center gap-2 px-3 py-1 rounded-full ${i18n.language === 'en' ? 'bg-white/10 scale-105' : 'bg-transparent'}`}
+                  onClick={() => { i18n.changeLanguage('en'); setLangOpenMobile(false); }}
+                  role="tab"
+                  aria-selected={i18n.language === 'en'}
                 >
-                  <span>{link.label}</span>
-                  <span className={`absolute bottom-1 left-3 h-0.5 bg-[#B71C1C] transition-all duration-300 ${
-                    activeSection === link.id ? 'w-[calc(100%-24px)]' : 'w-0 group-hover:w-[calc(100%-24px)]'
-                  }`}></span>
-                </button>
-              ))}
-              {/* Language Selector */}
-              <div className="flex items-center space-x-2 ml-4 border-l pl-4 border-white/10">
-                <button
-                  onClick={() => i18n.changeLanguage('sq')}
-                  className={`px-2 py-1 text-sm font-medium rounded ${
-                    i18n.language === 'sq' ? 'bg-[#B71C1C] text-white' : 'text-zinc-300 hover:text-[#B71C1C]'
-                  }`}
-                >
-                  SQ
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png" alt="EN" className="h-5 w-5 rounded-full" />
+                  <span className="text-xs font-semibold">EN</span>
                 </button>
                 <button
-                  onClick={() => i18n.changeLanguage('en')}
-                  className={`px-2 py-1 text-sm font-medium rounded ${
-                    i18n.language === 'en' ? 'bg-[#B71C1C] text-white' : 'text-zinc-300 hover:text-[#B71C1C]'
-                  }`}
+                  className={`lang-pill inline-flex items-center gap-2 px-3 py-1 rounded-full ${i18n.language === 'sq' ? 'bg-white/10 scale-105' : 'bg-transparent'}`}
+                  onClick={() => { i18n.changeLanguage('sq'); setLangOpenMobile(false); }}
+                  role="tab"
+                  aria-selected={i18n.language === 'sq'}
                 >
-                  EN
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png" alt="SQ" className="h-5 w-5 rounded-full" />
+                  <span className="text-xs font-semibold">SQ</span>
                 </button>
                 <button
-                  onClick={() => i18n.changeLanguage('de')}
-                  className={`px-2 py-1 text-sm font-medium rounded ${
-                    i18n.language === 'de' ? 'bg-[#B71C1C] text-white' : 'text-zinc-300 hover:text-[#B71C1C]'
-                  }`}
+                  className={`lang-pill inline-flex items-center gap-2 px-3 py-1 rounded-full ${i18n.language === 'de' ? 'bg-white/10 scale-105' : 'bg-transparent'}`}
+                  onClick={() => { i18n.changeLanguage('de'); setLangOpenMobile(false); }}
+                  role="tab"
+                  aria-selected={i18n.language === 'de'}
                 >
-                  DE
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png" alt="DE" className="h-5 w-5 rounded-full" />
+                  <span className="text-xs font-semibold">DE</span>
                 </button>
               </div>
             </div>
-          </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-zinc-300 hover:text-white hover:bg-[#B71C1C]/10 focus:outline-none"
+            {/* Menu (scrollable) */}
+            <motion.div
+              className="flex flex-col gap-2 pt-2 pb-6 overflow-y-auto grow max-h-[calc(100vh-140px)] z-0"
+              variants={navContainer}
+              initial="hidden"
+              animate={sidebarOpen ? 'show' : 'hidden'}
             >
-              <span className="sr-only">Open main menu</span>
-              {/* Menu icon */}
-              <svg
-                className={`${isOpen ? 'hidden' : 'block'} h-6 w-6`}
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-              {/* Close icon */}
-              <svg
-                className={`${isOpen ? 'block' : 'hidden'} h-6 w-6`}
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+              {menuItems.map((item) => (
+                <motion.a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`w-full text-lg font-semibold flex items-center justify-between transition-colors duration-200 nav-sidebar-item ${active === item.id ? 'text-white' : 'text-zinc-200 hover:text-[#B6862C]'}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToId(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  variants={navItem}
+                  whileHover={{ x: 4 }}
+                >
+                  <span className="pl-1">{item.label}</span>
+                  {active === item.id && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
+                </motion.a>
+              ))}
+            </motion.div>
           </div>
-        </div>
+        </nav>
       </div>
 
-      {/* Mobile menu overlay */}
-      <div
-        className={`${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        } fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out md:hidden`}
-        onClick={() => setIsOpen(false)}
-      />
-
-      {/* Mobile menu */}
-      <div
-        className={`${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } fixed top-0 left-0 h-screen w-64 bg-[#18191A] transform transition-transform duration-300 ease-in-out md:hidden shadow-2xl`}
+      {/* HEADER */}
+      <motion.header
+        className="sticky top-0 z-40 bg-[#18191A] border-b border-white/10"
+        initial="hidden"
+        animate="show"
+        variants={headerContainer}
       >
-        {/* Mobile menu header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-          <div className="flex items-center">
-            <img src={Alogo} alt="Alogo" className="h-8 w-8 rounded-full object-cover" />
-            <div className="ml-2">
-              <div className="text-lg font-semibold text-white">Art Halimi</div>
-              <div className="text-xs text-zinc-400">Full Stack Dev</div>
-            </div>
-          </div>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-zinc-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-[#B71C1C] rounded-md"
+        {/* subtle scroll progress bar */}
+        <div aria-hidden className="absolute inset-x-0 top-0 h-1 pointer-events-none">
+          <div
+            className="h-full bg-[#B71C1C]/60 origin-left transform"
+            style={{ transform: `scaleX(${scrollDisplay})`, willChange: 'transform' }}
+          />
+        </div>
+
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+          <motion.a href="#" className="inline-flex items-center gap-2"
+            variants={brandContainer}
+            aria-label="Home"
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+            <motion.img src={Alogo} alt="Alogo" className="h-8 w-8 object-contain" variants={brandPart} />
+            <motion.span className="text-white font-semibold" variants={brandPart}>Art Halimi</motion.span>
+          </motion.a>
 
-        {/* Mobile menu links */}
-        <div className="px-2 py-4">
-          {navLinks.map(link => (
-            <button
-              key={link.id}
-              onClick={() => scrollToSection(link.id)}
-              className={`block w-full text-left px-4 py-3 rounded-lg transition-colors duration-200 mb-2 relative group ${
-                activeSection === link.id ? 'text-[#B71C1C] bg-[#B71C1C]/10' : 'text-zinc-200 hover:text-[#B71C1C] hover:bg-[#B71C1C]/10'
-              }`}
-            >
-              <span>{link.label}</span>
-              <span className={`absolute bottom-0 left-4 h-0.5 bg-[#B71C1C] transition-all duration-300 ${
-                activeSection === link.id ? 'w-[calc(100%-32px)]' : 'w-0 group-hover:w-[calc(100%-32px)]'
-              }`}></span>
-            </button>
-          ))}
-          {/* Mobile Language Selector */}
-          <div className="mt-4 px-4 py-3 border-t border-white/10">
-            <div className="flex justify-center space-x-4">
-              <button
-                onClick={() => i18n.changeLanguage('sq')}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${
-                  i18n.language === 'sq' ? 'bg-[#B71C1C] text-white' : 'text-zinc-300 hover:text-[#B71C1C] border border-zinc-600'
-                }`}
+          <motion.nav
+            className="hidden gap-8 text-xs uppercase tracking-[0.2em] text-zinc-400 md:flex"
+            variants={navContainer}
+            aria-label="Primary navigation"
+          >
+            {menuItems.map((item) => (
+              <motion.a
+                key={item.id}
+                href={`#${item.id}`}
+                className={`relative hover:text-white ${active === item.id ? 'text-white' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToId(item.id);
+                }}
+                variants={navItem}
+                whileHover={{ y: -3, scale: 1.02 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
               >
-                SQ
-              </button>
-              <button
-                onClick={() => i18n.changeLanguage('en')}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${
-                  i18n.language === 'en' ? 'bg-[#B71C1C] text-white' : 'text-zinc-300 hover:text-[#B71C1C] border border-zinc-600'
-                }`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => i18n.changeLanguage('de')}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${
-                  i18n.language === 'de' ? 'bg-[#B71C1C] text-white' : 'text-zinc-300 hover:text-[#B71C1C] border border-zinc-600'
-                }`}
-              >
-                DE
-              </button>
+                {item.label}
+                {active === item.id && <span className="absolute left-0 -bottom-3 h-1 w-full bg-[#4a0f0f]" />}
+              </motion.a>
+            ))}
+          </motion.nav>
+
+          {/* Time on desktop, menu icon on mobile */}
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex md:items-center md:gap-2">
+              <span className="hidden md:block text-[10px] tracking-widest text-zinc-500 md:text-xs">{time}</span>
+              {/* Language dropdown (desktop) */}
+              <div className="relative" ref={langRefDesktop}>
+                <button
+                  onClick={() => setLangOpenDesktop((s) => !s)}
+                  className="inline-flex items-center gap-2 rounded-full bg-white/5 p-1 focus:outline-none focus:ring-2 focus:ring-white/20"
+                  aria-haspopup="true"
+                  aria-expanded={langOpenDesktop}
+                  aria-label="Select language"
+                >
+                  <img src={getFlagUrl(i18n.language)} alt={i18n.language} className="h-7 w-7 object-cover rounded-full shadow-2xl transition-transform transform hover:scale-110" />
+                </button>
+                {langOpenDesktop && (
+                  <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 w-48 rounded-lg bg-[#202226] p-3 shadow-2xl ring-1 ring-white/10 divide-y divide-white/5 origin-top transform transition-all duration-150">
+                    <div className="py-1">
+                      <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('en'); setLangOpenDesktop(false); }}>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png" alt="EN" className="h-8 w-8 object-cover rounded-full shadow-sm" />
+                        <span className="text-sm font-medium">English</span>
+                      </button>
+                    </div>
+                    <div className="py-1">
+                      <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('sq'); setLangOpenDesktop(false); }}>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png" alt="SQ" className="h-8 w-8 object-cover rounded-full shadow-sm" />
+                        <span className="text-sm font-medium">Shqip</span>
+                      </button>
+                    </div>
+                    <div className="py-1">
+                      <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('de'); setLangOpenDesktop(false); }}>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png" alt="DE" className="h-8 w-8 object-cover rounded-full shadow-sm" />
+                        <span className="text-sm font-medium">Deutsch</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
+
+            <button className="md:hidden text-[#d10000] text-2xl ml-2" onClick={() => setSidebarOpen(true)}>
+              &#9776;
+            </button>
           </div>
         </div>
-      </div>
-    </nav>
+        <div className="absolute inset-x-0 bottom-0 h-px bg-white/10" />
+      </motion.header>
+    </>
   );
-};
-
-export default Navbar;
+}
