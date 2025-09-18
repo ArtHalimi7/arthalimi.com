@@ -168,31 +168,28 @@ export default function Navbar({ formatted }) {
   return (
     <>
       {/* MOBILE SIDEBAR OVERLAY */}
+      {/* SIDEBAR OVERLAY (redesign) */}
       <div
-        className={`fixed inset-0 z-50 bg-[#18191A]/80 transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 z-50 bg-black/50 transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setSidebarOpen(false)}
       >
+        {/* Sidebar panel */}
         <nav
-          className={`fixed left-0 top-0 h-full w-64 bg-gradient-to-b from-[#1f1f1f]/80 to-[#161616] backdrop-blur-md shadow-2xl p-4 flex flex-col gap-4 overflow-y-auto overscroll-contain pb-6 transition-transform duration-300 border-r border-[#B71C1C]/20 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+    className={`fixed top-0 left-0 h-full w-64 bg-[#18191A] shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
           onClick={e => e.stopPropagation()}
           aria-hidden={!sidebarOpen}
         >
-          {/* Decorative lines */}
-          <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
-          <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
-          <span className="absolute left-0 right-0 top-0 h-px bg-white/10" />
-          <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
-
-          <div className="flex items-center justify-between sticky top-0 z-20 py-2 bg-transparent sidebar-sticky">
-            <div className="flex items-center gap-2">
-              <img src={Alogo} alt="Profile" className="h-12 w-12 rounded-full object-cover shadow-inner" />
-              <div>
-                <div className="text-white font-semibold">Art Halimi</div>
-                <div className="text-sm text-zinc-400">Full Stack Dev</div>
+          {/* Header: Logo and Name */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+            <div className="flex items-center cursor-pointer" onClick={() => { scrollToId('about'); setSidebarOpen(false); }}>
+              <img src={Alogo} alt="Alogo" className="h-8 w-8" />
+              <div className="ml-3">
+                <span className="text-lg font-semibold text-white leading-tight">Art Halimi</span>
+                <div className="text-xs text-zinc-400 leading-tight">Full Stack Developer</div>
               </div>
             </div>
             <button
-              className="close-btn text-zinc-300 text-2xl p-1 rounded-md hover:bg-white/5 transition-transform duration-200"
+              className="text-zinc-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md text-xl px-2"
               onClick={() => setSidebarOpen(false)}
               aria-label="Close sidebar"
             >
@@ -200,73 +197,60 @@ export default function Navbar({ formatted }) {
             </button>
           </div>
 
-          <div className="my-2 h-px w-full bg-white/6" />
-
-          <div className="relative flex-1 w-full">
-            {/* Centered language selector (doesn't block scroll) */}
-            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 flex justify-center z-10 pointer-events-none">
-              <div
-                className="lang-bar inline-flex items-center gap-3 bg-white/3 rounded-full p-1 shadow-sm pointer-events-auto"
-                ref={langRefMobile}
-                role="tablist"
-                aria-label="Language selector"
+          {/* Menu items */}
+          <div className="flex-1 px-2 py-4 overflow-y-auto">
+            {menuItems.map((item, idx) => (
+              <button
+                key={item.id}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToId(item.id);
+                  setSidebarOpen(false);
+                }}
+                className={`block w-full text-left px-4 py-3 rounded-lg transition-colors duration-200 mb-2 relative group ${
+                  active === item.id ? 'text-red-600 bg-white/10' : 'text-zinc-200 hover:text-red-600 hover:bg-white/5'
+                }`}
               >
-                <button
-                  className={`lang-pill inline-flex items-center gap-2 px-3 py-1 rounded-full ${i18n.language === 'en' ? 'bg-white/10 scale-105' : 'bg-transparent'}`}
-                  onClick={() => { i18n.changeLanguage('en'); setLangOpenMobile(false); }}
-                  role="tab"
-                  aria-selected={i18n.language === 'en'}
-                >
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png" alt="EN" className="h-5 w-5 rounded-full" />
-                  <span className="text-xs font-semibold">EN</span>
-                </button>
-                <button
-                  className={`lang-pill inline-flex items-center gap-2 px-3 py-1 rounded-full ${i18n.language === 'sq' ? 'bg-white/10 scale-105' : 'bg-transparent'}`}
-                  onClick={() => { i18n.changeLanguage('sq'); setLangOpenMobile(false); }}
-                  role="tab"
-                  aria-selected={i18n.language === 'sq'}
-                >
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png" alt="SQ" className="h-5 w-5 rounded-full" />
-                  <span className="text-xs font-semibold">SQ</span>
-                </button>
-                <button
-                  className={`lang-pill inline-flex items-center gap-2 px-3 py-1 rounded-full ${i18n.language === 'de' ? 'bg-white/10 scale-105' : 'bg-transparent'}`}
-                  onClick={() => { i18n.changeLanguage('de'); setLangOpenMobile(false); }}
-                  role="tab"
-                  aria-selected={i18n.language === 'de'}
-                >
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png" alt="DE" className="h-5 w-5 rounded-full" />
-                  <span className="text-xs font-semibold">DE</span>
-                </button>
-              </div>
-            </div>
+                <span className="font-medium">{item.label}</span>
+                <span className={`absolute bottom-2 left-4 h-0.5 bg-red-600 transition-all duration-300 ${
+                  active === item.id ? 'w-[calc(100%-32px)]' : 'w-0 group-hover:w-[calc(100%-32px)]'
+                }`}></span>
+              </button>
+            ))}
 
-            {/* Menu (scrollable) */}
-            <motion.div
-              className="flex flex-col gap-2 pt-2 pb-6 overflow-y-auto grow max-h-[calc(100vh-140px)] z-0"
-              variants={navContainer}
-              initial="hidden"
-              animate={sidebarOpen ? 'show' : 'hidden'}
-            >
-              {menuItems.map((item) => (
-                <motion.a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  className={`w-full text-lg font-semibold flex items-center justify-between transition-colors duration-200 nav-sidebar-item ${active === item.id ? 'text-white' : 'text-zinc-200 hover:text-[#B6862C]'}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToId(item.id);
-                    setSidebarOpen(false);
-                  }}
-                  variants={navItem}
-                  whileHover={{ x: 4 }}
-                >
-                  <span className="pl-1">{item.label}</span>
-                  {active === item.id && <span className="ml-auto h-6 w-1 bg-[#4a0f0f] rounded-sm" />}
-                </motion.a>
-              ))}
-            </motion.div>
+            {/* Subtle red divider */}
+            <hr className="my-4 border-t border-red-700/30" />
+
+            {/* Language selector directly under navlinks */}
+            <div className="flex justify-center space-x-4 mb-2" ref={langRefMobile}>
+              <button
+                onClick={() => { i18n.changeLanguage('sq'); setLangOpenMobile(false); }}
+                className={`px-4 py-2 text-sm font-medium rounded-md ${
+                  i18n.language === 'sq' ? 'bg-red-600 text-white' : 'text-zinc-200 hover:text-red-600 border border-white/10'
+                }`}
+              >
+                SQ
+              </button>
+              <button
+                onClick={() => { i18n.changeLanguage('en'); setLangOpenMobile(false); }}
+                className={`px-4 py-2 text-sm font-medium rounded-md ${
+                  i18n.language === 'en' ? 'bg-red-600 text-white' : 'text-zinc-200 hover:text-red-600 border border-white/10'
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => { i18n.changeLanguage('de'); setLangOpenMobile(false); }}
+                className={`px-4 py-2 text-sm font-medium rounded-md ${
+                  i18n.language === 'de' ? 'bg-red-600 text-white' : 'text-zinc-200 hover:text-red-600 border border-white/10'
+                }`}
+              >
+                DE
+              </button>
+            </div>
           </div>
+
+          {/* ...removed language selector at bottom... */}
         </nav>
       </div>
 
