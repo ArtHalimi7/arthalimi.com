@@ -28,7 +28,7 @@ const projects = [
       'projects.illyon.features.admin',
     ],
     impactKey: 'projects.illyon.impact',
-    link: 'https://illyon.com',
+    link: 'https://illyon.netlify.app',
   },
   {
     id: 2,
@@ -49,7 +49,7 @@ const projects = [
       'projects.zahlx.features.integrations',
     ],
     impactKey: 'projects.zahlx.impact',
-    link: 'https://zahlx.com',
+    link: 'https://zahlx.netlify.app',
   },
   {
     id: 3,
@@ -69,7 +69,7 @@ const projects = [
       'projects.andi.features.social',
     ],
     impactKey: 'projects.andi.impact',
-    link: 'https://andi.com',
+    link: 'https://andishkodra.com',
   },
   {
     id: 4,
@@ -87,7 +87,7 @@ const projects = [
       'projects.arsa.features.contact',
     ],
     impactKey: 'projects.arsa.impact',
-    link: 'https://arsa.com',
+    link: 'https://arsagipser.ch',
   },
 ];
 
