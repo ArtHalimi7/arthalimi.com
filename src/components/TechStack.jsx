@@ -164,6 +164,9 @@ function GridLines() {
 function TechBubble({ tech, delay, category }) {
   const [isHovered, setIsHovered] = useState(false);
   const { t } = useTranslation();
+  // prepare a display name that avoids breaking inside tokens like "Node.js" or "Next.js"
+  const rawName = t(tech.nameKey);
+  const displayName = rawName.replace(/\.(?=\w)/g, '\u00A0.').replace(/-/g, '\u2011'); // non-breaking hyphen
   
   return (
     <motion.div
@@ -185,16 +188,11 @@ function TechBubble({ tech, delay, category }) {
       className="relative group cursor-pointer"
     >
       <div 
-        className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full border-2 bg-gradient-to-br from-white to-gray-50 shadow-xl hover:shadow-2xl transition-all duration-500 flex items-center justify-center backdrop-blur-sm"
-        style={{ 
-          borderColor: category.color,
-          boxShadow: isHovered 
-            ? `0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px ${category.color}20`
-            : '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-        }}
+        className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full border-2 bg-gradient-to-br from-white to-gray-50 transition-all duration-500 flex items-center justify-center backdrop-blur-sm overflow-y-hidden focus:outline-none"
+        style={{ borderColor: category.color }}
       >
-        <div className="text-center">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-2 flex items-center justify-center">
+        <div className="relative z-20 flex flex-col items-center justify-center h-full px-2 py-2">
+          <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 mb-1 flex items-center justify-center">
             <img 
               src={tech.icon}
               alt={t(tech.nameKey)}
@@ -204,40 +202,15 @@ function TechBubble({ tech, delay, category }) {
               }}
             />
           </div>
-          <span className="text-xs sm:text-sm font-bold text-gray-800 leading-tight">
-            {t(tech.nameKey)}
+          <span className="mt-1 text-[9px] sm:text-[10px] md:text-[13px] font-semibold text-gray-800 leading-tight text-center break-normal max-w-[85%] whitespace-normal flex items-center justify-center">
+            {displayName}
           </span>
         </div>
         
-        {/* Progress ring */}
-        <svg className="absolute inset-0 w-full h-full -rotate-90 overflow-visible">
-          <circle
-            cx="50%"
-            cy="50%"
-            r="45%"
-            fill="none"
-            stroke="#e5e7eb"
-            strokeWidth="3"
-          />
-          <motion.circle
-            cx="50%"
-            cy="50%"
-            r="45%"
-            fill="none"
-            stroke={category.color}
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeDasharray={`${2 * Math.PI * 45} ${2 * Math.PI * 45}`}
-            initial={{ strokeDashoffset: 2 * Math.PI * 45 }}
-            animate={{ 
-              strokeDashoffset: 2 * Math.PI * 45 * (1 - tech.level / 100)
-            }}
-            transition={{ duration: 1.5, delay: delay + 0.5 }}
-          />
-        </svg>
+        {/* Removed progress ring to avoid inner circle/half-circle visuals */}
         
         {/* Floating label */}
-        <motion.div
+          <motion.div
           initial={{ opacity: 0, y: 10, scale: 0.9 }}
           animate={{ 
             opacity: isHovered ? 1 : 0,
@@ -245,10 +218,7 @@ function TechBubble({ tech, delay, category }) {
             scale: isHovered ? 1 : 0.9
           }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="absolute -top-20 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-gray-900 to-gray-800 text-white px-4 py-3 rounded-xl text-xs whitespace-nowrap z-20 shadow-2xl border border-gray-700"
-          style={{
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1)'
-          }}
+          className="absolute -top-20 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-gray-900 to-gray-800 text-white px-4 py-3 rounded-xl text-xs whitespace-nowrap z-20 border border-gray-700"
         >
           <div className="text-center">
             <div className="font-semibold text-white">{t('tech.proficiency', { level: tech.level })}</div>
@@ -286,15 +256,19 @@ function CategorySection({ category, index }) {
         </span>
       </div>
       
-      <div className="flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-12">
-        {category.technologies.map((tech, techIndex) => (
-          <TechBubble
-            key={tech.name}
-            tech={tech}
-            category={category}
-            delay={0.1 * techIndex + 0.3 * index}
-          />
-        ))}
+      {/* On small screens allow horizontal scroll; desktop keeps centered wrap */}
+      <div className="-mx-4 px-4 sm:mx-0 sm:px-0">
+        <div className="flex gap-4 sm:gap-6 md:gap-12 overflow-x-auto sm:flex-wrap justify-start sm:justify-center py-2 no-scrollbar">
+          {category.technologies.map((tech, techIndex) => (
+            <div key={tech.name} className="flex-shrink-0 sm:flex-shrink md:flex-shrink-0">
+              <TechBubble
+                tech={tech}
+                category={category}
+                delay={0.1 * techIndex + 0.3 * index}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -339,14 +313,14 @@ export function TechStack() {
 
         {/* Tech Categories */}
         <div className="space-y-16">
-          {techCategories.map((category, index) => (
-            <CategorySection 
-              key={category.id} 
-              category={category} 
-              index={index} 
-            />
-          ))}
-        </div>
+            {techCategories.map((category, index) => (
+              <CategorySection 
+                key={category.id} 
+                category={category} 
+                index={index} 
+              />
+            ))}
+          </div>
 
         {/* Summary Stats */}
         <motion.div
@@ -364,7 +338,7 @@ export function TechStack() {
             <div className="text-sm uppercase tracking-wider text-gray-600">{t('stats.years')}</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-extrabold text-[#6B7280] mb-2">50+</div>
+            <div className="text-3xl font-extrabold text-[#6B7280] mb-2">10+</div>
             <div className="text-sm uppercase tracking-wider text-gray-600">{t('stats.projects')}</div>
           </div>
           <div className="text-center">

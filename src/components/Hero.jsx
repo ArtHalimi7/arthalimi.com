@@ -78,13 +78,13 @@ export default function HeroWithGridLines() {
 
               <div className="mt-8 flex flex-wrap gap-4">
                 <a
-                  href="#"
+                  href="#contact"
                   className="inline-flex items-center rounded-xl bg-[#B71C1C] px-5 py-3 font-medium text-white shadow-sm hover:brightness-95 hover:bg-[#8B1515]"
                 >
                   {t('contact')}
                 </a>
                 <a
-                  href="#"
+                  href="#projects"
                   className="inline-flex items-center rounded-xl px-5 py-3 ring-1 ring-white/15 hover:bg-[#B71C1C] hover:text-white"
                 >
                   {t('seeWork')}

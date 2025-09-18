@@ -279,7 +279,7 @@ const resources = {
       description:
         'Një Zhvillues Full Stack i përkushtuar nga Kosova, i specializuar në React, Node.js dhe teknologjitë moderne të web-it. Unë krijoj aplikacione dinamike dhe të përgjegjshme që ofrojnë përvoja të shkëlqyera për përdoruesit.',
       contact: 'Kontakto',
-      seeWork: 'Shiko punët',
+      seeWork: 'Shiko punën time',
       about_personalProfile: 'Profili Personal',
       about_titleAbout: 'Rreth',
       about_titleMe: 'Meje',

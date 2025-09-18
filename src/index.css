@@ -64,6 +64,15 @@ body:has(.card[data-color="green"]:hover) {
 
 }
 
+/* Utility to hide scrollbars for overflow containers (works for WebKit, Firefox, Edge) */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
 .nav-link {
   color: black;
   transition: color 0.3s, border-bottom 0.3s;
