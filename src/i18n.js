@@ -437,11 +437,11 @@ const resources = {
   // Footer / Navigation (sq)
   'footer.navAria': 'Navigacioni i Footerit',
   'footer.nav.about': 'Rreth Meje',
-  'footer.nav.work': 'Eksperienca',
+  'footer.nav.work': 'Përvoja',
   'footer.nav.education': 'Arsimimi',
   'footer.nav.projects': 'Projekte',
   'footer.nav.services': 'Shërbimet',
-  'footer.nav.contact': 'Kontakt',
+  'footer.nav.contact': 'Kontakti',
   'footer.social.email': 'Email',
   'footer.social.github': 'GitHub',
   'footer.social.linkedin': 'LinkedIn',

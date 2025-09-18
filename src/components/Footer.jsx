@@ -205,6 +205,19 @@ export default function Footer() {
               <NavLink href="#services" delay={0.9}>{t('footer.nav.services')}</NavLink>
               <NavLink href="#contact" delay={1.0}>{t('footer.nav.contact')}</NavLink>
             </nav>
+            <div className="flex justify-center mt-3">
+              <span
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="text-sm text-[#B71C1C] cursor-pointer font-semibold hover:underline flex items-center gap-1 select-none transition-all duration-200"
+                style={{ letterSpacing: '0.12em' }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden className="inline-block">
+                  <path d="M12 6v12" stroke="#B71C1C" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M17 11.5l-5-5-5 5" stroke="#B71C1C" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {t('footer.scrollToTop', 'Scroll to top')}
+              </span>
+            </div>
           </div>
 
           {/* Contact & Social Card */}
