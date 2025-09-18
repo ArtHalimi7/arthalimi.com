@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Alogo from '../assets/Alogo.png';
 
+
 export default function Navbar({ formatted }) {
   const { i18n, t } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -321,21 +322,21 @@ export default function Navbar({ formatted }) {
                   <img src={getFlagUrl(i18n.language)} alt={i18n.language} className="h-7 w-7 object-cover rounded-full shadow-2xl transition-transform transform hover:scale-110" />
                 </button>
                 {langOpenDesktop && (
-                  <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 w-48 rounded-lg bg-[#202226] p-3 shadow-2xl ring-1 ring-white/10 divide-y divide-white/5 origin-top transform transition-all duration-150">
+                  <div className="absolute left-1/2 top-full mt-4 -translate-x-1/2 w-48 rounded-lg bg-[#18191A] p-3 shadow-2xl border border-[#B71C1C] text-white divide-y divide-white/5 origin-top transform transition-all duration-150 z-50">
                     <div className="py-1">
-                      <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('en'); setLangOpenDesktop(false); }}>
+                      <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-[#B71C1C]/20 transition-transform transform hover:scale-105 text-white" onClick={() => { i18n.changeLanguage('en'); setLangOpenDesktop(false); }}>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png" alt="EN" className="h-8 w-8 object-cover rounded-full shadow-sm" />
                         <span className="text-sm font-medium">English</span>
                       </button>
                     </div>
                     <div className="py-1">
-                      <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('sq'); setLangOpenDesktop(false); }}>
+                      <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-[#B71C1C]/20 transition-transform transform hover:scale-105 text-white" onClick={() => { i18n.changeLanguage('sq'); setLangOpenDesktop(false); }}>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/1200px-Flag_of_Albania.svg.png" alt="SQ" className="h-8 w-8 object-cover rounded-full shadow-sm" />
                         <span className="text-sm font-medium">Shqip</span>
                       </button>
                     </div>
                     <div className="py-1">
-                      <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-white/5 transition-transform transform hover:scale-105" onClick={() => { i18n.changeLanguage('de'); setLangOpenDesktop(false); }}>
+                      <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-[#B71C1C]/20 transition-transform transform hover:scale-105 text-white" onClick={() => { i18n.changeLanguage('de'); setLangOpenDesktop(false); }}>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png" alt="DE" className="h-8 w-8 object-cover rounded-full shadow-sm" />
                         <span className="text-sm font-medium">Deutsch</span>
                       </button>
