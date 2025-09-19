@@ -77,12 +77,12 @@ export default function HeroWithGridLines() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, delay: 0.12, ease: 'easeOut' }}
-                className="mt-[150px] max-w-xl text-zinc-300"
+                className="mt-[70px] md:mt-[130px] max-w-[34ch] ml-[27px] md:ml-0 md:max-w-xl text-zinc-300"
               >
                 {t('description')}
               </motion.p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
+              <div className="mt-8 flex flex-wrap gap-4 justify-end md:justify-start pr-8 md:pr-0">
                 <motion.a
                   href="#contact"
                   initial={{ opacity: 0, y: 10 }}
@@ -329,7 +329,7 @@ function AnimatedCodeSnippet() {
     "  return `Hello, ${name}!`;",
     '}',
     '',
-  // 'console.log(greet("Art"));',
+  'console.log(greet("Art"));',
   ];
 
   const fullText = lines.join('\n');
