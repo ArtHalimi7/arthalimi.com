@@ -2,6 +2,7 @@ import { useHiringMode } from '../context/HiringModeContext';
 import resumeData from '../data/resumeData';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { 
   X, 
   Mail, 
@@ -17,6 +18,8 @@ import {
 import Alogo from '../assets/Alogo.png';
 
 function StatusBadge() {
+  const { t } = useTranslation();
+
   return (
     <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full">
       <motion.div
@@ -27,7 +30,7 @@ function StatusBadge() {
         }}
         transition={{ duration: 2, repeat: Infinity }}
       />
-      <span className="text-green-400 text-sm font-medium">Available Now</span>
+      <span className="text-green-400 text-sm font-medium">{t('hiring.availableNow')}</span>
     </div>
   );
 }
@@ -79,6 +82,17 @@ function ContactItem({ icon: Icon, label, value, action, isClickable = false }) 
 }
 
 function MetricCard({ metric, index }) {
+  const { t } = useTranslation();
+
+  const labelMap = {
+    'Years Experience': 'stats.years',
+    'Projects Completed': 'stats.projects',
+    'Client Satisfaction': 'stats.satisfaction',
+    'Technologies Mastered': 'stats.technologies',
+  };
+
+  const labelText = labelMap[metric.label] ? t(labelMap[metric.label]) : t(metric.label, { defaultValue: metric.label });
+
   return (
     <motion.div
       className="bg-[#232425] border border-white/10 rounded-lg p-4 text-center"
@@ -86,13 +100,15 @@ function MetricCard({ metric, index }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.1 }}
     >
-      <div className="text-2xl font-bold text-[#B71C1C] mb-1">{metric.value}</div>
-      <div className="text-zinc-400 text-xs uppercase tracking-wider">{metric.label}</div>
+      <div className="text-2xl font-bold text-[#B71C1C] mb-1">{metric.value}{metric.suffix || ''}</div>
+      <div className="text-zinc-400 text-xs uppercase tracking-wider">{labelText}</div>
     </motion.div>
   );
 }
 
 function SkillTag({ skill, index }) {
+  const { t } = useTranslation();
+
   return (
     <motion.span
       className="inline-flex items-center px-3 py-1.5 bg-[#232425] border border-white/10 rounded-lg text-xs font-medium text-zinc-300"
@@ -100,7 +116,7 @@ function SkillTag({ skill, index }) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.2, delay: index * 0.03 }}
     >
-      {skill}
+      {t(skill, { defaultValue: skill })}
     </motion.span>
   );
 }
@@ -151,6 +167,7 @@ function SectionHeader({ icon: Icon, title }) {
 
 export default function HiringModePanel() {
   const { hiringMode, setHiringMode } = useHiringMode();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const onKey = (e) => {
@@ -177,7 +194,7 @@ export default function HiringModePanel() {
     portfolio: resumeData.contact?.website || resumeData.contact?.portfolio || 'arthalimi.netlify.app',
   };
 
-  const summary = resumeData.story?.text || resumeData.about?.intro || resumeData.summary || '';
+  const summaryKey = resumeData.story?.text || resumeData.about?.intro || resumeData.summary || '';
   const metrics = resumeData.summaryMetrics || resumeData.metrics || [];
 
   let skills = [];
@@ -222,8 +239,8 @@ export default function HiringModePanel() {
             <div className="flex-shrink-0 p-6 border-b border-white/10">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-1">Hiring Mode</h2>
-                  <p className="text-zinc-400 text-sm">Professional summary for recruiters</p>
+                  <h2 className="text-2xl font-bold text-white mb-1">{t('hiring.heading')}</h2>
+                  <p className="text-zinc-400 text-sm">{t('hiring.subheading')}</p>
                 </div>
                 <button
                   onClick={() => setHiringMode(false)}
@@ -246,15 +263,15 @@ export default function HiringModePanel() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-white">{contact.name}</h3>
-                    <p className="text-[#B71C1C] font-medium">Frontend Developer</p>
+                    <p className="text-[#B71C1C] font-medium">{t('hiring.profileRole')}</p>
                   </div>
                 </div>
-                <p className="text-zinc-300 leading-relaxed text-sm">{summary}</p>
+                    <p className="text-zinc-300 leading-relaxed text-sm">{t(summaryKey, { defaultValue: summaryKey })}</p>
               </div>
 
               {/* Key Metrics */}
               <div>
-                <SectionHeader icon={Award} title="Key Metrics" />
+                <SectionHeader icon={Award} title={t('hiring.keyMetrics')} />
                 <div className="grid grid-cols-2 gap-3">
                   {metrics.map((metric, index) => (
                     <MetricCard key={metric.label || index} metric={metric} index={index} />
@@ -266,7 +283,7 @@ export default function HiringModePanel() {
 
               {/* Core Skills */}
               <div>
-                <SectionHeader icon={Zap} title="Core Skills" />
+                <SectionHeader icon={Zap} title={t('hiring.coreSkills')} />
                 <div className="flex flex-wrap gap-2">
                   {skills.map((skill, index) => (
                     <SkillTag key={skill || index} skill={skill} index={index} />
@@ -276,23 +293,23 @@ export default function HiringModePanel() {
 
               {/* Availability & Rates */}
               <div>
-                <SectionHeader icon={Clock} title="Availability & Rates" />
+                <SectionHeader icon={Clock} title={t('hiring.availabilityRates')} />
                 <div className="bg-[#232425] border border-white/10 rounded-lg p-4 space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-zinc-400">Status</span>
-                    <span className="text-green-400 font-medium">{availability.status}</span>
+                    <span className="text-zinc-400">{t('hiring.status')}</span>
+                    <span className="text-green-400 font-medium">{t(availability.status, { defaultValue: availability.status })}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-zinc-400">Next Available</span>
-                    <span className="text-white font-medium">{availability.nextAvailable}</span>
+                    <span className="text-zinc-400">{t('hiring.nextAvailable')}</span>
+                    <span className="text-white font-medium">{t(availability.nextAvailable, { defaultValue: availability.nextAvailable })}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-zinc-400">Preferred Start</span>
-                    <span className="text-white font-medium">{availability.preferredStart}</span>
+                    <span className="text-zinc-400">{t('hiring.preferredStart')}</span>
+                    <span className="text-white font-medium">{t(availability.preferredStart, { defaultValue: availability.preferredStart })}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-zinc-400">Working Hours</span>
-                    <span className="text-white font-medium">{availability.workingHours}</span>
+                    <span className="text-zinc-400">{t('hiring.workingHours')}</span>
+                    <span className="text-white font-medium">{t(availability.workingHours, { defaultValue: availability.workingHours })}</span>
                   </div>
                   
                   {/* Rates intentionally removed per request */}
@@ -314,7 +331,7 @@ export default function HiringModePanel() {
                   }, 200);
                 }}
               >
-                Contact Now
+                {t('hiring.contactNow')}
               </ActionButton>
               
               <div className="grid grid-cols-2 gap-3">
@@ -324,14 +341,14 @@ export default function HiringModePanel() {
                   href={'/arthalimi.docx'}
                   download={true}
                 >
-                  Download CV
+                  {t('hiring.downloadCV')}
                 </ActionButton>
                 <ActionButton
                   icon={Printer}
                   variant="secondary"
                   onClick={() => window.print()}
                 >
-                  Print View
+                  {t('hiring.printView')}
                 </ActionButton>
               </div>
             </div>
