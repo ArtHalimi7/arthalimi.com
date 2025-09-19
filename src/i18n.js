@@ -308,7 +308,7 @@ const resources = {
       work_intro: 'Klikoni në çdo eksperiencë për të eksploruar arritjet e detajuara, teknologjitë e përdorura dhe pikat kryesore të projekteve nga udhëtimi im profesional.',
       education_heading_label: 'Arsimi & Mësimi',
       education_heading_part1: 'ARSIMI',
-      education_heading_part2: '& MËSIMI',
+      education_heading_part2: '& EDUKIMI',
       education_snapshot: 'Mësim i vazhdueshëm & përvojë praktike',
       education_intro: 'Studime të fokusuara në temat kryesore të CS dhe inxhinierinë softuerike praktike.',
       education_degree_title: 'B.Sc. në Shkenca Kompjuterike & Inxhinieri',
