@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import { Mail, MapPin, Phone, User, FileText, CheckCircle, Clock, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
+import EmailModal from './EmailModal';
 import { useTranslation } from 'react-i18next';
 
 function InputField({ label, name, type = 'text', required = false, icon: Icon, placeholder, value, onChange }) {
@@ -189,6 +191,29 @@ export default function Contact() {
     message: ''
   });
 
+  // validation state
+  const [errors, setErrors] = useState({});
+
+  const validators = {
+    name: (v) => {
+      if (!v || v.trim().length === 0) return 'Name is required';
+      if (v.trim().length < 2) return 'Name must be at least 2 characters';
+      return '';
+    },
+    email: (v) => {
+      if (!v || v.trim().length === 0) return 'Email is required';
+      // simple email regex
+      const re = /^\S+@\S+\.\S+$/;
+      if (!re.test(v)) return 'Enter a valid email';
+      return '';
+    },
+    message: (v) => {
+      if (!v || v.trim().length === 0) return 'Message is required';
+      if (v.trim().length < 10) return 'Message must be at least 10 characters';
+      return '';
+    },
+  };
+
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
@@ -197,29 +222,92 @@ export default function Contact() {
     if (typingTimeout) clearTimeout(typingTimeout);
     const timeout = setTimeout(() => setIsTyping(false), 1000);
     setTypingTimeout(timeout);
+    // live-validate on change for email and name to keep UX responsive
+    if (validators[field]) {
+      setErrors((prev) => ({ ...prev, [field]: validators[field](value) }));
+    }
+  };
+
+  const handleBlur = (field) => {
+    if (validators[field]) {
+      setErrors((prev) => ({ ...prev, [field]: validators[field](formData[field]) }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // validate all fields before sending
+    const nextErrors = {};
+    ['name','email','message'].forEach((f) => {
+      if (validators[f]) {
+        const msg = validators[f](formData[f]);
+        if (msg) nextErrors[f] = msg;
+      }
+    });
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) {
+      // focus first invalid field (best-effort)
+      const first = Object.keys(nextErrors)[0];
+      const el = document.querySelector(`[name=${first}]`);
+      if (el) el.focus();
+      return;
+    }
+
+    setShowModal({ open: true, type: 'info', title: 'Sending', message: 'Sending message...' });
     setSending(true);
     setError(null);
     setSent(false);
     
     try {
-      await emailjs.sendForm(
-        'service_edxi3zr',
-        'template_k7mg7ap',
-        e.target,
-        '-NWp731-hJ2KBhmcB'
-      );
+      // Require environment variables (no fallbacks). This prevents committing secrets
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC;
+
+      if (!serviceId || !templateId || !publicKey) {
+        setSending(false);
+        setShowModal({ open: true, type: 'error', title: 'Configuration missing', message: 'Email service is not configured. Please add EmailJS keys to your .env file.' });
+        return;
+      }
+
+      await emailjs.sendForm(serviceId, templateId, e.target, publicKey);
       setSent(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
+      setErrors({});
+      setShowModal({ open: true, type: 'success', title: 'Message sent', message: 'Thanks — your message was sent successfully.' });
+      // auto-close success modal after a short delay
+      const successTimer = setTimeout(() => {
+        setShowModal((s) => ({ ...s, open: false }));
+      }, 800);
+      // store timer id so it can be cleared if component unmounts or modal closed manually
+      setModalTimer(successTimer);
     } catch (err) {
       setError('Failed to send message. Please try again.');
+      setShowModal({ open: true, type: 'error', title: 'Send failed', message: 'Failed to send message. Please try again later.' });
+      // auto-close error modal after a short delay
+      const errorTimer = setTimeout(() => {
+        setShowModal((s) => ({ ...s, open: false }));
+      }, 3000);
+      setModalTimer(errorTimer);
     } finally {
       setSending(false);
     }
   };
+
+  // modal state
+  const [showModal, setShowModal] = React.useState({ open: false, type: 'info', title: '', message: '' });
+  // hold timer id for auto-close so we can clear it
+  const [modalTimer, setModalTimer] = React.useState(null);
+
+  // cleanup timers on unmount or when modal is manually closed
+  React.useEffect(() => {
+    return () => {
+      if (modalTimer) clearTimeout(modalTimer);
+    };
+  }, [modalTimer]);
+
+  // Check env vars at render time
+  const hasEmailJsConfig = Boolean(import.meta.env.VITE_EMAILJS_SERVICE && import.meta.env.VITE_EMAILJS_TEMPLATE && import.meta.env.VITE_EMAILJS_PUBLIC);
 
   return (
     <section id="contact" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
@@ -261,7 +349,10 @@ export default function Contact() {
                   placeholder={t('contact.placeholderName')}
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
+                  // show validation on blur
+                  onBlur={() => handleBlur('name')}
                 />
+                {errors.name && <div className="text-xs text-red-400 mt-1">{errors.name}</div>}
                 <InputField 
                   label={t('contact.inputEmail')} 
                   name="email" 
@@ -271,7 +362,9 @@ export default function Contact() {
                   placeholder={t('contact.placeholderEmail')}
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
+                  onBlur={() => handleBlur('email')}
                 />
+                {errors.email && <div className="text-xs text-red-400 mt-1">{errors.email}</div>}
                 <InputField 
                   label={t('contact.inputSubject')} 
                   name="subject" 
@@ -292,28 +385,42 @@ export default function Contact() {
                       rows={6}
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
+                      onBlur={() => handleBlur('message')}
                       className={`w-full mt-2 bg-[#18191A] border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] pl-10 placeholder:text-zinc-500 transition-all duration-200 ${formData.message ? 'border-[#B71C1C]/30' : ''}`}
                       placeholder={t('contact.placeholderMessage')}
                       required
                     />
                   </div>
+                  {errors.message && <div className="text-xs text-red-400 mt-1">{errors.message}</div>}
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <button
+                  <motion.button
                     type="submit"
-                    disabled={sending}
-                    className="inline-flex items-center rounded-xl bg-[#B71C1C] px-5 py-3 font-medium text-white shadow-sm hover:brightness-95 hover:bg-[#8B1515] disabled:opacity-60 transition-all duration-200"
+                    disabled={sending || Object.keys(errors).some(k => errors[k]) || !hasEmailJsConfig}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, ease: 'easeOut' }}
+                    className="inline-flex items-center px-5 py-3 font-medium text-white shadow-sm border border-[#B71C1C] bg-[#B71C1C] transition-all duration-300 ease-out hover:bg-[#8B1515] hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] relative overflow-hidden group"
+                    style={{ borderRadius: 0 }}
+                    title={!hasEmailJsConfig ? 'EmailJS not configured (see .env.example)' : undefined}
                   >
-                    {sending ? t('contact.sending') : t('contact.send')}
-                  </button>
-                  <button
+                    <span className="relative z-10">{sending ? t('contact.sending') : t('contact.send')}</span>
+                    <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full" />
+                  </motion.button>
+
+                  <motion.button
                     type="button"
                     onClick={() => setFormData({ name: '', email: '', subject: '', message: '' })}
-                    className="inline-flex items-center rounded-xl px-4 py-2 ring-1 ring-white/15 hover:bg-[#2a2b2c] transition-all duration-200"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: 0.06, ease: 'easeOut' }}
+                    className="inline-flex items-center px-5 py-3 font-medium text-[#B71C1C] border border-[#B71C1C] bg-transparent transition-all duration-300 ease-out hover:bg-black hover:text-white hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] relative overflow-hidden group"
+                    style={{ borderRadius: 0 }}
                   >
-                    {t('contact.reset')}
-                  </button>
+                    <span className="relative z-10">{t('contact.reset')}</span>
+                    <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#B71C1C] transition-all duration-300 group-hover:w-full" />
+                  </motion.button>
                 </div>
                 {sent && (
                   <div className="text-green-500 mt-2 flex items-center gap-2">
@@ -324,6 +431,20 @@ export default function Contact() {
                 {error && (
                   <div className="text-red-500 mt-2">{t('contact.sendError')}</div>
                 )}
+                <EmailModal
+                  open={showModal.open}
+                  type={showModal.type}
+                  title={showModal.title}
+                  message={showModal.message}
+                  onClose={() => {
+                    // clear any pending auto-close timers when user manually closes
+                    if (modalTimer) {
+                      clearTimeout(modalTimer);
+                      setModalTimer(null);
+                    }
+                    setShowModal({ ...showModal, open: false });
+                  }}
+                />
               </form>
             </div>
           </div>

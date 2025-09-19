@@ -429,9 +429,9 @@ const resources = {
   'contact.inputSubject': 'Subjekti',
   'contact.placeholderSubject': 'Subjekti (opsional)',
   'contact.placeholderMessage': 'Më trego rreth projektit tuaj...',
-  'contact.sending': 'Dërgimi...',
+  'contact.sending': 'Duke dërguar...',
   'contact.send': 'Dërgo mesazh',
-  'contact.reset': 'Rivendos',
+  'contact.reset': 'Fshij',
   'contact.sentSuccess': 'Mesazhi u dërgua me sukses!',
   'contact.sendError': 'Dështoi dërgimi i mesazhit. Ju lutem provoni përsëri.',
   // Footer / Navigation (sq)
