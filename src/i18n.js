@@ -443,7 +443,7 @@ const resources = {
   'hiring.workingHours': 'Orari i punës',
   'hiring.contactNow': 'Kontaktoni Tani',
   'hiring.downloadCV': 'Shkarko CV',
-  'hiring.printView': 'Shiko për printim',
+  'hiring.printView': 'Printo Pamjen',
   // (legacy work.* keys removed — using work.experiences.* keys below)
 
   // Work labels (sq)
