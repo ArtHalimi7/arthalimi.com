@@ -8,37 +8,30 @@ import {
   Mail, 
   Globe, 
   Languages, 
-  Lightbulb,
   ArrowRight,
-  Star,
-  ChevronDown
+  ChevronDown,
+  Code,
+  Coffee,
+  Heart,
+  Target,
+  Award,
+  Zap,
+  Clock,
+  Users,
+  Briefcase,
+  Lightbulb,
+  Star
 } from 'lucide-react';
 
 /**
- * @typedef {Object} ContactInfoProps
- * @property {React.ElementType} icon
- * @property {string} label
- * @property {string} value
- * @property {string} [href]
+ * Minimal Contact Item Component
  */
-
-function ContactItem({ icon: Icon, label, value, href }) {
+function MinimalContactItem({ icon: Icon, label, value, href }) {
   const content = (
-    <div className="flex items-center gap-3 p-4 bg-[#232425] border border-white/10 hover:bg-[#2a2b2c] transition-colors duration-200 group">
-      <div className="w-8 h-8 bg-[#18191A] border border-white/10 flex items-center justify-center">
-        <Icon className="w-4 h-4 text-[#B71C1C]" />
-      </div>
-      <div className="flex-1">
-        <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-1">
-          {label}
-        </div>
-        <div className="text-zinc-300 font-medium">
-          {value}
-        </div>
-      </div>
-      {href && (
-        <ArrowRight className="w-4 h-4 text-zinc-500 group-hover:text-[#B71C1C] transition-colors" />
-      )}
+    <div className="flex items-center gap-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors duration-200">
+      <Icon className="w-4 h-4 text-[#B71C1C]" />
+      <span>{value}</span>
+      {href && <ArrowRight className="w-3 h-3 ml-auto opacity-50" />}
     </div>
   );
 
@@ -54,99 +47,120 @@ function ContactItem({ icon: Icon, label, value, href }) {
 }
 
 /**
- * @typedef {Object} LanguageItemProps
- * @property {string} language
- * @property {string} proficiency
- * @property {number} level
+ * Minimal Language Item Component
  */
-
-/** @param {LanguageItemProps} props */
-function LanguageItem({ language, proficiency, level }) {
+function MinimalLanguageItem({ language, proficiency, level }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
-      className="p-6 min-h-[80px] bg-[#232425] border border-white/10 flex flex-col justify-center"
-    >
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-zinc-300 font-medium">{language}</span>
-        <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-          {proficiency}
-        </span>
-      </div>
-      <div className="flex gap-1 items-center min-h-[20.5px]">
+    <div className="flex items-center justify-between py-2">
+      <span className="text-sm text-zinc-300">{language}</span>
+      <div className="flex gap-1">
         {[...Array(5)].map((_, i) => (
           <div
             key={i}
-            className={`h-3 flex-1 rounded ${
-              i < level ? 'bg-[#B71C1C]' : 'bg-white/10'
+            className={`w-2 h-2 rounded-full ${
+              i < level ? 'bg-[#B71C1C]' : 'bg-white/20'
             }`}
           />
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 }
-/**
- * @typedef {Object} SkillItemProps
- * @property {string} skill
- * @property {number} index
- */
 
-/** @param {SkillItemProps} props */
-function SkillItem({ skill, index }) {
+/**
+ * Interactive Stat Card Component
+ */
+function StatCard({ icon: Icon, value, label, delay = 0 }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="flex items-center gap-2 p-3 bg-[#232425] border border-white/10 hover:bg-[#2a2b2c] transition-colors duration-200"
+      transition={{ duration: 0.6, delay }}
+      className="relative group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="w-1 h-1 bg-[#B71C1C]" />
-      <span className="text-zinc-300 text-sm font-medium">{skill}</span>
+      <motion.div
+        className="bg-gradient-to-br from-[#232425] to-[#1a1b1c] border border-white/10 rounded-xl p-6 text-center hover:border-[#B71C1C]/30 transition-all duration-300"
+        whileHover={{ scale: 1.05, y: -5 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        {/* Background glow */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-[#B71C1C]/10 to-transparent rounded-xl"
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+        />
+
+        <motion.div
+          className="relative z-10 mb-4 mx-auto w-12 h-12 bg-[#B71C1C]/10 border border-[#B71C1C]/20 rounded-lg flex items-center justify-center"
+          animate={isHovered ? { rotate: 10, scale: 1.1 } : { rotate: 0, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Icon className="w-6 h-6 text-[#B71C1C]" />
+        </motion.div>
+
+        <motion.div
+          className="text-3xl font-bold text-white mb-2"
+          animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          {value}
+        </motion.div>
+
+        <div className="text-sm text-zinc-400 uppercase tracking-wider">{label}</div>
+
+        {/* Accent line */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-px bg-[#B71C1C]"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ originX: 0 }}
+        />
+      </motion.div>
     </motion.div>
   );
 }
 
-function GridLines() {
+/**
+ * Interactive Value Card Component
+ */
+function ValueCard({ icon: Icon, title, description, delay = 0 }) {
+  // Static, low-motion card to respect reduced motion preference.
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0">
-      <div className="absolute left-6 right-6 top-0 bottom-0">
+    <div className="relative">
+      <div className="bg-[#232425] border border-white/10 rounded-lg p-6 transition-colors duration-200">
+        <div className="relative z-10 flex items-start gap-4">
+          <div className="w-10 h-10 bg-[#B71C1C]/10 border border-[#B71C1C]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <Icon className="w-5 h-5 text-[#B71C1C]" />
+          </div>
+
+          <div className="flex-1">
+            <h4 className="text-white font-medium mb-2">{title}</h4>
+            <p className="text-sm text-zinc-400 leading-relaxed">{description}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
+}
+
+/**
+ * Floating Particles Background
+ */
+function FloatingParticles() {
+  // Heavy particle animation removed to reduce motion; return null for now.
+  return null;
 }
 
 export function AboutMe() {
   const [isStoryExpanded, setIsStoryExpanded] = useState(false);
   const { t } = useTranslation();
 
-  const contactInfo = [
-    {
-      icon: MapPin,
-      label: t('about_contact_location'),
-      value: 'Prishtina, Kosovo'
-    },
-    {
-      icon: Phone,
-      label: t('about_contact_phone'),
-      value: '',
-      href: 'tel:'
-    },
-    {
-      icon: Mail,
-      label: t('about_contact_email'),
-      value: 'arthalimi989@gmail.com',
-      href: 'mailto:arthalimi989@gmail.com'
-    },
-    {
-      icon: Globe,
-      label: t('about_contact_website'),
-      value: 'arthalimi.netlify.app',
-      href: 'https://arthalimi.netlify.app'
-    }
-  ];
+  // Contact information intentionally removed from this section per request.
 
   const languages = [
     { language: t('about_lang_albanian'), proficiency: t('about_lang_prof_native'), level: 5 },
@@ -154,21 +168,58 @@ export function AboutMe() {
     { language: t('about_lang_german'), proficiency: t('about_lang_prof_intermediate'), level: 3 }
   ];
 
+  const stats = [
+    { icon: Code, value: '4+', label: 'Years Coding' },
+    { icon: Briefcase, value: '50+', label: 'Projects' },
+    { icon: Users, value: '30+', label: 'Happy Clients' },
+    { icon: Star, value: '100%', label: 'Satisfaction' }
+  ];
+
+  const values = [
+    {
+      icon: Target,
+      title: 'Precision & Detail',
+      description: 'Every pixel matters. I believe in crafting interfaces that are not just functional, but beautiful and intuitive.'
+    },
+    {
+      icon: Zap,
+      title: 'Performance First',
+      description: 'Fast, optimized, and efficient code. I build experiences that load instantly and run smoothly.'
+    },
+    {
+      icon: Heart,
+      title: 'User-Centered',
+      description: 'Technology serves people. I design with empathy and build for real human needs and behaviors.'
+    },
+    {
+      icon: Lightbulb,
+      title: 'Innovation',
+      description: 'Staying ahead of trends and technologies to deliver cutting-edge solutions that make a difference.'
+    }
+  ];
+
   return (
-  <section id="about" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
-      <GridLines />
+    <section id="about" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20 overflow-hidden">
+      <FloatingParticles />
       
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10">
         {/* Header */}
         <motion.div 
-          className="mb-16"
+          className="mb-20"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
           <div className="flex items-center gap-3 mb-6">
-            <User className="w-6 h-6 text-[#B71C1C]" />
-            <div className="h-px flex-1 bg-white/10" />
+            <div>
+              <User className="w-6 h-6 text-[#B71C1C]" />
+            </div>
+            <motion.div 
+              className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+            />
             <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
               {t('about_personalProfile')}
             </span>
@@ -181,55 +232,79 @@ export function AboutMe() {
           
           <div className="flex items-center gap-3 max-w-3xl">
             <span className="text-xl text-[#B71C1C]">*</span>
-            <div className="h-px flex-1 bg-white/10" />
+            <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
               {t('about_subtitle')}
             </span>
           </div>
-          <p className="mt-8 max-w-2xl text-zinc-300 leading-relaxed">
-            {t('about_lead')}
-          </p>
+          
+          <p className="mt-8 max-w-2xl text-zinc-300 leading-relaxed">{t('about_lead')}</p>
+        </motion.div>
+
+        {/* Stats Section */}
+        <motion.div
+          className="mb-20"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            {stats.map((stat, index) => (
+              <StatCard key={stat.label} {...stat} delay={index * 0.1} />
+            ))}
+          </div>
         </motion.div>
 
         {/* Story Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative group mb-16"
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="relative group mb-20"
         >
-          <div className="absolute inset-0 pointer-events-none">
-            <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
-            <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
-            <span className="absolute left-0 right-0 top-0 h-px bg-white/10" />
-            <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
-          </div>
-
-          <div 
-            className="relative bg-[#232425] p-8 cursor-pointer hover:bg-[#2a2b2c] transition-colors duration-200"
+          <motion.div 
+            className="bg-gradient-to-br from-[#232425] to-[#1a1b1c] border border-white/10 rounded-xl p-6 lg:p-8 cursor-pointer hover:border-[#B71C1C]/30 transition-all duration-300"
             onClick={() => setIsStoryExpanded(!isStoryExpanded)}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                >
+                  <Heart className="w-5 h-5 text-[#B71C1C]" />
+                </motion.div>
                 <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
                   {t('about_myStory')}
                 </span>
-                <div className="h-px flex-1 bg-white/10" />
+                <motion.div 
+                  className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1, delay: 0.6 }}
+                />
               </div>
               
               <motion.div
                 animate={{ rotate: isStoryExpanded ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
                 className="text-zinc-500 group-hover:text-[#B71C1C] transition-colors"
+                whileHover={{ scale: 1.1 }}
               >
                 <ChevronDown className="w-5 h-5" />
               </motion.div>
             </div>
 
-              <div className="space-y-4 text-zinc-300 leading-relaxed">
-              <p>
+            <div className="space-y-4 text-zinc-300 leading-relaxed">
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
                 {t('about_storyIntro')}
-              </p>
+              </motion.p>
               
               {isStoryExpanded && (
                 <motion.div
@@ -239,98 +314,122 @@ export function AboutMe() {
                   transition={{ duration: 0.4 }}
                   className="space-y-4"
                 >
-                  <p>
+                  <motion.p
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
                     {t('about_storyP1')}
-                  </p>
+                  </motion.p>
                   
-                  <p>
+                  <motion.p
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                  >
                     {t('about_storyP2')}
-                  </p>
+                  </motion.p>
                 </motion.div>
               )}
             </div>
+          </motion.div>
+        </motion.div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-[#B71C1C] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+        {/* Values Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mb-20"
+        >
+          <div className="flex items-center gap-3 mb-8">
+            <Lightbulb className="w-6 h-6 text-[#B71C1C]" />
+            <h3 className="text-2xl font-bold text-white">Core Values</h3>
+            <motion.div 
+              className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1, delay: 0.8 }}
+            />
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-4 lg:gap-6">
+            {values.map((value, index) => (
+              <ValueCard key={value.title} {...value} delay={index * 0.1} />
+            ))}
           </div>
         </motion.div>
 
-        {/* Grid Layout for Contact, Languages, and Skills */}
-        <div className="grid lg:grid-cols-2 gap-0 mb-16">
-          {/* Contact Information */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 pointer-events-none">
-              <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
-              <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
-              <span className="absolute left-0 right-0 top-0 h-px bg-white/10" />
-              <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
-            </div>
+        {/* Centered Languages Section (inline pills) */}
+        <div className="mb-20">
+          <div className="text-center mb-6">
+            <Languages className="inline-block w-6 h-6 text-[#B71C1C] mb-2" />
+            <h4 className="text-sm uppercase tracking-[0.2em] text-[#B71C1C] font-medium mt-2">
+              {t('about_languagesHeading')}
+            </h4>
+          </div>
 
-            <div className="relative bg-[#232425] p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-                  {t('about_contactHeading')}
-                </span>
-                <div className="h-px flex-1 bg-white/10" />
-              </div>
-              
-              <div className="space-y-3">
-                {contactInfo.map((item, index) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
-                  >
-                    <ContactItem {...item} />
-                  </motion.div>
-                ))}
-              </div>
+          <div className="mx-auto max-w-4xl">
+            <div className="flex flex-wrap justify-center gap-4">
+              {languages.map((lang) => (
+                <div
+                  key={lang.language}
+                  className="flex items-center gap-3 bg-[#232425] border border-white/6 rounded-full px-4 py-2 text-sm text-zinc-200"
+                >
+                  <span className="font-medium">{lang.language}</span>
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <span
+                        key={i}
+                        className={`w-2 h-2 rounded-full inline-block ${i < lang.level ? 'bg-[#B71C1C]' : 'bg-white/20'}`}
+                        aria-hidden
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-          </motion.div>
-
-          {/* Languages */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 pointer-events-none">
-              <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
-              <span className="absolute right-0 top-0 h-full w-px bg-white/10" />
-              <span className="absolute left-0 right-0 top-0 h-px bg-white/10" />
-              <span className="absolute left-0 right-0 bottom-0 h-px bg-white/10" />
-            </div>
-
-            <div className="relative bg-[#232425] p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <Languages className="w-4 h-4 text-[#B71C1C]" />
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
-                  {t('about_languagesHeading')}
-                </span>
-                <div className="h-px flex-1 bg-white/10" />
-              </div>
-              
-              <div className="space-y-3">
-                {languages.map((lang, index) => (
-                  <motion.div
-                    key={lang.language}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                  >
-                    <LanguageItem {...lang} />
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
+          </div>
         </div>
+
+        {/* CTA Section */}
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
+        >
+          <div className="flex items-center gap-3 mb-8 justify-center">
+            <motion.div 
+              className="h-px w-24 bg-gradient-to-r from-transparent to-white/10"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1, delay: 1.6 }}
+            />
+            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 px-4">
+              Let's Connect
+            </span>
+            <motion.div 
+              className="h-px w-24 bg-gradient-to-l from-transparent to-white/10"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1, delay: 1.6 }}
+            />
+          </div>
+          
+          <a
+            href="#contact"
+            className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] text-white px-8 py-4 font-medium hover:from-[#8B1515] hover:to-[#B71C1C] transition-colors duration-200 rounded-lg shadow-2xl"
+          >
+            <span className="relative z-10">Get In Touch</span>
+            <div className="relative z-10">
+              <ArrowRight className="w-5 h-5" />
+            </div>
+            
+            {/* Glowing effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 -z-10" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );
