@@ -211,7 +211,7 @@ export default function HiringModePanel() {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 flex"
+        className="fixed inset-0 z-50 flex hiring-print-root"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -228,7 +228,7 @@ export default function HiringModePanel() {
 
         {/* Sidebar (opens from left) */}
         <motion.div
-          className="relative mr-auto w-full max-w-lg h-full bg-[#18191A] border-r border-white/10 shadow-2xl overflow-hidden left-0"
+          className="relative mr-auto w-full max-w-lg h-full bg-[#18191A] border-r border-white/10 shadow-2xl overflow-hidden left-0 hiring-print"
           initial={{ x: '-100%' }}
           animate={{ x: 0 }}
           exit={{ x: '-100%' }}
@@ -266,7 +266,7 @@ export default function HiringModePanel() {
                     <p className="text-[#B71C1C] font-medium">{t('hiring.profileRole')}</p>
                   </div>
                 </div>
-                    <p className="text-zinc-300 leading-relaxed text-sm">{t(summaryKey, { defaultValue: summaryKey })}</p>
+                    <p className="text-zinc-300 leading-relaxed text-sm print-clamp">{t(summaryKey, { defaultValue: summaryKey })}</p>
               </div>
 
               {/* Key Metrics */}
