@@ -2,10 +2,14 @@ import { useEffect, useState, useRef } from "react";
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Alogo from '../assets/Alogo.png';
+import { Briefcase } from 'lucide-react';
+import { useHiringMode } from '../context/HiringModeContext';
 
 
 export default function Navbar({ formatted }) {
   const { i18n, t } = useTranslation();
+  const { setHiringMode } = useHiringMode();
+  const [showBriefcaseShake, setShowBriefcaseShake] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [time, setTime] = useState(formatted || "");
   const [active, setActive] = useState('home');
@@ -23,7 +27,18 @@ export default function Navbar({ formatted }) {
   const HEADER_OFFSET = 72; // ~ h-16 + border; tweak to match your header
 
   useEffect(() => {
-    const onScroll = () => {
+    try {
+      const seen = localStorage.getItem('hiringPanelSeen');
+      setShowBriefcaseShake(!seen);
+    } catch (e) {
+      setShowBriefcaseShake(true);
+    }
+    
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+  const onScroll = () => {
       const doc = document.documentElement;
       const scrollTop = window.scrollY || doc.scrollTop || 0;
       const scrollHeight = doc.scrollHeight - window.innerHeight;
@@ -310,6 +325,20 @@ export default function Navbar({ formatted }) {
           <div className="flex items-center gap-3">
             <div className="hidden md:flex md:items-center md:gap-2">
               <span className="hidden md:block text-[10px] tracking-widest text-zinc-500 md:text-xs">{time}</span>
+              <div className="ml-3">
+                <button
+                  onClick={() => {
+                    setHiringMode(true);
+                    try { localStorage.setItem('hiringPanelSeen', '1'); } catch (e) {}
+                    setShowBriefcaseShake(false);
+                  }}
+                  className={`p-2 rounded-md hover:bg-white/5 ${showBriefcaseShake ? 'shake-briefcase' : ''}`}
+                  aria-label="Open hiring panel"
+                  aria-live="polite"
+                >
+                  <Briefcase className="w-5 h-5 text-[#B71C1C]" />
+                </button>
+              </div>
               {/* Language dropdown (desktop) */}
               <div className="relative" ref={langRefDesktop}>
                 <button

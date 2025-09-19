@@ -8,6 +8,7 @@ import Navbar from './components/Navbar';
 import CustomScrollbar from './components/CustomScrollbar';
 import ScrollTop from './components/ScrollTop';
 import SplashScreen from './components/SplashScreen';
+import HiringModePanel from './components/HiringModePanel';
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -24,6 +25,7 @@ const App = () => {
     <main className='background1'>
       <Router>
         <Navbar />
+        <HiringModePanel />
         {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
         {appReady && (
           <div className="opacity-0 animate-fade-in">
