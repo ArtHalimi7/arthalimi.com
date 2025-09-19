@@ -30,12 +30,8 @@ export default function ScrollTop() {
   }, []);
 
   const scrollToTop = () => {
-    // Extra smooth scroll to top
-    const c = document.documentElement.scrollTop || document.body.scrollTop;
-    if (c > 0) {
-      window.requestAnimationFrame(scrollToTop);
-      window.scrollTo(0, Math.floor(c - c / 8));
-    }
+    // Use browser's native smooth scroll for speed and responsiveness
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const button = (

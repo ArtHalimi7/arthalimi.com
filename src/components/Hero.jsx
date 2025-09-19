@@ -329,7 +329,7 @@ function AnimatedCodeSnippet() {
     "  return `Hello, ${name}!`;",
     '}',
     '',
-    'console.log(greet("Art"));',
+  // 'console.log(greet("Art"));',
   ];
 
   const fullText = lines.join('\n');

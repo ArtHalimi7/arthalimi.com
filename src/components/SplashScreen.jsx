@@ -240,12 +240,12 @@ export default function SplashScreen({ onComplete }) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    console.log('[splash] mounted, initial phase=', phase);
+  // console.log('[splash] mounted, initial phase=', phase);
   }, []);
 
   // Simulate loading progress
   useEffect(() => {
-    console.log('[splash] phase changed ->', phase);
+  // console.log('[splash] phase changed ->', phase);
     if (phase === 'loading') {
       const interval = setInterval(() => {
         setProgress(prev => {

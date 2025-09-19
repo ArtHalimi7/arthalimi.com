@@ -26,7 +26,7 @@ const App = () => {
     <main className='background1'>
       <Router>
                     <Navbar />
-        {console.log('[app] showSplash=', showSplash, 'appReady=', appReady)}
+  {/* console.log('[app] showSplash=', showSplash, 'appReady=', appReady) */}
         {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
 
         {/* Render app content only after splash has fully exited */}
