@@ -5,20 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, 
   Mail, 
-  Phone, 
-  MapPin, 
-  Globe, 
-  Github, 
-  Linkedin, 
   Download, 
   Printer, 
-  Star, 
   CheckCircle, 
   Copy,
   ExternalLink,
   Clock,
-  DollarSign,
-  User,
   Award,
   Zap
 } from 'lucide-react';
