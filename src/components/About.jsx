@@ -164,37 +164,37 @@ export function AboutMe() {
 
   const languages = [
     { language: t('about_lang_albanian'), proficiency: t('about_lang_prof_native'), level: 5 },
-    { language: t('about_lang_english'), proficiency: t('about_lang_prof_advanced'), level: 4 },
+    { language: t('about_lang_english'), proficiency: t('about_lang_prof_advanced'), level: 5 },
     { language: t('about_lang_german'), proficiency: t('about_lang_prof_intermediate'), level: 3 }
   ];
 
   const stats = [
-    { icon: Code, value: '4+', label: 'Years Coding' },
-    { icon: Briefcase, value: '50+', label: 'Projects' },
-    { icon: Users, value: '30+', label: 'Happy Clients' },
-    { icon: Star, value: '100%', label: 'Satisfaction' }
+    { icon: Code, value: t('stats.coding_value'), label: t('stats.coding_label') },
+    { icon: Briefcase, value: t('stats.projects_value_short'), label: t('stats.projects_label_short') },
+    { icon: Users, value: t('stats.clients_value'), label: t('stats.clients_label') },
+    { icon: Star, value: t('stats.satisfaction_value_short'), label: t('stats.satisfaction_label_short') }
   ];
 
   const values = [
     {
       icon: Target,
-      title: 'Precision & Detail',
-      description: 'Every pixel matters. I believe in crafting interfaces that are not just functional, but beautiful and intuitive.'
+      title: t('about_value_precision_title'),
+      description: t('about_value_precision_desc')
     },
     {
       icon: Zap,
-      title: 'Performance First',
-      description: 'Fast, optimized, and efficient code. I build experiences that load instantly and run smoothly.'
+      title: t('about_value_performance_title'),
+      description: t('about_value_performance_desc')
     },
     {
       icon: Heart,
-      title: 'User-Centered',
-      description: 'Technology serves people. I design with empathy and build for real human needs and behaviors.'
+      title: t('about_value_user_title'),
+      description: t('about_value_user_desc')
     },
     {
       icon: Lightbulb,
-      title: 'Innovation',
-      description: 'Staying ahead of trends and technologies to deliver cutting-edge solutions that make a difference.'
+      title: t('about_value_innovation_title'),
+      description: t('about_value_innovation_desc')
     }
   ];
 
