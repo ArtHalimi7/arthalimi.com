@@ -82,13 +82,13 @@ export default function HeroWithGridLines() {
                 {t('description')}
               </motion.p>
 
-              <div className="mt-8 flex flex-wrap gap-4 justify-end md:justify-start pr-8 md:pr-0">
+              <div className="mt-8 flex flex-wrap gap-3 justify-end md:justify-start pr-10 md:pr-0">
                 <motion.a
                   href="#contact"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: 0.22, ease: 'easeOut' }}
-                  className="inline-flex items-center px-5 py-3 font-medium text-white shadow-sm border border-[#B71C1C] bg-[#B71C1C] transition-all duration-300 ease-out hover:bg-[#8B1515] hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] relative overflow-hidden group"
+                  className="inline-flex items-center px-4 py-2.5 text-sm md:text-base font-medium text-white shadow-sm border border-[#B71C1C] bg-[#B71C1C] transition-all duration-300 ease-out hover:bg-[#8B1515] hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] relative overflow-hidden group"
                   style={{ borderRadius: 0 }}
                 >
                   <span className="relative z-10">{t('contact')}</span>
@@ -99,7 +99,7 @@ export default function HeroWithGridLines() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: 0.32, ease: 'easeOut' }}
-                  className="inline-flex items-center px-5 py-3 font-medium text-[#B71C1C] border border-[#B71C1C] bg-transparent transition-all duration-300 ease-out hover:bg-black hover:text-white hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] relative overflow-hidden group"
+                  className="inline-flex items-center px-4 py-2.5 text-sm md:text-base font-medium text-[#B71C1C] border border-[#B71C1C] bg-transparent transition-all duration-300 ease-out hover:bg-black hover:text-white hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] relative overflow-hidden group"
                   style={{ borderRadius: 0 }}
                 >
                   <span className="relative z-10">{t('seeWork')}</span>

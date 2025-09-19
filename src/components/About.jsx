@@ -83,7 +83,7 @@ function StatCard({ icon: Icon, value, label, delay = 0 }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <motion.div
-        className="bg-gradient-to-br from-[#232425] to-[#1a1b1c] border border-white/10 rounded-xl p-6 text-center hover:border-[#B71C1C]/30 transition-all duration-300"
+        className="bg-gradient-to-br from-[#232425] to-[#1a1b1c] border border-white/10 rounded-xl p-6 text-center hover:border-[#B71C1C]/30 transition-all duration-300 h-[180px] sm:h-[210px] flex flex-col items-center justify-center whitespace-normal"
         whileHover={{ scale: 1.05, y: -5 }}
         whileTap={{ scale: 0.98 }}
       >
@@ -148,9 +148,6 @@ function ValueCard({ icon: Icon, title, description, delay = 0 }) {
   );
 }
 
-/**
- * Floating Particles Background
- */
 function FloatingParticles() {
   // Heavy particle animation removed to reduce motion; return null for now.
   return null;
@@ -421,7 +418,7 @@ export function AboutMe() {
             href="#contact"
             className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] text-white px-8 py-4 font-medium hover:from-[#8B1515] hover:to-[#B71C1C] transition-colors duration-200 rounded-lg shadow-2xl"
           >
-            <span className="relative z-10">Get In Touch</span>
+            <span className="relative z-10">{t('about_getInTouch')}</span>
             <div className="relative z-10">
               <ArrowRight className="w-5 h-5" />
             </div>

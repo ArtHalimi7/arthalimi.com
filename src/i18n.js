@@ -12,6 +12,7 @@ const resources = {
       description:
         'A dedicated Full Stack Web Developer from Kosovo, specializing in React, Node.js, and modern web technologies. I create dynamic, responsive applications that deliver exceptional user experiences.',
       contact: 'Get in touch',
+  about_getInTouch: 'Get In Touch',
       seeWork: 'See work',
       about_personalProfile: 'Personal Profile',
       about_titleAbout: 'About',
@@ -32,9 +33,9 @@ const resources = {
   'stats.coding_label': 'Years Coding',
   'stats.coding_value': '4+',
   'stats.projects_label_short': 'Projects',
-  'stats.projects_value_short': '50+',
+  'stats.projects_value_short': '10+',
   'stats.clients_label': 'Happy Clients',
-  'stats.clients_value': '30+',
+  'stats.clients_value': '5+',
   'stats.satisfaction_label_short': 'Satisfaction',
   'stats.satisfaction_value_short': '100%',
   // Core Values
@@ -322,6 +323,7 @@ const resources = {
       description:
         'Një Zhvillues Full Stack i përkushtuar nga Kosova, i specializuar në React, Node.js dhe teknologjitë moderne të web-it. Unë krijoj aplikacione dinamike dhe të përgjegjshme që ofrojnë përvoja të shkëlqyera për përdoruesit.',
       contact: 'Kontakto',
+  about_getInTouch: 'Lidhu me mua',
       seeWork: 'Shiko punën time',
       about_personalProfile: 'Profili Personal',
       about_titleAbout: 'Rreth',
@@ -342,9 +344,9 @@ const resources = {
   'stats.coding_label': 'Vite Programim',
   'stats.coding_value': '4+',
   'stats.projects_label_short': 'Projekte',
-  'stats.projects_value_short': '50+',
+  'stats.projects_value_short': '10+',
   'stats.clients_label': 'Klientë të Kënaqur',
-  'stats.clients_value': '30+',
+  'stats.clients_value': '5+',
   'stats.satisfaction_label_short': 'Kënaqësia',
   'stats.satisfaction_value_short': '100%',
   // Core Values (sq)
@@ -637,6 +639,7 @@ const resources = {
       description:
         'Ein engagierter Full-Stack-Webentwickler aus dem Kosovo, spezialisiert auf React, Node.js und moderne Web-Technologien. Ich erstelle dynamische, responsive Anwendungen, die hervorragende Benutzererlebnisse bieten.',
       contact: 'Kontaktieren',
+  about_getInTouch: 'Kontakt aufnehmen',
       seeWork: 'Arbeiten ansehen',
       about_personalProfile: 'Persönliches Profil',
       about_titleAbout: 'Über',
@@ -657,9 +660,9 @@ const resources = {
   'stats.coding_label': 'Jahre Programmierung',
   'stats.coding_value': '4+',
   'stats.projects_label_short': 'Projekte',
-  'stats.projects_value_short': '50+',
+  'stats.projects_value_short': '10+',
   'stats.clients_label': 'Zufriedene Kunden',
-  'stats.clients_value': '30+',
+  'stats.clients_value': '5+',
   'stats.satisfaction_label_short': 'Zufriedenheit',
   'stats.satisfaction_value_short': '100%',
   // Core Values (de)
