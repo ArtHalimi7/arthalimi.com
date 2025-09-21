@@ -1,12 +1,13 @@
 // Helper to record a visit
 async function recordVisit() {
   try {
-    // Get country code from a free geolocation API
-    const geo = await fetch('https://ipapi.co/json/').then(r => r.json());
-    const country = geo.country_code || 'XX';
+    // Get country code from a more accurate free geolocation API (ipinfo.io)
+  const geo = await fetch('https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN').then(r => r.json());
+    console.log('Geo API response:', geo); // Log for debugging
+    const country = geo.country || 'XX';
     const page = window.location.pathname;
     const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  await fetch('https://arti-analytics.onrender.com/api/visit', {
+    await fetch('https://arti-analytics.onrender.com/api/visit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ country, timestamp, page })
@@ -34,11 +35,72 @@ const fetchAnalyticsData = async (username, password) => {
   }
   const visits = await res.json();
 
+  // Country code to name mapping
+  const countryNames = {
+    XK: 'Kosovo',
+    AL: 'Albania',
+    AD: 'Andorra',
+    AT: 'Austria',
+    BY: 'Belarus',
+    BE: 'Belgium',
+    BA: 'Bosnia and Herzegovina',
+    BG: 'Bulgaria',
+    HR: 'Croatia',
+    CY: 'Cyprus',
+    CZ: 'Czechia',
+    DK: 'Denmark',
+    EE: 'Estonia',
+    FI: 'Finland',
+    FR: 'France',
+    DE: 'Germany',
+    GR: 'Greece',
+    HU: 'Hungary',
+    IS: 'Iceland',
+    IE: 'Ireland',
+    IT: 'Italy',
+    LV: 'Latvia',
+    LI: 'Liechtenstein',
+    LT: 'Lithuania',
+    LU: 'Luxembourg',
+    MT: 'Malta',
+    MD: 'Moldova',
+    MC: 'Monaco',
+    ME: 'Montenegro',
+    NL: 'Netherlands',
+    MK: 'North Macedonia',
+    NO: 'Norway',
+    PL: 'Poland',
+    PT: 'Portugal',
+    RO: 'Romania',
+    RU: 'Russia',
+    SM: 'San Marino',
+    RS: 'Serbia',
+    SK: 'Slovakia',
+    SI: 'Slovenia',
+    ES: 'Spain',
+    SE: 'Sweden',
+    CH: 'Switzerland',
+    TR: 'Turkey',
+    UA: 'Ukraine',
+    GB: 'United Kingdom',
+    VA: 'Vatican City',
+    CN: 'China',
+    IN: 'India',
+    JP: 'Japan',
+    KR: 'South Korea',
+    MX: 'Mexico',
+    US: 'United States',
+    CA: 'Canada',
+    AU: 'Australia',
+    // fallback
+    XX: 'Unknown',
+  };
   // Aggregate by country
   const countryMap = {};
   visits.forEach(v => {
     const code = v.country || 'XX';
-    if (!countryMap[code]) countryMap[code] = { name: code, visits: 0, code };
+    const name = countryNames[code] || code;
+    if (!countryMap[code]) countryMap[code] = { name, visits: 0, code };
     countryMap[code].visits += 1;
   });
   let countries = Object.values(countryMap);
@@ -281,11 +343,14 @@ export default function AnalyticsDashboard() {
                   <YAxis stroke="#zinc-400" fontSize={12} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#18191A', 
-                      border: '1px solid #B71C1C',
-                      borderRadius: '0px',
-                      color: '#zinc-100'
-                    }} 
+                      backgroundColor: '#232324', 
+                      border: '1px solid #333',
+                      borderRadius: '6px',
+                      color: '#fff',
+                      boxShadow: '0 2px 12px 0 #0008'
+                    }}
+                    itemStyle={{ color: '#fff' }}
+                    labelStyle={{ color: '#fff', fontWeight: 600 }}
                   />
                   <Area 
                     type="monotone" 
@@ -327,11 +392,14 @@ export default function AnalyticsDashboard() {
                   </Pie>
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#18191A', 
-                      border: '1px solid #B71C1C',
-                      borderRadius: '0px',
-                      color: '#zinc-100'
-                    }} 
+                      backgroundColor: '#232324', 
+                      border: '1px solid #333',
+                      borderRadius: '6px',
+                      color: '#fff',
+                      boxShadow: '0 2px 12px 0 #0008'
+                    }}
+                    itemStyle={{ color: '#fff' }}
+                    labelStyle={{ color: '#fff', fontWeight: 600 }}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -397,11 +465,14 @@ export default function AnalyticsDashboard() {
                   <YAxis stroke="#zinc-400" fontSize={12} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#18191A', 
-                      border: '1px solid #B71C1C',
-                      borderRadius: '0px',
-                      color: '#zinc-100'
-                    }} 
+                      backgroundColor: '#232324', 
+                      border: '1px solid #333',
+                      borderRadius: '6px',
+                      color: '#fff',
+                      boxShadow: '0 2px 12px 0 #0008'
+                    }}
+                    itemStyle={{ color: '#fff' }}
+                    labelStyle={{ color: '#fff', fontWeight: 600 }}
                   />
                   <Bar dataKey="visits" fill="#B71C1C" radius={[2, 2, 0, 0]} />
                   <Bar dataKey="pageViews" fill="#D32F2F" radius={[2, 2, 0, 0]} />
