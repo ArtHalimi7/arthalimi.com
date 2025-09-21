@@ -1,3 +1,17 @@
+// Simple HTTP Basic Auth middleware for /api/visits
+const ADMIN_USER = process.env.ADMIN_USER || 'admin';
+const ADMIN_PASS = process.env.ADMIN_PASS || '***REMOVED***';
+function basicAuth(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Basic ')) {
+    res.set('WWW-Authenticate', 'Basic realm="Analytics"');
+    return res.status(401).send('Authentication required.');
+  }
+  const [user, pass] = Buffer.from(auth.split(' ')[1], 'base64').toString().split(':');
+  if (user === ADMIN_USER && pass === ADMIN_PASS) return next();
+  res.set('WWW-Authenticate', 'Basic realm="Analytics"');
+  return res.status(401).send('Invalid credentials.');
+}
 // Express server for analytics backend
 import express from 'express';
 import cors from 'cors';
@@ -53,8 +67,8 @@ app.post('/api/visit', async (req, res) => {
   }
 });
 
-// GET /api/visits - fetch analytics data
-app.get('/api/visits', async (req, res) => {
+// GET /api/visits - fetch analytics data (protected)
+app.get('/api/visits', basicAuth, async (req, res) => {
   try {
     // Example: fetch all visits (for demo, aggregate on frontend)
     const [rows] = await pool.query('SELECT * FROM visits');

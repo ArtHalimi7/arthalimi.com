@@ -20,9 +20,14 @@ import { motion } from "framer-motion";
 import { Globe, Eye, TrendingUp, Clock, BarChart3 } from "lucide-react";
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
-// Fetch and aggregate real analytics data from backend
-const fetchAnalyticsData = async () => {
-  const res = await fetch('https://arti-analytics.onrender.com/api/visits');
+
+// Fetch and aggregate real analytics data from backend with Basic Auth
+const fetchAnalyticsData = async (username, password) => {
+  const auth = 'Basic ' + btoa(`${username}:${password}`);
+  const res = await fetch('https://arti-analytics.onrender.com/api/visits', {
+    headers: { Authorization: auth }
+  });
+  if (res.status === 401) throw new Error('unauthorized');
   if (!res.ok) {
     const err = await res.text();
     throw new Error('Backend error: ' + err);
@@ -90,12 +95,18 @@ const timePeriods = [
 
 const COLORS = ['#B71C1C', '#D32F2F', '#F44336', '#EF5350', '#FFCDD2', '#FFEBEE', '#FAFAFA', '#E0E0E0'];
 
+
 export default function AnalyticsDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState('week');
   const [data, setData] = useState({ countries: [], hourlyData: [], weeklyData: [], monthlyData: [] });
   const [isLoading, setIsLoading] = useState(false);
+  const [auth, setAuth] = useState(() => {
+    const saved = localStorage.getItem('analyticsAuth');
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [error, setError] = useState(null);
 
-  // Record visit on first mount only
+  // Record visit on first mount only (does not require auth)
   useEffect(() => {
     recordVisit();
     // eslint-disable-next-line
@@ -103,12 +114,24 @@ export default function AnalyticsDashboard() {
 
   // Fetch real data when period changes or on mount
   useEffect(() => {
+    if (!auth) return;
     setIsLoading(true);
-    fetchAnalyticsData().then(d => {
-      setData(d);
-      setIsLoading(false);
-    });
-  }, [selectedPeriod]);
+    fetchAnalyticsData(auth.username, auth.password)
+      .then(d => {
+        setData(d);
+        setIsLoading(false);
+        setError(null);
+      })
+      .catch(e => {
+        if (e.message === 'unauthorized') {
+          setAuth(null);
+          localStorage.removeItem('analyticsAuth');
+        } else {
+          setError(e.message);
+        }
+        setIsLoading(false);
+      });
+  }, [selectedPeriod, auth]);
 
   // Calculate total stats
   const totalVisits = data.countries.reduce((sum, country) => sum + country.visits, 0);
@@ -116,10 +139,13 @@ export default function AnalyticsDashboard() {
   const avgVisitsPerDay = Math.floor(totalVisits / 7);
   const growthRate = 12.5; // Mock growth rate
 
+  if (!auth) {
+    return <AnalyticsLogin onLogin={setAuth} error={error} />;
+  }
+
   return (
     <div className="min-h-screen bg-[#18191A] text-zinc-100">
       <Lines />
-      
       <div className="relative mx-auto max-w-7xl px-6 py-12">
         {/* Container boundary lines */}
         <div className="pointer-events-none absolute inset-0">
@@ -385,6 +411,60 @@ export default function AnalyticsDashboard() {
           </motion.div>
         </div>
       </div>
+    </div>
+  );
+}
+
+// Minimal login form for analytics auth
+function AnalyticsLogin({ onLogin, error }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [localError, setLocalError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setLocalError(null);
+    try {
+      // Try to fetch with credentials
+      await fetchAnalyticsData(username, password);
+      localStorage.setItem('analyticsAuth', JSON.stringify({ username, password }));
+      onLogin({ username, password });
+    } catch (err) {
+      setLocalError('Unauthorized: Invalid credentials');
+    }
+    setSubmitting(false);
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#18191A] text-zinc-100">
+      <form onSubmit={handleSubmit} className="bg-white/5 p-8 rounded shadow-lg w-full max-w-xs flex flex-col gap-4 border border-white/10">
+        <h2 className="text-xl font-bold mb-2 text-center">Analytics Login</h2>
+        <input
+          className="p-2 rounded bg-zinc-900 border border-zinc-700 text-zinc-100 focus:outline-none"
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+          autoFocus
+        />
+        <input
+          className="p-2 rounded bg-zinc-900 border border-zinc-700 text-zinc-100 focus:outline-none"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <button
+          className="bg-[#B71C1C] hover:bg-[#8B1515] text-white font-bold py-2 rounded transition"
+          type="submit"
+          disabled={submitting}
+        >
+          {submitting ? 'Signing in...' : 'Sign In'}
+        </button>
+        {(localError || error) && <div className="text-red-400 text-sm text-center">{localError || error}</div>}
+      </form>
     </div>
   );
 }
