@@ -1,38 +1,76 @@
+// Helper to record a visit
+async function recordVisit() {
+  try {
+    // Get country code from a free geolocation API
+    const geo = await fetch('https://ipapi.co/json/').then(r => r.json());
+    const country = geo.country_code || 'XX';
+    const page = window.location.pathname;
+    const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  await fetch('http://localhost:4000/api/visit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ country, timestamp, page })
+    });
+  } catch (e) {
+    // Ignore errors
+  }
+}
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Globe, Eye, TrendingUp, Clock, BarChart3 } from "lucide-react";
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
-// Mock data - in production this would come from your analytics backend
-const generateMockData = () => {
-  const countries = [
-    { name: 'United States', visits: 1247, percentage: 31.2, code: 'US' },
-    { name: 'Germany', visits: 892, percentage: 22.3, code: 'DE' },
-    { name: 'United Kingdom', visits: 634, percentage: 15.8, code: 'GB' },
-    { name: 'France', visits: 423, percentage: 10.6, code: 'FR' },
-    { name: 'Canada', visits: 321, percentage: 8.0, code: 'CA' },
-    { name: 'Netherlands', visits: 245, percentage: 6.1, code: 'NL' },
-    { name: 'Australia', visits: 167, percentage: 4.2, code: 'AU' },
-    { name: 'Others', visits: 71, percentage: 1.8, code: 'XX' }
-  ];
+// Fetch and aggregate real analytics data from backend
+const fetchAnalyticsData = async () => {
+  const res = await fetch('http://localhost:4000/api/visits');
+  const visits = await res.json();
 
-  const hourlyData = Array.from({ length: 24 }, (_, i) => ({
-    hour: i,
-    visits: Math.floor(Math.random() * 50) + 10,
-    label: `${i.toString().padStart(2, '0')}:00`
-  }));
+  // Aggregate by country
+  const countryMap = {};
+  visits.forEach(v => {
+    const code = v.country || 'XX';
+    if (!countryMap[code]) countryMap[code] = { name: code, visits: 0, code };
+    countryMap[code].visits += 1;
+  });
+  let countries = Object.values(countryMap);
+  const totalVisits = visits.length;
+  countries = countries.map(c => ({ ...c, percentage: ((c.visits / totalVisits) * 100).toFixed(1) }));
+  countries.sort((a, b) => b.visits - a.visits);
 
-  const weeklyData = Array.from({ length: 7 }, (_, i) => ({
-    day: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i],
-    visits: Math.floor(Math.random() * 200) + 50,
-    uniqueVisitors: Math.floor(Math.random() * 150) + 30
-  }));
+  // Hourly data (last 24h)
+  const now = new Date();
+  const hourlyData = Array.from({ length: 24 }, (_, i) => {
+    const hour = (now.getHours() - (23 - i) + 24) % 24;
+    const label = `${hour.toString().padStart(2, '0')}:00`;
+    const count = visits.filter(v => {
+      const d = new Date(v.timestamp);
+      return d.getHours() === hour && (now - d) < 24 * 60 * 60 * 1000;
+    }).length;
+    return { hour, visits: count, label };
+  });
 
-  const monthlyData = Array.from({ length: 30 }, (_, i) => ({
-    day: i + 1,
-    visits: Math.floor(Math.random() * 100) + 20,
-    pageViews: Math.floor(Math.random() * 150) + 40
-  }));
+  // Weekly data (last 7 days)
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const weeklyData = Array.from({ length: 7 }, (_, i) => {
+    const dayIdx = (now.getDay() - (6 - i) + 7) % 7;
+    const day = days[dayIdx];
+    const count = visits.filter(v => {
+      const d = new Date(v.timestamp);
+      return d.getDay() === dayIdx && (now - d) < 7 * 24 * 60 * 60 * 1000;
+    }).length;
+    return { day, visits: count, uniqueVisitors: count };
+  });
+
+  // Monthly data (last 30 days)
+  const monthlyData = Array.from({ length: 30 }, (_, i) => {
+    const day = i + 1;
+    const date = new Date(now.getTime() - (29 - i) * 24 * 60 * 60 * 1000);
+    const count = visits.filter(v => {
+      const d = new Date(v.timestamp);
+      return d.toDateString() === date.toDateString();
+    }).length;
+    return { day, visits: count, pageViews: count };
+  });
 
   return { countries, hourlyData, weeklyData, monthlyData };
 };
@@ -50,17 +88,22 @@ const COLORS = ['#B71C1C', '#D32F2F', '#F44336', '#EF5350', '#FFCDD2', '#FFEBEE'
 
 export default function AnalyticsDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState('week');
-  const [data, setData] = useState(generateMockData());
+  const [data, setData] = useState({ countries: [], hourlyData: [], weeklyData: [], monthlyData: [] });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Simulate data loading when period changes
+  // Record visit on first mount only
+  useEffect(() => {
+    recordVisit();
+    // eslint-disable-next-line
+  }, []);
+
+  // Fetch real data when period changes or on mount
   useEffect(() => {
     setIsLoading(true);
-    const timer = setTimeout(() => {
-      setData(generateMockData());
+    fetchAnalyticsData().then(d => {
+      setData(d);
       setIsLoading(false);
-    }, 300);
-    return () => clearTimeout(timer);
+    });
   }, [selectedPeriod]);
 
   // Calculate total stats
