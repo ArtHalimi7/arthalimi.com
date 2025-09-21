@@ -5,6 +5,7 @@ import './index.css';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
+import CookiesModal from './components/CookiesModal';
 import CustomScrollbar from './components/CustomScrollbar';
 import ScrollTop from './components/ScrollTop';
 import SplashScreen from './components/SplashScreen';
@@ -29,15 +30,18 @@ const App = () => {
         <HiringModePanel />
         {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
         {appReady && (
-          <div className="opacity-0 animate-fade-in">
-            <CustomScrollbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="*" element={<NotFound />} />
-              <Route path="/analytics" element={<Analytics />} />
-            </Routes>
-            <ScrollTop />
-          </div>
+          <>
+            <div className="opacity-0 animate-fade-in">
+              <CustomScrollbar />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="*" element={<NotFound />} />
+                <Route path="/analytics" element={<Analytics />} />
+              </Routes>
+              <ScrollTop />
+            </div>
+            <CookiesModal animateIn={true} />
+          </>
         )}
       </Router>
     </main>

@@ -1,8 +1,24 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes cookies-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-cookies-in {
+  animation: cookies-in 0.4s cubic-bezier(.4,0,.2,1) forwards;
+}
 
 /* Smooth in-page anchor scrolling */
 html {
