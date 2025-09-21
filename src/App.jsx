@@ -9,6 +9,7 @@ import CustomScrollbar from './components/CustomScrollbar';
 import ScrollTop from './components/ScrollTop';
 import SplashScreen from './components/SplashScreen';
 import HiringModePanel from './components/HiringModePanel';
+import Analytics from './pages/Analytics';
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -33,6 +34,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
+              <Route path="/analytics" element={<Analytics />} />
             </Routes>
             <ScrollTop />
           </div>
