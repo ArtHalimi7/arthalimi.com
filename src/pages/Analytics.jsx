@@ -258,7 +258,7 @@ export default function AnalyticsDashboard() {
                     focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] 
                     relative overflow-hidden group
                     ${selectedPeriod === period.id 
-                      ? 'bg-[#B71C1C] text-white hover:bg-[#8B1515]' 
+                      ? 'bg-[#B71C1C] text-white' 
                       : 'bg-transparent text-[#B71C1C] hover:bg-black hover:text-white'
                     }
                   `}
@@ -424,7 +424,7 @@ export default function AnalyticsDashboard() {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.4, delay: 0.7 + index * 0.05, ease: "easeOut" }}
-                    className="relative flex items-center justify-between p-3 bg-white/5 hover:bg-white/10 transition-all duration-300 border-l-2 border-[#B71C1C] group overflow-hidden"
+                    className="relative flex items-center justify-between p-3 bg-white/5 transition-all duration-300 border-l-2 border-[#B71C1C] group overflow-hidden"
                   >
                     <div className="relative z-10 flex items-center gap-3">
                       <div className="w-8 h-6 bg-zinc-700 flex items-center justify-center text-xs font-medium border border-zinc-600">
@@ -436,7 +436,7 @@ export default function AnalyticsDashboard() {
                       <div className="font-semibold">{country.visits.toLocaleString()}</div>
                       <div className="text-sm text-zinc-400">{country.percentage}%</div>
                     </div>
-                    <div className="absolute right-0 top-0 h-full w-0 bg-[#B71C1C]/10 transition-all duration-300 group-hover:w-full"></div>
+                    <div className="absolute right-0 top-0 h-full w-0 transition-all duration-300"></div>
                   </motion.div>
                 ))}
               </div>
@@ -528,7 +528,7 @@ function AnalyticsLogin({ onLogin, error }) {
           onChange={e => setPassword(e.target.value)}
         />
         <button
-          className="bg-[#B71C1C] hover:bg-[#8B1515] text-white font-bold py-2 rounded transition"
+          className="bg-[#B71C1C] text-white font-bold py-2 rounded transition"
           type="submit"
           disabled={submitting}
         >
@@ -626,8 +626,8 @@ function StatsCard({ icon, title, value, change, delay }) {
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
     >
       <div className="relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] opacity-20 blur group-hover:opacity-30 transition duration-300"></div>
-        <div className="relative p-6 bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 border-l-4 border-l-[#B71C1C] backdrop-blur-sm">
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] opacity-20 blur transition duration-300"></div>
+        <div className="relative p-6 bg-white/5 border border-white/10 transition-all duration-300 border-l-4 border-l-[#B71C1C] backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <div className="text-[#B71C1C]">
               {icon}
@@ -640,7 +640,7 @@ function StatsCard({ icon, title, value, change, delay }) {
             <div className="text-2xl font-bold text-white">{value}</div>
             <div className="text-sm text-zinc-400 mt-1">{title}</div>
           </div>
-          <div className="absolute top-0 right-0 w-0 h-full bg-[#B71C1C]/10 transition-all duration-300 group-hover:w-full"></div>
+          <div className="absolute top-0 right-0 w-0 h-full transition-all duration-300"></div>
         </div>
       </div>
     </motion.div>
@@ -651,9 +651,9 @@ function ChartCard({ title, subtitle, children, isLoading }) {
   return (
     <div className="relative group">
       {/* Animated border effect */}
-      <div className="absolute -inset-1 bg-gradient-to-r from-[#B71C1C] via-transparent to-[#B71C1C] opacity-0 group-hover:opacity-20 transition duration-500"></div>
+  <div className="absolute -inset-1 bg-gradient-to-r from-[#B71C1C] via-transparent to-[#B71C1C] opacity-0 transition duration-500"></div>
       
-      <div className="relative p-6 bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 backdrop-blur-sm">
+  <div className="relative p-6 bg-white/5 border border-white/10 transition-all duration-300 backdrop-blur-sm">
         {/* Grid lines overlay */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-6 left-0 right-0 h-px bg-white/5"></div>
