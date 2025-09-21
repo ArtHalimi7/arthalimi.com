@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.use(cors({
   credentials: true
 }));
 
-// MySQL connection pool with SSL support for Aiven Cloud
+// MySQL connection pool with SSL support for Aiven Cloud and CA cert
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -30,7 +31,7 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   ssl: process.env.DB_SSL === 'true' ? {
-    // If you have a CA cert, add: ca: fs.readFileSync(process.env.DB_SSL_CA)
+    ca: fs.readFileSync('./ca.pem'),
     rejectUnauthorized: true
   } : undefined
 });
