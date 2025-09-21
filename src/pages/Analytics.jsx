@@ -6,7 +6,7 @@ async function recordVisit() {
     const country = geo.country_code || 'XX';
     const page = window.location.pathname;
     const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  await fetch('http://localhost:4000/api/visit', {
+  await fetch('https://arti-analytics.onrender.com/api/visit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ country, timestamp, page })
@@ -22,7 +22,11 @@ import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, Cartesia
 
 // Fetch and aggregate real analytics data from backend
 const fetchAnalyticsData = async () => {
-  const res = await fetch('http://localhost:4000/api/visits');
+  const res = await fetch('https://arti-analytics.onrender.com/api/visits');
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error('Backend error: ' + err);
+  }
   const visits = await res.json();
 
   // Aggregate by country
