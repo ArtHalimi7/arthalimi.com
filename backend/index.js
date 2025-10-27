@@ -85,3 +85,17 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Analytics backend listening on port ${PORT}`);
 });
+
+  // Keep-alive: ping the backend every 5 minutes to prevent Render spin-down
+
+  const KEEP_ALIVE_INTERVAL = 5 * 60 * 1000; // 5 minutes in ms
+  const SELF_URL = process.env.KEEP_ALIVE_URL || 'https://arti-analytics.onrender.com';
+
+  function keepAlive() {
+    fetch(SELF_URL)
+      .then(res => res.text())
+      .then(text => console.log(`[KeepAlive] Pinged self: ${text}`))
+      .catch(err => console.error('[KeepAlive] Error pinging self:', err));
+  }
+
+  setInterval(keepAlive, KEEP_ALIVE_INTERVAL);
