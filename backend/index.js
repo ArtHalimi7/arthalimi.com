@@ -13,11 +13,14 @@ function basicAuth(req, res, next) {
   return res.status(401).send('Invalid credentials.');
 }
 // Express server for analytics backend
+
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
 import fs from 'fs';
+
+console.log('[Startup] Backend starting...');
 
 dotenv.config();
 
@@ -34,21 +37,38 @@ app.use(cors({
   credentials: true
 }));
 
-// MySQL connection pool with SSL support for Aiven Cloud and CA cert
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-  ssl: process.env.DB_SSL === 'true' ? {
-    ca: fs.readFileSync('./ca.pem'),
-    rejectUnauthorized: true
-  } : undefined
-});
+
+// MySQL connection pool with error handling
+let pool;
+try {
+  let sslConfig = undefined;
+  if (process.env.DB_SSL === 'true') {
+    try {
+      sslConfig = {
+        ca: fs.readFileSync('./ca.pem'),
+        rejectUnauthorized: true
+      };
+    } catch (sslErr) {
+      console.error('[Startup] Failed to read ca.pem for SSL:', sslErr);
+      process.exit(1);
+    }
+  }
+  pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    ssl: sslConfig
+  });
+  console.log('[Startup] MySQL pool created successfully.');
+} catch (err) {
+  console.error('[Startup] Error creating MySQL pool:', err);
+  process.exit(1);
+}
 
 // POST /api/visit - record a new visit
 app.post('/api/visit', async (req, res) => {

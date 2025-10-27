@@ -201,13 +201,29 @@ export default function AnalyticsDashboard() {
   const avgVisitsPerDay = Math.floor(totalVisits / 7);
   const growthRate = 12.5; // Mock growth rate
 
+
   if (!auth) {
     return <AnalyticsLogin onLogin={setAuth} error={error} />;
+  }
+
+  // Log out handler
+  function handleLogout() {
+    setAuth(null);
+    localStorage.removeItem('analyticsAuth');
   }
 
   return (
     <div className="min-h-screen bg-[#18191A] text-zinc-100">
       <Lines />
+      {/* Log out button top right */}
+      <div className="absolute top-6 right-8 z-50">
+        <button
+          onClick={handleLogout}
+          className="bg-[#B71C1C] text-white px-4 py-2 rounded shadow hover:bg-[#D32F2F] font-bold transition"
+        >
+          Log Out
+        </button>
+      </div>
       <div className="relative mx-auto max-w-7xl px-6 py-12">
         {/* Container boundary lines */}
         <div className="pointer-events-none absolute inset-0">
