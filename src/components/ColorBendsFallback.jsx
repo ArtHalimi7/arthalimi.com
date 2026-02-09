@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
@@ -96,18 +97,27 @@ void main() {
 `;
 
 export default function ColorBends({
+  // eslint-disable-next-line react/prop-types
   className,
+  // eslint-disable-next-line react/prop-types
   style,
+  // eslint-disable-next-line react/prop-types
   rotation = 45,
+  // eslint-disable-next-line react/prop-types
   speed = 0.2,
+  // eslint-disable-next-line react/prop-types
   colors = [],
+  // eslint-disable-next-line react/prop-types
   transparent = true,
+  // eslint-disable-next-line react/prop-types
   autoRotate = 0,
+  // eslint-disable-next-line react/prop-types
   scale = 1,
   frequency = 1,
   warpStrength = 1,
   mouseInfluence = 1,
   parallax = 0.5,
+  // eslint-disable-next-line react/prop-types
   noise = 0.1
 }) {
   const containerRef = useRef(null);

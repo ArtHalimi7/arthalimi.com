@@ -1,365 +1,138 @@
-import { motion } from 'framer-motion';
-import { Code, Palette, Zap, ArrowRight, Sparkles } from 'lucide-react';
+/* eslint-disable react/prop-types */
+import { motion, AnimatePresence } from 'framer-motion';
+import { Code, Palette, Zap, ArrowRight, Plus, Minus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
-// Define services with translation keys for title/description so we can localize at render-time
-const services = [
-  {
-    icon: Code,
-    titleKey: 'services.frontend.title',
-    descriptionKey: 'services.frontend.description',
-    capabilities: ['React', 'Next.js', 'Tailwind'],
-    accent: 'bg-[#7C3AED]/80',
-    position: 'left',
-  },
-  {
-    icon: Zap,
-    titleKey: 'services.backend.title',
-    descriptionKey: 'services.backend.description',
-    capabilities: ['Node.js', 'Express', 'MongoDB'],
-    accent: 'bg-[#7C3AED]/40',
-    position: 'center',
-  },
-  {
-    icon: Palette,
-    titleKey: 'services.tools.title',
-    descriptionKey: 'services.tools.description',
-    capabilities: ['Git', 'Vite', 'VS Code'],
-    accent: 'bg-[#7C3AED]/80',
-    position: 'right',
-  },
-];
-
-function GridLines() {
-  return <div aria-hidden className="pointer-events-none absolute inset-0" />;
-}
-
-function ConnectingLines() {
-  return (
-    <div className="absolute inset-0 pointer-events-none hidden lg:block">
-      <svg className="w-full h-full">
-        <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#7C3AED" stopOpacity="0" />
-            <stop offset="50%" stopColor="#7C3AED" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#7C3AED" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <motion.path
-          d="M 150 300 Q 400 200 650 300 Q 900 400 1150 300"
-          stroke="url(#lineGradient)"
-          strokeWidth="2"
-          fill="none"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 2, delay: 1 }}
-        />
-        {/* Animated dots along the path */}
-        <motion.circle
-          r="4"
-          fill="#7C3AED"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 1, 0] }}
-          transition={{ duration: 3, repeat: Infinity, delay: 2 }}
-        >
-          <animateMotion dur="3s" repeatCount="indefinite" begin="2s">
-            <mpath href="#connectingPath" />
-          </animateMotion>
-        </motion.circle>
-        <path id="connectingPath" d="M 150 300 Q 400 200 650 300 Q 900 400 1150 300" fill="none" />
-      </svg>
-    </div>
-  );
-}
-
-function FloatingElements() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 bg-[#7C3AED]/20 rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [-20, 20, -20],
-            x: [-10, 10, -10],
-            opacity: [0.2, 0.8, 0.2],
-          }}
-          transition={{
-            duration: 4 + Math.random() * 2,
-            repeat: Infinity,
-            delay: Math.random() * 2,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function ServiceCard({ service, index }) {
-  const Icon = service.icon;
+const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
   const { t } = useTranslation();
-  const [isHovered, setIsHovered] = useState(false);
-
-  // Map services to localized versions for rendering
-  const localizedService = {
-    ...service,
-    title: t(service.titleKey),
-    description: t(service.descriptionKey),
-  };
-
-  const getCardStyle = () => {
-    switch (service.position) {
-      case 'left':
-        return {
-          transform: 'rotate(-2deg)',
-          zIndex: 1,
-        };
-      case 'center':
-        return {
-          transform: 'rotate(0deg) scale(1.05)',
-          zIndex: 3,
-        };
-      case 'right':
-        return {
-          transform: 'rotate(2deg)',
-          zIndex: 1,
-        };
-      default:
-        return {};
-    }
-  };
-
-  const getHoverStyle = () => {
-    switch (service.position) {
-      case 'left':
-        return {
-          transform: 'rotate(-1deg) scale(1.02) translateY(-10px)',
-          zIndex: 2,
-        };
-      case 'center':
-        return {
-          transform: 'rotate(0deg) scale(1.08) translateY(-15px)',
-          zIndex: 4,
-        };
-      case 'right':
-        return {
-          transform: 'rotate(1deg) scale(1.02) translateY(-10px)',
-          zIndex: 2,
-        };
-      default:
-        return {};
-    }
-  };
+  const Icon = service.icon;
+  const isActive = activeIndex === index;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 100, rotate: service.position === 'center' ? 0 : service.position === 'left' ? -5 : 5 }}
-      animate={{ opacity: 1, y: 0, rotate: service.position === 'center' ? 0 : service.position === 'left' ? -2 : 2 }}
-      transition={{ 
-        duration: 0.8, 
-        delay: 0.2 * index,
-        type: "spring",
-        stiffness: 100,
-      }}
-      className="relative group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.8 }}
+      className="relative border-t border-white/5 last:border-b last:border-white/5 group"
     >
-      <motion.div
-        className="relative bg-gradient-to-br from-[#232425] to-[#1a1b1c] p-8 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-sm overflow-hidden"
-        style={{
-          minHeight: 380,
-          ...getCardStyle(),
-        }}
-        animate={isHovered ? getHoverStyle() : getCardStyle()}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+      <span className="absolute right-0 top-1/2 -translate-y-1/2 text-7xl font-bold text-white/[0.01] pointer-events-none select-none group-hover:text-purple-500/[0.03] transition-colors duration-700">
+        0{index + 1}
+      </span>
+
+      <div 
+        onClick={() => setActiveIndex(isActive ? null : index)}
+        className="relative z-10 py-12 cursor-pointer grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
       >
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#7C3AED]/5 to-transparent" />
-        </div>
-
-        {/* Glowing accent */}
-        <motion.div 
-          className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#7C3AED] to-transparent"
-          animate={{
-            opacity: isHovered ? 1 : 0.6,
-            scaleX: isHovered ? 1 : 0.8,
-          }}
-          transition={{ duration: 0.3 }}
-        />
-
-        {/* Icon Section */}
-        <div className="relative z-10 flex items-start gap-4 mb-6">
-          <motion.div 
-            className="relative"
-            animate={isHovered ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="w-16 h-16 flex items-center justify-center border border-white/20 rounded-2xl bg-gradient-to-br from-black to-[#2a2b2c] shadow-lg">
-              <Icon className="w-8 h-8 text-[#7C3AED]" />
-            </div>
-            {isHovered && (
-              <motion.div
-                className="absolute -top-1 -right-1 w-4 h-4"
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Sparkles className="w-4 h-4 text-[#7C3AED]" />
-              </motion.div>
-            )}
-          </motion.div>
-
-          <div className="flex-1">
-            <motion.h3 
-              className="text-xl font-bold text-white mb-2"
-              animate={isHovered ? { x: 5 } : { x: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {localizedService.title}
-            </motion.h3>
-            <motion.p 
-              className="text-zinc-400 text-sm leading-relaxed"
-              animate={isHovered ? { x: 5 } : { x: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-            >
-              {localizedService.description}
-            </motion.p>
-          </div>
-        </div>
-
-        {/* Capabilities Section */}
-        <div className="relative z-10 flex-1 flex flex-col">
-          <motion.span 
-            className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium mb-4 flex items-center gap-2"
-            animate={isHovered ? { x: 5 } : { x: 0 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-          >
-            <div className="w-1 h-1 bg-[#7C3AED] rounded-full" />
-            {t('services_keyCapabilities')}
-          </motion.span>
-          
-          <div className="space-y-3">
-            {localizedService.capabilities.map((cap, i) => (
-              <motion.div
-                key={i}
-                className="flex items-center gap-3 text-zinc-200 text-sm"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.3 + (i * 0.1) }}
-                whileHover={{ x: 10, color: '#7C3AED' }}
-              >
-                <div className="w-1.5 h-1.5 bg-[#7C3AED] rounded-full flex-shrink-0" />
-                <span>{cap}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Hover overlay */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-[#7C3AED]/10 to-transparent rounded-2xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-        />
-
-        {/* Service number */}
-        <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#7C3AED]/20 flex items-center justify-center">
-          <span className="text-[#7C3AED] text-sm font-bold">
+        <div className="lg:col-span-1 flex items-center gap-6">
+          <span className={`font-mono text-xs ${isActive ? 'text-purple-500' : 'text-zinc-700'}`}>
             {String(index + 1).padStart(2, '0')}
           </span>
+          <div className={`p-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-purple-500/10 text-purple-400' : 'bg-white/5 text-zinc-500 group-hover:text-zinc-300'}`}>
+            <Icon size={24} strokeWidth={1.2} />
+          </div>
         </div>
-      </motion.div>
+
+        <div className="lg:col-span-10">
+          <div className="flex flex-col">
+            <h3 className={`text-3xl md:text-5xl font-extralight tracking-tighter transition-all duration-500 ${isActive ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+              {t(service.titleKey)}
+            </h3>
+            <p className={`text-xs font-mono uppercase tracking-[0.3em] mt-2 transition-colors ${isActive ? 'text-purple-400/80' : 'text-zinc-700'}`}>
+              {t(service.descriptionKey)}
+            </p>
+          </div>
+
+          <AnimatePresence>
+            {isActive && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <div className="pt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {service.capabilities.map((cap, i) => (
+                    <div key={i} className="flex items-center gap-4 group/cap">
+                      <div className="w-1 h-1 rounded-full bg-purple-500/40 group-hover/cap:bg-purple-500 transition-colors" />
+                      <span className="text-sm font-light text-zinc-400 group-hover/cap:text-white transition-colors uppercase tracking-widest">
+                        {cap}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <div className="lg:col-span-1 flex justify-end">
+           <div className={`transition-colors duration-500 ${isActive ? 'text-purple-500' : 'text-zinc-800'}`}>
+             {isActive ? <Minus size={32} strokeWidth={1} /> : <Plus size={32} strokeWidth={1} />}
+           </div>
+        </div>
+      </div>
     </motion.div>
   );
-}
+};
 
 export function ServicesSection() {
-  const { t } = useTranslation();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const services = [
+    {
+      icon: Code,
+      titleKey: 'services.frontend.title',
+      descriptionKey: 'services.frontend.description',
+      capabilities: ['Interface Architecture', 'Motion Design', 'Responsive Logic'],
+    },
+    {
+      icon: Zap,
+      titleKey: 'services.backend.title',
+      descriptionKey: 'services.backend.description',
+      capabilities: ['Scalable API Design', 'Data Integrity', 'Cloud Workflows'],
+    },
+    {
+      icon: Palette,
+      titleKey: 'services.tools.title',
+      descriptionKey: 'services.tools.description',
+      capabilities: ['Design Engineering', 'Product Strategy', 'System Audits'],
+    },
+  ];
 
   return (
-    <section id="services" className="relative min-h-screen bg-black text-zinc-100 py-20 overflow-hidden">
-      <GridLines />
-      <FloatingElements />
-      <ConnectingLines />
+    // TIGHTENED: Reduced top padding (pt-12) to meet the previous section better
+    <section id="services" className="relative pt-12 pb-24 md:pb-48 bg-transparent overflow-hidden">
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-900/5 blur-[150px] rounded-full pointer-events-none" />
       
-      <div className="relative mx-auto max-w-7xl px-6 z-10">
-        {/* Header */}
-        <motion.div
-          className="mb-20"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <Code className="w-6 h-6 text-[#7C3AED]" />
-            <div className="h-px flex-1 bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
-              {t('services_heading')}
-            </span>
-          </div>
-          <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-white mb-8">
-            <span className="block">{t('services_title_part1')}</span>
-            <span className="block ml-16">{t('services_title_part2')}</span>
-          </h1>
-          <div className="flex items-center gap-3 max-w-3xl">
-            <span className="text-xl text-[#7C3AED]">*</span>
-            <div className="h-px flex-1 bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              {t('services_sub')}
-            </span>
-          </div>
-          <p className="mt-8 max-w-2xl text-zinc-300 leading-relaxed">
-            {t('services_lead')}
-          </p>
-        </motion.div>
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
+        <div className="mb-24 flex flex-col items-center text-center lg:items-start lg:text-left">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-px bg-purple-500/50" />
+            <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase italic">Solution_Models</span>
+          </motion.div>
+          <h2 className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic">
+            Services <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">Expertise</span>
+          </h2>
+        </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-20">
+        <div className="flex flex-col">
           {services.map((service, index) => (
-            <ServiceCard key={service.titleKey} service={service} index={index} />
+            <ServiceItem key={index} service={service} index={index} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
           ))}
         </div>
 
-        {/* Footer CTA */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.2 }}
-        >
-          <div className="flex items-center gap-3 mb-8 justify-center">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10 max-w-32" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 px-4">
-              {t('services_cta_sub')}
-            </span>
-            <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10 max-w-32" />
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="mt-32 flex flex-col md:flex-row items-center justify-between gap-12 border-t border-white/5 pt-16">
+          <div className="max-w-md">
+            <h4 className="text-2xl font-light text-white italic mb-4">Ready to build something iconic?</h4>
+            <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest leading-relaxed">Available for selective projects where design meets technical excellence.</p>
           </div>
-          
-          <motion.a
-            href="#contact"
-            className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#7C3AED] to-[#8B1515] text-white px-10 py-5 font-medium hover:from-[#8B1515] hover:to-[#7C3AED] transition-all duration-300 rounded-lg shadow-2xl"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <span className="relative z-10">{t('services_cta')}</span>
-            <motion.div
-              className="relative z-10"
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <ArrowRight className="w-5 h-5" />
-            </motion.div>
-            
-            {/* Glowing effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#7C3AED] to-[#8B1515] rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 -z-10" />
+          <motion.a href="#contact" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="group relative flex items-center gap-6 px-12 py-6 bg-white text-black font-medium overflow-hidden rounded-full">
+            <span className="relative z-10 uppercase tracking-widest text-xs">Start a Conversation</span>
+            <ArrowRight className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-2" />
+            <div className="absolute inset-0 bg-purple-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
           </motion.a>
         </motion.div>
       </div>

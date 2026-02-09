@@ -9,6 +9,8 @@ const resources = {
       title2: 'FULL STACK',
       title3: 'DEVELOPER',
       role: 'Modern Web Architect',
+      cta_work: 'See Work',
+      cta_contact: 'Contact',
       description:
         'A dedicated Full Stack Web Developer from Kosovo, specializing in React, Node.js, and modern web technologies. I create dynamic, responsive applications that deliver exceptional user experiences.',
       contact: 'Get in touch',
@@ -320,6 +322,8 @@ const resources = {
       title2: 'FULL STACK',
       title3: 'KREATIV',
       role: 'Arkitekt Modern i Web-it',
+      cta_work: 'Shiko Punën',
+      cta_contact: 'Kontakto',
       description:
         'Një Zhvillues Full Stack i përkushtuar nga Kosova, i specializuar në React, Node.js dhe teknologjitë moderne të web-it. Unë krijoj aplikacione dinamike dhe të përgjegjshme që ofrojnë përvoja të shkëlqyera për përdoruesit.',
       contact: 'Kontakto',
@@ -636,6 +640,8 @@ const resources = {
       title2: 'FULL STACK',
       title3: 'ENTWICKLER',
       role: 'Moderner Web-Architekt',
+      cta_work: 'Arbeiten ansehen',
+      cta_contact: 'Kontakt',
       description:
         'Ein engagierter Full-Stack-Webentwickler aus dem Kosovo, spezialisiert auf React, Node.js und moderne Web-Technologien. Ich erstelle dynamische, responsive Anwendungen, die hervorragende Benutzererlebnisse bieten.',
       contact: 'Kontaktieren',

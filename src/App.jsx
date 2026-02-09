@@ -1,4 +1,4 @@
-
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './index.css';
@@ -16,22 +16,26 @@ const App = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [appReady, setAppReady] = useState(false);
 
-  // Called by SplashScreen when its exit animation completes
   const handleSplashComplete = () => {
     setShowSplash(false);
-    // small timeout to allow DOM settle, then show app content
     setTimeout(() => setAppReady(true), 80);
   };
 
   return (
-    <main className='background1'>
+    // CHANGE: Added bg-architecture here
+    <main className='bg-architecture min-h-screen relative'>
+      {/* NEW: The Grain Overlay (Always visible, sits on top but ignores clicks) */}
+      <div className="bg-grain" />
+
       <Router>
         <Navbar />
         <HiringModePanel />
+        
         {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
+        
         {appReady && (
           <>
-            <div className="opacity-0 animate-fade-in">
+            <div className="opacity-0 animate-fade-in relative z-10">
               <CustomScrollbar />
               <Routes>
                 <Route path="/" element={<Home />} />
