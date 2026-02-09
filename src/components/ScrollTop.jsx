@@ -46,7 +46,7 @@ export default function ScrollTop() {
       }}
       aria-hidden={!visible}
     >
-      <div className="w-14 h-14 md:w-14 md:h-14 rounded-full flex items-center justify-center bg-[#B71C1C] shadow-lg touch-none border-2 border-[#B71C1C]">
+      <div className="w-14 h-14 md:w-14 md:h-14 rounded-full flex items-center justify-center bg-[#7C3AED] shadow-lg touch-none border-2 border-[#7C3AED]">
         {/* inner subtle circle */}
         <div className="w-10 h-10 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>

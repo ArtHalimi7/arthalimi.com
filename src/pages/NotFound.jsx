@@ -7,7 +7,7 @@ export default function NotFound() {
   const [enableHover] = useState(true);
 
   return (
-    <main className="relative h-screen overflow-hidden bg-[#18191A] text-zinc-100">
+    <main className="relative h-screen overflow-hidden bg-black text-zinc-100">
       <div className="relative mx-auto max-w-7xl px-6 py-12 h-full flex items-center">
         <div className="pointer-events-none absolute inset-0">
           <span className="absolute left-0 top-0 h-full w-px bg-white/10" />
@@ -24,7 +24,7 @@ export default function NotFound() {
           <p className="mt-4 text-center text-zinc-400 max-w-xl">Page not found — the page you are looking for does not exist.</p>
 
           <div className="mt-8">
-            <Link to="/" className="inline-flex items-center rounded-xl bg-[#B71C1C] px-6 py-3 font-medium text-white shadow-sm hover:brightness-95">Back to homepage</Link>
+            <Link to="/" className="inline-flex items-center rounded-xl bg-[#7C3AED] px-6 py-3 font-medium text-white shadow-sm hover:brightness-95">Back to homepage</Link>
           </div>
         </div>
       </div>

@@ -97,7 +97,7 @@ function AnimatedLogo({ onComplete }) {
       >
         {logoText.slice(0, currentChar)}
         <motion.span
-          className="text-[#B71C1C]"
+          className="text-[#7C3AED]"
           animate={{ opacity: [1, 0, 1] }}
           transition={{ duration: 0.8, repeat: Infinity }}
         >
@@ -107,7 +107,7 @@ function AnimatedLogo({ onComplete }) {
       
       {/* Glow effect */}
       <motion.div
-        className="absolute inset-0 text-4xl md:text-6xl font-mono font-bold text-[#B71C1C] blur-lg opacity-50"
+        className="absolute inset-0 text-4xl md:text-6xl font-mono font-bold text-[#7C3AED] blur-lg opacity-50"
         initial={{ opacity: 0 }}
         animate={{ opacity: [0, 0.5, 0] }}
         transition={{ duration: 2, repeat: Infinity, delay: 1 }}
@@ -136,7 +136,7 @@ function LoadingIndicator() {
             cx="50"
             cy="50"
             r="45"
-            stroke="#B71C1C"
+            stroke="#7C3AED"
             strokeWidth="8"
             fill="none"
             strokeLinecap="round"
@@ -153,7 +153,7 @@ function LoadingIndicator() {
           animate={{ scale: 1, rotate: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          <Code className="w-6 h-6 text-[#B71C1C]" />
+          <Code className="w-6 h-6 text-[#7C3AED]" />
         </motion.div>
       </div>
       
@@ -173,7 +173,7 @@ function LoadingIndicator() {
           {[...Array(3)].map((_, i) => (
             <motion.div
               key={i}
-              className="w-2 h-2 bg-[#B71C1C] rounded-full"
+              className="w-2 h-2 bg-[#7C3AED] rounded-full"
               animate={{
                 scale: [1, 1.3, 1],
                 opacity: [0.5, 1, 0.5]
@@ -226,7 +226,7 @@ function FloatingElements() {
             {typeof Icon === 'string' || Icon instanceof String ? (
               <img src={Icon} alt="logo" className="w-5 h-5 opacity-80" />
             ) : (
-              <Icon className="w-4 h-4 text-[#B71C1C]/50" />
+              <Icon className="w-4 h-4 text-[#7C3AED]/50" />
             )}
           </motion.div>
         );
@@ -275,7 +275,7 @@ export default function SplashScreen({ onComplete }) {
   const splashContent = (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[99999] bg-[#18191A] flex items-center justify-center"
+        className="fixed inset-0 z-[99999] bg-black flex items-center justify-center"
         initial={{ opacity: 1 }}
         exit={{ 
           opacity: 0,
@@ -318,7 +318,7 @@ export default function SplashScreen({ onComplete }) {
               
               {/* Progress percentage */}
               <motion.div
-                className="mt-6 text-[#B71C1C] font-mono text-lg"
+                className="mt-6 text-[#7C3AED] font-mono text-lg"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
@@ -360,13 +360,13 @@ export default function SplashScreen({ onComplete }) {
         
         {/* Corner decorations */}
         <motion.div
-          className="absolute top-8 left-8 w-12 h-12 border-l-2 border-t-2 border-[#B71C1C]/30"
+          className="absolute top-8 left-8 w-12 h-12 border-l-2 border-t-2 border-[#7C3AED]/30"
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 4 }}
         />
         <motion.div
-          className="absolute bottom-8 right-8 w-12 h-12 border-r-2 border-b-2 border-[#B71C1C]/30"
+          className="absolute bottom-8 right-8 w-12 h-12 border-r-2 border-b-2 border-[#7C3AED]/30"
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 4.2 }}
@@ -375,7 +375,7 @@ export default function SplashScreen({ onComplete }) {
         {/* Skip button */}
         <motion.button
           onClick={onComplete}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-zinc-500 hover:text-[#B71C1C] transition-colors text-sm tracking-wider"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-zinc-500 hover:text-[#7C3AED] transition-colors text-sm tracking-wider"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 3 }}

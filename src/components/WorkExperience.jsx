@@ -76,7 +76,7 @@ function GridLines() {
 export function WorkExperiences() {
   const { t } = useTranslation();
   return (
-    <section id="work" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
+    <section id="work" className="relative min-h-screen bg-black text-zinc-100 py-20">
       <GridLines />
       
       <div className="relative mx-auto max-w-7xl px-6">
@@ -88,9 +88,9 @@ export function WorkExperiences() {
           transition={{ duration: 0.8 }}
         >
           <div className="flex items-center gap-3 mb-6">
-            <Briefcase className="w-6 h-6 text-[#B71C1C]" />
+            <Briefcase className="w-6 h-6 text-[#7C3AED]" />
             <div className="h-px flex-1 bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
               {t('work_professionalJourney')}
             </span>
           </div>
@@ -101,7 +101,7 @@ export function WorkExperiences() {
           </h1>
           
           <div className="flex items-center gap-3 max-w-3xl">
-            <span className="text-xl text-[#B71C1C]">*</span>
+            <span className="text-xl text-[#7C3AED]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
               {t('work_snapshot_label')}

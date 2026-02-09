@@ -155,7 +155,7 @@ const timePeriods = [
   { id: 'all', label: 'All Time', duration: '∞' }
 ];
 
-const COLORS = ['#B71C1C', '#D32F2F', '#F44336', '#EF5350', '#FFCDD2', '#FFEBEE', '#FAFAFA', '#E0E0E0'];
+const COLORS = ['#7C3AED', '#D32F2F', '#F44336', '#EF5350', '#FFCDD2', '#FFEBEE', '#FAFAFA', '#E0E0E0'];
 
 
 export default function AnalyticsDashboard() {
@@ -213,13 +213,13 @@ export default function AnalyticsDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#18191A] text-zinc-100">
+    <div className="min-h-screen bg-black text-zinc-100">
       <Lines />
       {/* Log out button top right */}
       <div className="absolute top-6 right-8 z-50">
         <button
           onClick={handleLogout}
-          className="bg-[#B71C1C] text-white px-4 py-2 rounded shadow hover:bg-[#D32F2F] font-bold transition"
+          className="bg-[#7C3AED] text-white px-4 py-2 rounded shadow hover:bg-[#D32F2F] font-bold transition"
         >
           Log Out
         </button>
@@ -239,7 +239,7 @@ export default function AnalyticsDashboard() {
           className="mb-8"
         >
           <div className="flex items-center gap-3 mb-2">
-            <BarChart3 className="w-8 h-8 text-[#B71C1C]" />
+            <BarChart3 className="w-8 h-8 text-[#7C3AED]" />
             <h1 className="text-[clamp(2rem,5vw,3rem)] font-extrabold uppercase tracking-[-0.02em] text-[#e7e6e3]">
               Analytics
             </h1>
@@ -247,7 +247,7 @@ export default function AnalyticsDashboard() {
           <div className="flex items-center gap-3">
             <span className="text-xl">*</span>
             <AnimatedLineHorizontal className="h-px flex-1 bg-white/10" delay={400} />
-            <span className="text-[10px] uppercase tracking-widest text-[#B71C1C]">Portfolio Statistics</span>
+            <span className="text-[10px] uppercase tracking-widest text-[#7C3AED]">Portfolio Statistics</span>
           </div>
         </motion.div>
 
@@ -269,13 +269,13 @@ export default function AnalyticsDashboard() {
                 <button
                   onClick={() => setSelectedPeriod(period.id)}
                   className={`
-                    inline-flex items-center px-4 py-2.5 font-medium border border-[#B71C1C] 
+                    inline-flex items-center px-4 py-2.5 font-medium border border-[#7C3AED] 
                     transition-all duration-300 ease-out hover:scale-105 focus:scale-105 focus:outline-none 
-                    focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] 
+                    focus:ring-2 focus:ring-[#7C3AED] focus:ring-offset-2 ring-offset-black 
                     relative overflow-hidden group
                     ${selectedPeriod === period.id 
-                      ? 'bg-[#B71C1C] text-white' 
-                      : 'bg-transparent text-[#B71C1C] hover:bg-black hover:text-white'
+                      ? 'bg-[#7C3AED] text-white' 
+                      : 'bg-transparent text-[#7C3AED] hover:bg-black hover:text-white'
                     }
                   `}
                   style={{ borderRadius: 0 }}
@@ -346,8 +346,8 @@ export default function AnalyticsDashboard() {
                 <AreaChart data={selectedPeriod === 'week' ? data.weeklyData : data.hourlyData}>
                   <defs>
                     <linearGradient id="visitGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#B71C1C" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#B71C1C" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#7C3AED" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#7C3AED" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
@@ -371,7 +371,7 @@ export default function AnalyticsDashboard() {
                   <Area 
                     type="monotone" 
                     dataKey="visits" 
-                    stroke="#B71C1C" 
+                    stroke="#7C3AED" 
                     strokeWidth={2}
                     fill="url(#visitGradient)" 
                   />
@@ -440,7 +440,7 @@ export default function AnalyticsDashboard() {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.4, delay: 0.7 + index * 0.05, ease: "easeOut" }}
-                    className="relative flex items-center justify-between p-3 bg-white/5 transition-all duration-300 border-l-2 border-[#B71C1C] group overflow-hidden"
+                    className="relative flex items-center justify-between p-3 bg-white/5 transition-all duration-300 border-l-2 border-[#7C3AED] group overflow-hidden"
                   >
                     <div className="relative z-10 flex items-center gap-3">
                       <div className="w-8 h-6 bg-zinc-700 flex items-center justify-center text-xs font-medium border border-zinc-600">
@@ -490,7 +490,7 @@ export default function AnalyticsDashboard() {
                     itemStyle={{ color: '#fff' }}
                     labelStyle={{ color: '#fff', fontWeight: 600 }}
                   />
-                  <Bar dataKey="visits" fill="#B71C1C" radius={[2, 2, 0, 0]} />
+                  <Bar dataKey="visits" fill="#7C3AED" radius={[2, 2, 0, 0]} />
                   <Bar dataKey="pageViews" fill="#D32F2F" radius={[2, 2, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -525,7 +525,7 @@ function AnalyticsLogin({ onLogin, error }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#18191A] text-zinc-100">
+    <div className="min-h-screen flex items-center justify-center bg-black text-zinc-100">
       <form onSubmit={handleSubmit} className="bg-white/5 p-8 rounded shadow-lg w-full max-w-xs flex flex-col gap-4 border border-white/10">
         <h2 className="text-xl font-bold mb-2 text-center">Analytics Login</h2>
         <input
@@ -544,7 +544,7 @@ function AnalyticsLogin({ onLogin, error }) {
           onChange={e => setPassword(e.target.value)}
         />
         <button
-          className="bg-[#B71C1C] text-white font-bold py-2 rounded transition"
+          className="bg-[#7C3AED] text-white font-bold py-2 rounded transition"
           type="submit"
           disabled={submitting}
         >
@@ -642,10 +642,10 @@ function StatsCard({ icon, title, value, change, delay }) {
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
     >
       <div className="relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] opacity-20 blur transition duration-300"></div>
-        <div className="relative p-6 bg-white/5 border border-white/10 transition-all duration-300 border-l-4 border-l-[#B71C1C] backdrop-blur-sm">
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#7C3AED] to-[#8B1515] opacity-20 blur transition duration-300"></div>
+        <div className="relative p-6 bg-white/5 border border-white/10 transition-all duration-300 border-l-4 border-l-[#7C3AED] backdrop-blur-sm">
           <div className="flex items-center justify-between">
-            <div className="text-[#B71C1C]">
+            <div className="text-[#7C3AED]">
               {icon}
             </div>
             <span className="px-2 py-1 bg-green-500/20 text-green-400 border-none text-xs uppercase tracking-wider">
@@ -667,7 +667,7 @@ function ChartCard({ title, subtitle, children, isLoading }) {
   return (
     <div className="relative group">
       {/* Animated border effect */}
-  <div className="absolute -inset-1 bg-gradient-to-r from-[#B71C1C] via-transparent to-[#B71C1C] opacity-0 transition duration-500"></div>
+  <div className="absolute -inset-1 bg-gradient-to-r from-[#7C3AED] via-transparent to-[#7C3AED] opacity-0 transition duration-500"></div>
       
   <div className="relative p-6 bg-white/5 border border-white/10 transition-all duration-300 backdrop-blur-sm">
         {/* Grid lines overlay */}
@@ -692,7 +692,7 @@ function ChartCard({ title, subtitle, children, isLoading }) {
             <div className="flex items-center justify-center h-[300px]">
               <div className="relative">
                 <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/20"></div>
-                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#B71C1C] absolute top-0 left-0"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#7C3AED] absolute top-0 left-0"></div>
               </div>
             </div>
           ) : (

@@ -10,7 +10,7 @@ const services = [
     titleKey: 'services.frontend.title',
     descriptionKey: 'services.frontend.description',
     capabilities: ['React', 'Next.js', 'Tailwind'],
-    accent: 'bg-[#b71c1c]/80',
+    accent: 'bg-[#7C3AED]/80',
     position: 'left',
   },
   {
@@ -18,7 +18,7 @@ const services = [
     titleKey: 'services.backend.title',
     descriptionKey: 'services.backend.description',
     capabilities: ['Node.js', 'Express', 'MongoDB'],
-    accent: 'bg-[#b71c1c]/40',
+    accent: 'bg-[#7C3AED]/40',
     position: 'center',
   },
   {
@@ -26,7 +26,7 @@ const services = [
     titleKey: 'services.tools.title',
     descriptionKey: 'services.tools.description',
     capabilities: ['Git', 'Vite', 'VS Code'],
-    accent: 'bg-[#b71c1c]/80',
+    accent: 'bg-[#7C3AED]/80',
     position: 'right',
   },
 ];
@@ -41,9 +41,9 @@ function ConnectingLines() {
       <svg className="w-full h-full">
         <defs>
           <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#B71C1C" stopOpacity="0" />
-            <stop offset="50%" stopColor="#B71C1C" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#B71C1C" stopOpacity="0" />
+            <stop offset="0%" stopColor="#7C3AED" stopOpacity="0" />
+            <stop offset="50%" stopColor="#7C3AED" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#7C3AED" stopOpacity="0" />
           </linearGradient>
         </defs>
         <motion.path
@@ -58,7 +58,7 @@ function ConnectingLines() {
         {/* Animated dots along the path */}
         <motion.circle
           r="4"
-          fill="#B71C1C"
+          fill="#7C3AED"
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 0] }}
           transition={{ duration: 3, repeat: Infinity, delay: 2 }}
@@ -79,7 +79,7 @@ function FloatingElements() {
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 bg-[#B71C1C]/20 rounded-full"
+          className="absolute w-2 h-2 bg-[#7C3AED]/20 rounded-full"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -181,12 +181,12 @@ function ServiceCard({ service, index }) {
       >
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#B71C1C]/5 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#7C3AED]/5 to-transparent" />
         </div>
 
         {/* Glowing accent */}
         <motion.div 
-          className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#B71C1C] to-transparent"
+          className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#7C3AED] to-transparent"
           animate={{
             opacity: isHovered ? 1 : 0.6,
             scaleX: isHovered ? 1 : 0.8,
@@ -201,8 +201,8 @@ function ServiceCard({ service, index }) {
             animate={isHovered ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="w-16 h-16 flex items-center justify-center border border-white/20 rounded-2xl bg-gradient-to-br from-[#18191A] to-[#2a2b2c] shadow-lg">
-              <Icon className="w-8 h-8 text-[#B71C1C]" />
+            <div className="w-16 h-16 flex items-center justify-center border border-white/20 rounded-2xl bg-gradient-to-br from-black to-[#2a2b2c] shadow-lg">
+              <Icon className="w-8 h-8 text-[#7C3AED]" />
             </div>
             {isHovered && (
               <motion.div
@@ -211,7 +211,7 @@ function ServiceCard({ service, index }) {
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <Sparkles className="w-4 h-4 text-[#B71C1C]" />
+                <Sparkles className="w-4 h-4 text-[#7C3AED]" />
               </motion.div>
             )}
           </motion.div>
@@ -237,11 +237,11 @@ function ServiceCard({ service, index }) {
         {/* Capabilities Section */}
         <div className="relative z-10 flex-1 flex flex-col">
           <motion.span 
-            className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium mb-4 flex items-center gap-2"
+            className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium mb-4 flex items-center gap-2"
             animate={isHovered ? { x: 5 } : { x: 0 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
-            <div className="w-1 h-1 bg-[#B71C1C] rounded-full" />
+            <div className="w-1 h-1 bg-[#7C3AED] rounded-full" />
             {t('services_keyCapabilities')}
           </motion.span>
           
@@ -253,9 +253,9 @@ function ServiceCard({ service, index }) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: 0.3 + (i * 0.1) }}
-                whileHover={{ x: 10, color: '#B71C1C' }}
+                whileHover={{ x: 10, color: '#7C3AED' }}
               >
-                <div className="w-1.5 h-1.5 bg-[#B71C1C] rounded-full flex-shrink-0" />
+                <div className="w-1.5 h-1.5 bg-[#7C3AED] rounded-full flex-shrink-0" />
                 <span>{cap}</span>
               </motion.div>
             ))}
@@ -264,15 +264,15 @@ function ServiceCard({ service, index }) {
 
         {/* Hover overlay */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-[#B71C1C]/10 to-transparent rounded-2xl"
+          className="absolute inset-0 bg-gradient-to-t from-[#7C3AED]/10 to-transparent rounded-2xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3 }}
         />
 
         {/* Service number */}
-        <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#B71C1C]/20 flex items-center justify-center">
-          <span className="text-[#B71C1C] text-sm font-bold">
+        <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#7C3AED]/20 flex items-center justify-center">
+          <span className="text-[#7C3AED] text-sm font-bold">
             {String(index + 1).padStart(2, '0')}
           </span>
         </div>
@@ -285,7 +285,7 @@ export function ServicesSection() {
   const { t } = useTranslation();
 
   return (
-    <section id="services" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20 overflow-hidden">
+    <section id="services" className="relative min-h-screen bg-black text-zinc-100 py-20 overflow-hidden">
       <GridLines />
       <FloatingElements />
       <ConnectingLines />
@@ -299,9 +299,9 @@ export function ServicesSection() {
           transition={{ duration: 0.8 }}
         >
           <div className="flex items-center gap-3 mb-6">
-            <Code className="w-6 h-6 text-[#B71C1C]" />
+            <Code className="w-6 h-6 text-[#7C3AED]" />
             <div className="h-px flex-1 bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
               {t('services_heading')}
             </span>
           </div>
@@ -310,7 +310,7 @@ export function ServicesSection() {
             <span className="block ml-16">{t('services_title_part2')}</span>
           </h1>
           <div className="flex items-center gap-3 max-w-3xl">
-            <span className="text-xl text-[#B71C1C]">*</span>
+            <span className="text-xl text-[#7C3AED]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
               {t('services_sub')}
@@ -345,7 +345,7 @@ export function ServicesSection() {
           
           <motion.a
             href="#contact"
-            className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] text-white px-10 py-5 font-medium hover:from-[#8B1515] hover:to-[#B71C1C] transition-all duration-300 rounded-lg shadow-2xl"
+            className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#7C3AED] to-[#8B1515] text-white px-10 py-5 font-medium hover:from-[#8B1515] hover:to-[#7C3AED] transition-all duration-300 rounded-lg shadow-2xl"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -359,7 +359,7 @@ export function ServicesSection() {
             </motion.div>
             
             {/* Glowing effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 -z-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#7C3AED] to-[#8B1515] rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 -z-10" />
           </motion.a>
         </motion.div>
       </div>

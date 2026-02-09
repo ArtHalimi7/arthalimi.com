@@ -39,7 +39,7 @@ export default function CookiesModal({ animateIn }) {
         </div>
         <button
           onClick={acceptCookies}
-          className="px-4 py-1 bg-[#B71C1C] hover:bg-[#8B1515] text-white transition font-bold shadow rounded-sm border border-[#B71C1C] hover:border-[#8B1515] focus:outline-none focus:ring-2 focus:ring-[#B71C1C] focus:ring-opacity-50"
+          className="px-4 py-1 bg-[#7C3AED] hover:bg-[#8B1515] text-white transition font-bold shadow rounded-sm border border-[#7C3AED] hover:border-[#8B1515] focus:outline-none focus:ring-2 focus:ring-[#7C3AED] focus:ring-opacity-50"
           style={{ minWidth: 80 }}
         >
           Accept

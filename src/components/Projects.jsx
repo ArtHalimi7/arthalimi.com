@@ -106,9 +106,9 @@ function ProjectCard({ project, index }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.1 * index }}
-      className="group bg-[#232425] border border-white/10 hover:border-[#B71C1C] transition-colors duration-200 rounded-none overflow-hidden flex flex-col"
+      className="group bg-[#232425] border border-white/10 hover:border-[#7C3AED] transition-colors duration-200 rounded-none overflow-hidden flex flex-col"
     >
-      <div className="w-full h-48 bg-[#18191A] border-b border-white/10 flex items-center justify-center">
+      <div className="w-full h-48 bg-black border-b border-white/10 flex items-center justify-center">
         <img
           src={project.image}
           alt={project.title}
@@ -117,7 +117,7 @@ function ProjectCard({ project, index }) {
       </div>
       <div className="flex-1 flex flex-col p-6">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
             {t(project.categoryKey)}
           </span>
           <div className="h-px flex-1 bg-white/10" />
@@ -129,7 +129,7 @@ function ProjectCard({ project, index }) {
           {project.tech.slice(0, 3).map((tech, i) => (
             <span
               key={i}
-              className="px-2 py-0.5 border border-zinc-700 text-[#B71C1C] bg-zinc-800 text-[11px] font-mono"
+              className="px-2 py-0.5 border border-zinc-700 text-[#7C3AED] bg-zinc-800 text-[11px] font-mono"
             >
               {tech}
             </span>
@@ -145,7 +145,7 @@ function ProjectCard({ project, index }) {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#B71C1C] text-white px-8 py-3 font-medium text-base rounded-none hover:bg-[#8B1515] transition-colors duration-200"
+              className="inline-flex items-center justify-center gap-2 bg-[#7C3AED] text-white px-8 py-3 font-medium text-base rounded-none hover:bg-[#8B1515] transition-colors duration-200"
             >
               <span>{t('projects_viewProject')}</span>
               <ArrowRight className="w-5 h-5" />
@@ -160,7 +160,7 @@ export function Projects() {
   const { t } = useTranslation();
 
   return (
-    <section id="projects" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
+    <section id="projects" className="relative min-h-screen bg-black text-zinc-100 py-20">
       <GridLines />
       <div className="relative mx-auto max-w-7xl px-6">
         {/* Header */}
@@ -171,9 +171,9 @@ export function Projects() {
           transition={{ duration: 0.8 }}
         >
           <div className="flex items-center gap-3 mb-6">
-            <Code className="w-6 h-6 text-[#B71C1C]" />
+            <Code className="w-6 h-6 text-[#7C3AED]" />
             <div className="h-px flex-1 bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
               {t('projects_heading')}
             </span>
           </div>
@@ -182,7 +182,7 @@ export function Projects() {
             <span className="block ml-16">{t('projects_title_part2')}</span>
           </h1>
           <div className="flex items-center gap-3 max-w-3xl">
-            <span className="text-xl text-[#B71C1C]">*</span>
+            <span className="text-xl text-[#7C3AED]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
               {t('projects_sub')}

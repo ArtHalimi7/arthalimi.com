@@ -54,7 +54,7 @@ export function ExperienceCard({
   <div className="flex flex-col sm:flex-row items-start sm:items-start justify-between mb-6 gap-4 sm:gap-0 w-full">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <div className="h-px flex-1 bg-white/10" />
@@ -69,11 +69,11 @@ export function ExperienceCard({
             
             <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-4 text-zinc-400 mb-4 w-full">
               <div className="flex items-center gap-2">
-                <Building className="w-4 h-4 text-[#B71C1C]" />
+                <Building className="w-4 h-4 text-[#7C3AED]" />
                 <span className="font-medium">{company}</span>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#B71C1C]" />
+                <MapPin className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-sm">{employmentType} • {location}</span>
               </div>
             </div>
@@ -81,15 +81,15 @@ export function ExperienceCard({
             {/* Quick metrics */}
             <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-6 text-sm w-full">
               <div className="flex items-center gap-2">
-                <Code className="w-4 h-4 text-[#B71C1C]" />
+                <Code className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-zinc-300">{skills.length} Technologies</span>
               </div>
               <div className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-[#B71C1C]" />
+                <Award className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-zinc-300">{achievements.length} Achievements</span>
               </div>
               <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-[#B71C1C]" />
+                <Users className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-zinc-300">{projects} Projects</span>
               </div>
             </div>
@@ -98,7 +98,7 @@ export function ExperienceCard({
           <motion.div
             animate={{ rotate: isExpanded ? 180 : 0 }}
             transition={{ duration: 0.3 }}
-            className="text-zinc-500 group-hover:text-[#B71C1C] transition-colors"
+            className="text-zinc-500 group-hover:text-[#7C3AED] transition-colors"
           >
             <ChevronDown className="w-5 h-5" />
           </motion.div>
@@ -123,7 +123,7 @@ export function ExperienceCard({
                 {/* Skills */}
                 <div>
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
                       Technologies
                     </span>
                     <div className="h-px flex-1 bg-white/10" />
@@ -131,13 +131,13 @@ export function ExperienceCard({
                   <div className="grid grid-cols-2 gap-2 w-full">
                     {skills.map((skill, skillIndex) => (
                       <motion.div
-                        key={skill}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: skillIndex * 0.05 }}
-                        className="flex items-center gap-2 p-2 bg-[#18191A] border border-white/10 w-full min-w-0"
-                      >
-                        <div className="w-1 h-1 bg-[#B71C1C]" />
+                          key={skill}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: skillIndex * 0.05 }}
+                          className="flex items-center gap-2 p-2 bg-black border border-white/10 w-full min-w-0"
+                        >
+                        <div className="w-1 h-1 bg-[#7C3AED]" />
                         <span className="text-zinc-300 text-sm font-medium">{skill}</span>
                       </motion.div>
                     ))}
@@ -147,7 +147,7 @@ export function ExperienceCard({
                 {/* Achievements */}
                 <div>
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
                       Key Results
                     </span>
                     <div className="h-px flex-1 bg-white/10" />
@@ -159,9 +159,9 @@ export function ExperienceCard({
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: achievementIndex * 0.1 }}
-                        className="flex items-start gap-3 p-3 bg-[#18191A] border border-white/10 w-full min-w-0"
+                        className="flex items-start gap-3 p-3 bg-black border border-white/10 w-full min-w-0"
                       >
-                        <ArrowRight className="w-4 h-4 text-[#B71C1C] mt-0.5 flex-shrink-0" />
+                        <ArrowRight className="w-4 h-4 text-[#7C3AED] mt-0.5 flex-shrink-0" />
                         <p className="text-zinc-300 text-sm leading-relaxed">
                           {achievement}
                         </p>
@@ -175,7 +175,7 @@ export function ExperienceCard({
         </AnimatePresence>
 
         {/* Expand indicator */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-[#B71C1C] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-[#7C3AED] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
       </div>
     </motion.div>
   );

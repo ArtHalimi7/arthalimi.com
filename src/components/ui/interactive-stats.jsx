@@ -91,9 +91,9 @@ function InteractiveStats({ totalYears, totalProjects, satisfaction, currentStre
             
             <div className="relative bg-[#232425] p-6 flex flex-col items-center justify-center text-center hover:bg-[#2a2b2c] transition-colors duration-200 min-h-[140px] w-full max-w-full overflow-hidden">
               {/* Icon */}
-              <div className="flex justify-center items-center mb-4">
-                <div className="w-10 h-10 bg-[#18191A] border border-white/10 flex items-center justify-center rounded-lg">
-                  <Icon className="w-5 h-5 text-[#B71C1C]" />
+                <div className="flex justify-center items-center mb-4">
+                <div className="w-10 h-10 bg-black border border-white/10 flex items-center justify-center rounded-lg">
+                  <Icon className="w-5 h-5 text-[#7C3AED]" />
                 </div>
               </div>
 
@@ -102,7 +102,7 @@ function InteractiveStats({ totalYears, totalProjects, satisfaction, currentStre
                 <span className="text-2xl font-semibold text-white tracking-tight break-words max-w-full w-full">
                   {stat.value}
                 </span>
-                <span className="text-[#B71C1C] font-medium text-lg break-words max-w-full w-full">{stat.suffix}</span>
+                <span className="text-[#7C3AED] font-medium text-lg break-words max-w-full w-full">{stat.suffix}</span>
               </div>
 
               {/* Label */}
@@ -115,7 +115,7 @@ function InteractiveStats({ totalYears, totalProjects, satisfaction, currentStre
               </div>
 
               {/* Hover indicator */}
-              <div className="absolute bottom-0 left-0 right-0 h-px bg-[#B71C1C] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
+              <div className="absolute bottom-0 left-0 right-0 h-px bg-[#7C3AED] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
             </div>
           </motion.div>
         );

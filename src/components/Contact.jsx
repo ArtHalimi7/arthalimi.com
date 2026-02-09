@@ -11,7 +11,7 @@ function InputField({ label, name, type = 'text', required = false, icon: Icon, 
       <label className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2 block">{label}</label>
       <div className="relative">
         {Icon && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B71C1C]">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#7C3AED]">
             <Icon className="w-4 h-4" />
           </span>
         )}
@@ -22,7 +22,7 @@ function InputField({ label, name, type = 'text', required = false, icon: Icon, 
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`w-full mt-2 bg-[#18191A] border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] placeholder:text-zinc-500 transition-all duration-200 ${Icon ? 'pl-10' : ''} ${value ? 'border-[#B71C1C]/30' : ''}`}
+          className={`w-full mt-2 bg-black border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#7C3AED] placeholder:text-zinc-500 transition-all duration-200 ${Icon ? 'pl-10' : ''} ${value ? 'border-[#7C3AED]/30' : ''}`}
         />
       </div>
     </div>
@@ -60,7 +60,7 @@ function LivePreview({ formData, isTyping }) {
     const percentage = completionPercentage();
     if (percentage === 100) return 'text-green-400';
     if (percentage >= 60) return 'text-yellow-400';
-    return 'text-[#B71C1C]';
+    return 'text-[#7C3AED]';
   };
 
   return (
@@ -68,14 +68,14 @@ function LivePreview({ formData, isTyping }) {
       <div className="p-6 bg-[#232425] border border-white/10 rounded-lg h-full">
         <div className="space-y-6 h-full flex flex-col">
           {/* Form Progress */}
-          <div className="p-4 bg-[#18191A] border border-white/10 rounded-lg">
+          <div className="p-4 bg-black border border-white/10 rounded-lg">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">{t('contact.formProgress')}</span>
               <span className={`text-sm font-medium ${getStatusColor()}`}>{completionPercentage()}%</span>
             </div>
             <div className="w-full bg-[#232425] rounded-full h-2">
               <div 
-                className="bg-gradient-to-r from-[#B71C1C] to-red-400 h-2 rounded-full transition-all duration-500 ease-out"
+                className="bg-gradient-to-r from-[#7C3AED] to-[#7C3AED] h-2 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${completionPercentage()}%` }}
               />
             </div>
@@ -92,19 +92,19 @@ function LivePreview({ formData, isTyping }) {
           </div>
 
           {/* Live Message Preview */}
-          <div className="p-4 bg-[#18191A] border border-white/10 rounded-lg flex-1">
+          <div className="p-4 bg-black border border-white/10 rounded-lg flex-1">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">Message Preview</span>
               {isTyping && (
                 <div className="flex items-center gap-1">
-                  <div className="w-1 h-1 bg-[#B71C1C] rounded-full animate-pulse" />
-                  <div className="w-1 h-1 bg-[#B71C1C] rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
-                  <div className="w-1 h-1 bg-[#B71C1C] rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+                  <div className="w-1 h-1 bg-[#7C3AED] rounded-full animate-pulse" />
+                  <div className="w-1 h-1 bg-[#7C3AED] rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                  <div className="w-1 h-1 bg-[#7C3AED] rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
                 </div>
               )}
             </div>
             
-            <div className={`min-h-[200px] p-3 bg-[#232425] rounded-lg border border-white/5 transition-all duration-300 ${isAnimating ? 'scale-[1.02] border-[#B71C1C]/20' : ''}`}>
+            <div className={`min-h-[200px] p-3 bg-[#232425] rounded-lg border border-white/5 transition-all duration-300 ${isAnimating ? 'scale-[1.02] border-[#7C3AED]/20' : ''}`}>
               {formData.name && (
                 <div className="mb-2">
                   <span className="text-xs text-zinc-500">{t('contact.from')}</span>
@@ -143,19 +143,19 @@ function LivePreview({ formData, isTyping }) {
           </div>
 
           {/* Contact Info */}
-          <div className="p-4 bg-[#18191A] border border-white/10 rounded-lg">
+          <div className="p-4 bg-black border border-white/10 rounded-lg">
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 block mb-3">{t('contact.infoHeading')}</span>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-[#B71C1C]" />
+                <Mail className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-sm text-zinc-300">arthalimi989@gmail.com</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-[#B71C1C]" />
+                <Phone className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-sm text-zinc-300"></span>
               </div>
               <div className="flex items-center gap-3">
-                <MapPin className="w-4 h-4 text-[#B71C1C]" />
+                <MapPin className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-sm text-zinc-300">Pristina, Kosovo</span>
               </div>
             </div>
@@ -310,15 +310,15 @@ export default function Contact() {
   const hasEmailJsConfig = Boolean(import.meta.env.VITE_EMAILJS_SERVICE && import.meta.env.VITE_EMAILJS_TEMPLATE && import.meta.env.VITE_EMAILJS_PUBLIC);
 
   return (
-    <section id="contact" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20">
+    <section id="contact" className="relative min-h-screen bg-black text-zinc-100 py-20">
       <GridLines />
 
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-6">
-            <Mail className="w-6 h-6 text-[#B71C1C]" />
+            <Mail className="w-6 h-6 text-[#7C3AED]" />
             <div className="h-px flex-1 bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">{t('contact.headingSmall')}</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">{t('contact.headingSmall')}</span>
           </div>
 
           <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold uppercase leading-[0.8] tracking-[-0.02em] text-white mb-8">
@@ -326,7 +326,7 @@ export default function Contact() {
             <span className="block ml-16">{t('contact.title2')}</span>
           </h1>
           <div className="flex items-center gap-3 max-w-3xl">
-            <span className="text-xl text-[#B71C1C]">*</span>
+            <span className="text-xl text-[#7C3AED]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
               {t('contact.tagline')}
@@ -352,7 +352,7 @@ export default function Contact() {
                   // show validation on blur
                   onBlur={() => handleBlur('name')}
                 />
-                {errors.name && <div className="text-xs text-red-400 mt-1">{errors.name}</div>}
+                {errors.name && <div className="text-xs text-purple-400 mt-1">{errors.name}</div>}
                 <InputField 
                   label={t('contact.inputEmail')} 
                   name="email" 
@@ -364,7 +364,7 @@ export default function Contact() {
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   onBlur={() => handleBlur('email')}
                 />
-                {errors.email && <div className="text-xs text-red-400 mt-1">{errors.email}</div>}
+                {errors.email && <div className="text-xs text-purple-400 mt-1">{errors.email}</div>}
                 <InputField 
                   label={t('contact.inputSubject')} 
                   name="subject" 
@@ -376,7 +376,7 @@ export default function Contact() {
                 <div>
                   <label className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2 block">Message</label>
                   <div className="relative">
-                    <span className="absolute left-3 top-5 text-[#B71C1C]">
+                    <span className="absolute left-3 top-5 text-[#7C3AED]">
                       <FileText className="w-4 h-4" />
                     </span>
                     <textarea
@@ -386,12 +386,12 @@ export default function Contact() {
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
                       onBlur={() => handleBlur('message')}
-                      className={`w-full mt-2 bg-[#18191A] border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] pl-10 placeholder:text-zinc-500 transition-all duration-200 ${formData.message ? 'border-[#B71C1C]/30' : ''}`}
+                      className={`w-full mt-2 bg-black border border-white/10 rounded-lg p-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-[#7C3AED] pl-10 placeholder:text-zinc-500 transition-all duration-200 ${formData.message ? 'border-[#7C3AED]/30' : ''}`}
                       placeholder={t('contact.placeholderMessage')}
                       required
                     />
                   </div>
-                  {errors.message && <div className="text-xs text-red-400 mt-1">{errors.message}</div>}
+                  {errors.message && <div className="text-xs text-purple-400 mt-1">{errors.message}</div>}
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -401,7 +401,7 @@ export default function Contact() {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35, ease: 'easeOut' }}
-                    className="inline-flex items-center px-5 py-3 font-medium text-white shadow-sm border border-[#B71C1C] bg-[#B71C1C] transition-all duration-300 ease-out hover:bg-[#8B1515] hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] relative overflow-hidden group"
+                    className="inline-flex items-center px-5 py-3 font-medium text-white shadow-sm border border-[#7C3AED] bg-[#7C3AED] transition-all duration-300 ease-out hover:bg-[#8B1515] hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#7C3AED] focus:ring-offset-2 ring-offset-black relative overflow-hidden group"
                     style={{ borderRadius: 0 }}
                     title={!hasEmailJsConfig ? 'EmailJS not configured (see .env.example)' : undefined}
                   >
@@ -415,11 +415,11 @@ export default function Contact() {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35, delay: 0.06, ease: 'easeOut' }}
-                    className="inline-flex items-center px-5 py-3 font-medium text-[#B71C1C] border border-[#B71C1C] bg-transparent transition-all duration-300 ease-out hover:bg-black hover:text-white hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B71C1C] focus:ring-offset-2 ring-offset-[#18191A] relative overflow-hidden group"
+                    className="inline-flex items-center px-5 py-3 font-medium text-[#7C3AED] border border-[#7C3AED] bg-transparent transition-all duration-300 ease-out hover:bg-black hover:text-white hover:scale-105 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-[#7C3AED] focus:ring-offset-2 ring-offset-black relative overflow-hidden group"
                     style={{ borderRadius: 0 }}
                   >
                     <span className="relative z-10">{t('contact.reset')}</span>
-                    <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#B71C1C] transition-all duration-300 group-hover:w-full" />
+                    <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#7C3AED] transition-all duration-300 group-hover:w-full" />
                   </motion.button>
                 </div>
                 {sent && (
@@ -429,7 +429,7 @@ export default function Contact() {
                   </div>
                 )}
                 {error && (
-                  <div className="text-red-500 mt-2">{t('contact.sendError')}</div>
+                  <div className="text-purple-500 mt-2">{t('contact.sendError')}</div>
                 )}
                 <EmailModal
                   open={showModal.open}

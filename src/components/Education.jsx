@@ -13,7 +13,7 @@ function FloatingElements() {
       {[...Array(6)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1.5 h-1.5 bg-[#B71C1C]/30 rounded-full"
+          className="absolute w-1.5 h-1.5 bg-[#7C3AED]/30 rounded-full"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -39,17 +39,17 @@ function TimelineLine() {
   return (
     <div className="absolute left-8 top-32 bottom-0 hidden lg:block">
       <motion.div
-        className="w-0.5 h-full bg-gradient-to-b from-[#B71C1C] via-[#B71C1C]/50 to-transparent"
+        className="w-0.5 h-full bg-gradient-to-b from-[#7C3AED] via-[#7C3AED]/50 to-transparent"
         initial={{ scaleY: 0, originY: 0 }}
         animate={{ scaleY: 1 }}
         transition={{ duration: 2, delay: 0.5 }}
       />
       
       {/* Timeline dots */}
-      {[0, 1, 2].map((index) => (
+          {[0, 1, 2].map((index) => (
         <motion.div
           key={index}
-          className="absolute w-4 h-4 bg-[#B71C1C] rounded-full -left-1.5 shadow-lg ring-4 ring-[#18191A]"
+          className="absolute w-4 h-4 bg-[#7C3AED] rounded-full -left-1.5 shadow-lg ring-4 ring-black"
           style={{ top: `${20 + index * 35}%` }}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -83,11 +83,11 @@ function EducationCard({ t }) {
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#B71C1C]/5 to-transparent opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#7C3AED]/5 to-transparent opacity-50" />
         
         {/* Accent line */}
         <motion.div 
-          className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#B71C1C] via-[#B71C1C]/70 to-transparent"
+          className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#7C3AED] via-[#7C3AED]/70 to-transparent"
           animate={{
             opacity: isHovered ? 1 : 0.8,
             scaleX: isHovered ? 1 : 0.9,
@@ -98,7 +98,7 @@ function EducationCard({ t }) {
         {/* Header with icon */}
         <div className="relative z-10 flex items-center gap-4 mb-6">
           <motion.div
-            className="p-4 bg-gradient-to-br from-[#B71C1C] to-[#8B1515] rounded-2xl shadow-lg"
+            className="p-4 bg-gradient-to-br from-[#7C3AED] to-[#8B1515] rounded-2xl shadow-lg"
             animate={isHovered ? { rotate: 5, scale: 1.1 } : { rotate: 0, scale: 1 }}
             transition={{ duration: 0.3 }}
           >
@@ -114,7 +114,7 @@ function EducationCard({ t }) {
               {t('education_degree_title')}
             </motion.h3>
             <motion.div 
-              className="text-[#B71C1C] font-medium"
+              className="text-[#7C3AED] font-medium"
               animate={isHovered ? { x: 5 } : { x: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
@@ -131,7 +131,7 @@ function EducationCard({ t }) {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <div className="p-2 bg-white/5 rounded-lg">
-              <MapPin className="w-4 h-4 text-[#B71C1C]" />
+              <MapPin className="w-4 h-4 text-[#7C3AED]" />
             </div>
             <span>{t('education_location')}</span>
           </motion.div>
@@ -142,7 +142,7 @@ function EducationCard({ t }) {
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             <div className="p-2 bg-white/5 rounded-lg">
-              <Calendar className="w-4 h-4 text-[#B71C1C]" />
+              <Calendar className="w-4 h-4 text-[#7C3AED]" />
             </div>
             <span>{t('education_years')}</span>
           </motion.div>
@@ -158,7 +158,7 @@ function EducationCard({ t }) {
 
         {/* Hover overlay */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-[#B71C1C]/10 to-transparent rounded-3xl"
+          className="absolute inset-0 bg-gradient-to-t from-[#7C3AED]/10 to-transparent rounded-3xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3 }}
@@ -200,16 +200,16 @@ function CourseworkCard({ t }) {
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Background pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#B71C1C]/3 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#7C3AED]/3 to-transparent" />
         
         {/* Header */}
         <div className="relative z-10 flex items-center gap-4 mb-6">
           <motion.div
-            className="p-3 bg-gradient-to-br from-[#B71C1C]/20 to-[#B71C1C]/10 rounded-xl border border-[#B71C1C]/20"
+            className="p-3 bg-gradient-to-br from-[#7C3AED]/20 to-[#7C3AED]/10 rounded-xl border border-[#7C3AED]/20"
             animate={isHovered ? { rotate: -5, scale: 1.1 } : { rotate: 0, scale: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <BookOpen className="w-6 h-6 text-[#B71C1C]" />
+            <BookOpen className="w-6 h-6 text-[#7C3AED]" />
           </motion.div>
           
           <motion.h4 
@@ -233,7 +233,7 @@ function CourseworkCard({ t }) {
               whileHover={{ x: 10 }}
             >
               <motion.div
-                className="w-2 h-2 bg-[#B71C1C] rounded-full flex-shrink-0"
+                className="w-2 h-2 bg-[#7C3AED] rounded-full flex-shrink-0"
                 animate={{
                   scale: isHovered ? [1, 1.3, 1] : 1,
                   opacity: isHovered ? [0.7, 1, 0.7] : 0.7,
@@ -291,16 +291,16 @@ function AchievementsCard({ t }) {
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-to-tl from-[#B71C1C]/5 to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-tl from-[#7C3AED]/5 to-transparent opacity-60" />
         
         {/* Header */}
         <div className="relative z-10 flex items-center gap-4 mb-8">
           <motion.div
-            className="p-3 bg-gradient-to-br from-[#B71C1C]/20 to-[#B71C1C]/10 rounded-xl border border-[#B71C1C]/20"
+            className="p-3 bg-gradient-to-br from-[#7C3AED]/20 to-[#7C3AED]/10 rounded-xl border border-[#7C3AED]/20"
             animate={isHovered ? { rotate: 10, scale: 1.1 } : { rotate: 0, scale: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <Award className="w-6 h-6 text-[#B71C1C]" />
+            <Award className="w-6 h-6 text-[#7C3AED]" />
           </motion.div>
           
           <motion.h4 
@@ -324,15 +324,15 @@ function AchievementsCard({ t }) {
             >
               <div className="flex items-start gap-4 p-4 rounded-2xl transition-all duration-300 hover:bg-white/5">
                 <motion.div
-                  className="p-2 bg-[#B71C1C]/10 rounded-lg border border-[#B71C1C]/20 flex-shrink-0"
+                  className="p-2 bg-[#7C3AED]/10 rounded-lg border border-[#7C3AED]/20 flex-shrink-0"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <achievement.icon className="w-5 h-5 text-[#B71C1C]" />
+                  <achievement.icon className="w-5 h-5 text-[#7C3AED]" />
                 </motion.div>
                 
                 <div className="flex-1">
-                  <h5 className="font-semibold text-white mb-2 group-hover:text-[#B71C1C] transition-colors">
+                  <h5 className="font-semibold text-white mb-2 group-hover:text-[#7C3AED] transition-colors">
                     {achievement.title}
                   </h5>
                   <p className="text-zinc-300 text-sm leading-relaxed">
@@ -352,7 +352,7 @@ export function Education() {
   const { t } = useTranslation();
   
   return (
-    <section id="education" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20 overflow-hidden">
+    <section id="education" className="relative min-h-screen bg-black text-zinc-100 py-20 overflow-hidden">
       <GridLines />
       <FloatingElements />
       <TimelineLine />
@@ -366,9 +366,9 @@ export function Education() {
           transition={{ duration: 0.8 }}
         >
           <div className="flex items-center gap-3 mb-6">
-            <BookOpen className="w-6 h-6 text-[#B71C1C]" />
+            <BookOpen className="w-6 h-6 text-[#7C3AED]" />
             <div className="h-px flex-1 bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
               {t('education_heading_label')}
             </span>
           </div>
@@ -379,7 +379,7 @@ export function Education() {
           </h1>
 
           <div className="flex items-center gap-3 max-w-3xl">
-            <span className="text-xl text-[#B71C1C]">*</span>
+            <span className="text-xl text-[#7C3AED]">*</span>
             <div className="h-px flex-1 bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
               {t('education_snapshot')}

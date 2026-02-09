@@ -54,11 +54,11 @@ function ContactItem({ icon: Icon, label, value, action, isClickable = false }) 
 
   return (
     <div 
-      className={`flex items-center gap-3 p-3 bg-[#232425] border border-white/10 rounded-lg ${isClickable ? 'cursor-pointer hover:bg-[#2a2b2c] hover:border-[#B71C1C]/30 transition-all duration-200' : ''}`}
+      className={`flex items-center gap-3 p-3 bg-[#232425] border border-white/10 rounded-lg ${isClickable ? 'cursor-pointer hover:bg-[#2a2b2c] hover:border-[#7C3AED]/30 transition-all duration-200' : ''}`}
       onClick={handleClick}
     >
-      <div className="p-2 bg-[#B71C1C]/10 border border-[#B71C1C]/20 rounded-lg">
-        <Icon className="w-4 h-4 text-[#B71C1C]" />
+      <div className="p-2 bg-[#7C3AED]/10 border border-[#7C3AED]/20 rounded-lg">
+        <Icon className="w-4 h-4 text-[#7C3AED]" />
       </div>
       
       <div className="flex-1 min-w-0">
@@ -100,7 +100,7 @@ function MetricCard({ metric, index }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.1 }}
     >
-      <div className="text-2xl font-bold text-[#B71C1C] mb-1">{metric.value}{metric.suffix || ''}</div>
+      <div className="text-2xl font-bold text-[#7C3AED] mb-1">{metric.value}{metric.suffix || ''}</div>
       <div className="text-zinc-400 text-xs uppercase tracking-wider">{labelText}</div>
     </motion.div>
   );
@@ -125,8 +125,8 @@ function ActionButton({ icon: Icon, children, variant = "secondary", href, downl
   const baseClasses = "flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 w-full";
 
   const variants = {
-    primary: "bg-[#B71C1C] hover:bg-[#8B1515] text-white",
-    secondary: "bg-[#232425] hover:bg-[#2a2b2c] border border-white/10 hover:border-[#B71C1C]/30 text-white"
+    primary: "bg-[#7C3AED] hover:bg-[#8B1515] text-white",
+    secondary: "bg-[#232425] hover:bg-[#2a2b2c] border border-white/10 hover:border-[#7C3AED]/30 text-white"
   };
 
   const Component = href ? 'a' : 'button';
@@ -159,7 +159,7 @@ function ActionButton({ icon: Icon, children, variant = "secondary", href, downl
 function SectionHeader({ icon: Icon, title }) {
   return (
     <div className="flex items-center gap-2 mb-4">
-      <Icon className="w-5 h-5 text-[#B71C1C]" />
+      <Icon className="w-5 h-5 text-[#7C3AED]" />
       <h3 className="text-lg font-semibold text-white">{title}</h3>
     </div>
   );
@@ -228,7 +228,7 @@ export default function HiringModePanel() {
 
         {/* Sidebar (opens from left) */}
         <motion.div
-          className="relative mr-auto w-full max-w-lg h-full bg-[#18191A] border-r border-white/10 shadow-2xl overflow-hidden left-0 hiring-print"
+          className="relative mr-auto w-full max-w-lg h-full bg-black border-r border-white/10 shadow-2xl overflow-hidden left-0 hiring-print"
           initial={{ x: '-100%' }}
           animate={{ x: 0 }}
           exit={{ x: '-100%' }}
@@ -263,7 +263,7 @@ export default function HiringModePanel() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-white">{contact.name}</h3>
-                    <p className="text-[#B71C1C] font-medium">{t('hiring.profileRole')}</p>
+                    <p className="text-[#7C3AED] font-medium">{t('hiring.profileRole')}</p>
                   </div>
                 </div>
                     <p className="text-zinc-300 leading-relaxed text-sm print-clamp">{t(summaryKey, { defaultValue: summaryKey })}</p>

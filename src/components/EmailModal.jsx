@@ -3,7 +3,7 @@ import React from 'react';
 export default function EmailModal({ open, type = 'info', title, message, onClose }) {
   if (!open) return null;
 
-  const bg = type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-zinc-800';
+  const bg = type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-purple-600' : 'bg-zinc-800';
 
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center">

@@ -29,7 +29,7 @@ import {
 function MinimalContactItem({ icon: Icon, label, value, href }) {
   const content = (
     <div className="flex items-center gap-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors duration-200">
-      <Icon className="w-4 h-4 text-[#B71C1C]" />
+      <Icon className="w-4 h-4 text-[#7C3AED]" />
       <span>{value}</span>
       {href && <ArrowRight className="w-3 h-3 ml-auto opacity-50" />}
     </div>
@@ -58,7 +58,7 @@ function MinimalLanguageItem({ language, proficiency, level }) {
           <div
             key={i}
             className={`w-2 h-2 rounded-full ${
-              i < level ? 'bg-[#B71C1C]' : 'bg-white/20'
+              i < level ? 'bg-[#7C3AED]' : 'bg-white/20'
             }`}
           />
         ))}
@@ -83,23 +83,23 @@ function StatCard({ icon: Icon, value, label, delay = 0 }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <motion.div
-        className="bg-gradient-to-br from-[#232425] to-[#1a1b1c] border border-white/10 rounded-xl p-6 text-center hover:border-[#B71C1C]/30 transition-all duration-300 h-[180px] sm:h-[210px] flex flex-col items-center justify-center whitespace-normal"
+        className="bg-gradient-to-br from-[#232425] to-[#1a1b1c] border border-white/10 rounded-xl p-6 text-center hover:border-[#7C3AED]/30 transition-all duration-300 h-[180px] sm:h-[210px] flex flex-col items-center justify-center whitespace-normal"
         whileHover={{ scale: 1.05, y: -5 }}
         whileTap={{ scale: 0.98 }}
       >
         {/* Background glow */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-[#B71C1C]/10 to-transparent rounded-xl"
+          className="absolute inset-0 bg-gradient-to-br from-[#7C3AED]/10 to-transparent rounded-xl"
           animate={{ opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3 }}
         />
 
         <motion.div
-          className="relative z-10 mb-4 mx-auto w-12 h-12 bg-[#B71C1C]/10 border border-[#B71C1C]/20 rounded-lg flex items-center justify-center"
+          className="relative z-10 mb-4 mx-auto w-12 h-12 bg-[#7C3AED]/10 border border-[#7C3AED]/20 rounded-lg flex items-center justify-center"
           animate={isHovered ? { rotate: 10, scale: 1.1 } : { rotate: 0, scale: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Icon className="w-6 h-6 text-[#B71C1C]" />
+          <Icon className="w-6 h-6 text-[#7C3AED]" />
         </motion.div>
 
         <motion.div
@@ -114,7 +114,7 @@ function StatCard({ icon: Icon, value, label, delay = 0 }) {
 
         {/* Accent line */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-px bg-[#B71C1C]"
+          className="absolute bottom-0 left-0 right-0 h-px bg-[#7C3AED]"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3 }}
@@ -134,8 +134,8 @@ function ValueCard({ icon: Icon, title, description, delay = 0 }) {
     <div className="relative">
       <div className="bg-[#232425] border border-white/10 rounded-lg p-6 transition-colors duration-200">
         <div className="relative z-10 flex items-start gap-4">
-          <div className="w-10 h-10 bg-[#B71C1C]/10 border border-[#B71C1C]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-            <Icon className="w-5 h-5 text-[#B71C1C]" />
+          <div className="w-10 h-10 bg-[#7C3AED]/10 border border-[#7C3AED]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <Icon className="w-5 h-5 text-[#7C3AED]" />
           </div>
 
           <div className="flex-1">
@@ -196,7 +196,7 @@ export function AboutMe() {
   ];
 
   return (
-    <section id="about" className="relative min-h-screen bg-[#18191A] text-zinc-100 py-20 overflow-hidden">
+    <section id="about" className="relative min-h-screen bg-black text-zinc-100 py-20 overflow-hidden">
       <FloatingParticles />
       
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10">
@@ -209,7 +209,7 @@ export function AboutMe() {
         >
           <div className="flex items-center gap-3 mb-6">
             <div>
-              <User className="w-6 h-6 text-[#B71C1C]" />
+              <User className="w-6 h-6 text-[#7C3AED]" />
             </div>
             <motion.div 
               className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"
@@ -217,7 +217,7 @@ export function AboutMe() {
               animate={{ scaleX: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
             />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
               {t('about_personalProfile')}
             </span>
           </div>
@@ -228,7 +228,7 @@ export function AboutMe() {
           </h1>
           
           <div className="flex items-center gap-3 max-w-3xl">
-            <span className="text-xl text-[#B71C1C]">*</span>
+            <span className="text-xl text-[#7C3AED]">*</span>
             <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
               {t('about_subtitle')}
@@ -260,7 +260,7 @@ export function AboutMe() {
           className="relative group mb-20"
         >
           <motion.div 
-            className="bg-gradient-to-br from-[#232425] to-[#1a1b1c] border border-white/10 rounded-xl p-6 lg:p-8 cursor-pointer hover:border-[#B71C1C]/30 transition-all duration-300"
+            className="bg-gradient-to-br from-[#232425] to-[#1a1b1c] border border-white/10 rounded-xl p-6 lg:p-8 cursor-pointer hover:border-[#7C3AED]/30 transition-all duration-300"
             onClick={() => setIsStoryExpanded(!isStoryExpanded)}
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
@@ -271,9 +271,9 @@ export function AboutMe() {
                   animate={{ rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <Heart className="w-5 h-5 text-[#B71C1C]" />
+                  <Heart className="w-5 h-5 text-[#7C3AED]" />
                 </motion.div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#B71C1C] font-medium">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#7C3AED] font-medium">
                   {t('about_myStory')}
                 </span>
                 <motion.div 
@@ -287,7 +287,7 @@ export function AboutMe() {
               <motion.div
                 animate={{ rotate: isStoryExpanded ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
-                className="text-zinc-500 group-hover:text-[#B71C1C] transition-colors"
+                className="text-zinc-500 group-hover:text-[#7C3AED] transition-colors"
                 whileHover={{ scale: 1.1 }}
               >
                 <ChevronDown className="w-5 h-5" />
@@ -340,7 +340,7 @@ export function AboutMe() {
           className="mb-20"
         >
           <div className="flex items-center gap-3 mb-8">
-            <Lightbulb className="w-6 h-6 text-[#B71C1C]" />
+            <Lightbulb className="w-6 h-6 text-[#7C3AED]" />
             <h3 className="text-2xl font-bold text-white">Core Values</h3>
             <motion.div 
               className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"
@@ -360,8 +360,8 @@ export function AboutMe() {
         {/* Centered Languages Section (inline pills) */}
         <div className="mb-20">
           <div className="text-center mb-6">
-            <Languages className="inline-block w-6 h-6 text-[#B71C1C] mb-2" />
-            <h4 className="text-sm uppercase tracking-[0.2em] text-[#B71C1C] font-medium mt-2">
+            <Languages className="inline-block w-6 h-6 text-[#7C3AED] mb-2" />
+            <h4 className="text-sm uppercase tracking-[0.2em] text-[#7C3AED] font-medium mt-2">
               {t('about_languagesHeading')}
             </h4>
           </div>
@@ -378,7 +378,7 @@ export function AboutMe() {
                     {[...Array(5)].map((_, i) => (
                       <span
                         key={i}
-                        className={`w-2 h-2 rounded-full inline-block ${i < lang.level ? 'bg-[#B71C1C]' : 'bg-white/20'}`}
+                        className={`w-2 h-2 rounded-full inline-block ${i < lang.level ? 'bg-[#7C3AED]' : 'bg-white/20'}`}
                         aria-hidden
                       />
                     ))}
@@ -416,7 +416,7 @@ export function AboutMe() {
           
           <a
             href="#contact"
-            className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] text-white px-8 py-4 font-medium hover:from-[#8B1515] hover:to-[#B71C1C] transition-colors duration-200 rounded-lg shadow-2xl"
+            className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#7C3AED] to-[#8B1515] text-white px-8 py-4 font-medium hover:from-[#8B1515] hover:to-[#7C3AED] transition-colors duration-200 rounded-lg shadow-2xl"
           >
             <span className="relative z-10">{t('about_getInTouch')}</span>
             <div className="relative z-10">
@@ -424,7 +424,7 @@ export function AboutMe() {
             </div>
             
             {/* Glowing effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#B71C1C] to-[#8B1515] rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 -z-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#7C3AED] to-[#8B1515] rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 -z-10" />
           </a>
         </motion.div>
       </div>

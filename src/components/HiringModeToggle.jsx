@@ -8,7 +8,7 @@ export default function HiringModeToggle() {
   return (
     <button
       onClick={() => setHiringMode((s) => !s)}
-      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium transition-all focus:outline-none focus:ring-2 ${hiringMode ? 'bg-red-600 text-white' : 'bg-white/5 text-zinc-200'}`}
+      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium transition-all focus:outline-none focus:ring-2 ${hiringMode ? 'bg-purple-600 text-white' : 'bg-white/5 text-zinc-200'}`}
       title={t('Hiring Mode')}
       aria-pressed={hiringMode}
     >

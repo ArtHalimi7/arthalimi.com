@@ -121,11 +121,11 @@ function SocialIcon({ href, icon: Icon, label, delay = 0 }) {
         transition={{ duration: 0.25 }}
       />
 
-  <Icon className="w-5 h-5 text-[#B71C1C] group-hover:text-[#8B0000] transition-colors duration-300 relative z-10" />
+  <Icon className="w-5 h-5 text-[#7C3AED] group-hover:text-[#8B0000] transition-colors duration-300 relative z-10" />
       
       {/* Hover accent line */}
       <motion.div
-        className="absolute bottom-0 left-0 right-0 h-px bg-[#B71C1C]"
+        className="absolute bottom-0 left-0 right-0 h-px bg-[#7C3AED]"
         initial={{ scaleX: 0 }}
         whileHover={{ scaleX: 1 }}
         transition={{ duration: 0.3 }}
@@ -138,7 +138,7 @@ function NavLink({ href, children, delay = 0 }) {
   return (
     <motion.a
       href={href}
-      className="group relative text-white/80 hover:text-[#B71C1C] transition-colors duration-300 py-2 px-1"
+      className="group relative text-white/80 hover:text-[#7C3AED] transition-colors duration-300 py-2 px-1"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
@@ -180,15 +180,15 @@ export default function Footer() {
             <p className="text-zinc-300 leading-relaxed text-sm">{t('footer.description', 'Crafting digital experiences with passion and precision. Building the future, one line of code at a time.')}</p>
             <div className="flex gap-6 text-xs justify-center">
               <div>
-                <div className="text-[#B71C1C] font-bold text-lg">10+</div>
+                <div className="text-[#7C3AED] font-bold text-lg">10+</div>
                 <div className="text-zinc-400">Projects</div>
               </div>
               <div>
-                <div className="text-[#B71C1C] font-bold text-lg">3+</div>
+                <div className="text-[#7C3AED] font-bold text-lg">3+</div>
                 <div className="text-zinc-400">Years</div>
               </div>
               <div>
-                <div className="text-[#B71C1C] font-bold text-lg">99%</div>
+                <div className="text-[#7C3AED] font-bold text-lg">99%</div>
                 <div className="text-zinc-400">Success</div>
               </div>
             </div>
@@ -196,7 +196,7 @@ export default function Footer() {
 
           {/* Navigation Card */}
           <div className="bg-[#2e2f31] border border-white/10 rounded-lg p-6 flex flex-col gap-6 h-full">
-            <h3 className="text-[#B71C1C] font-bold text-base uppercase tracking-widest mb-2 text-center">{t('footer.navigation', 'Navigation')}</h3>
+            <h3 className="text-[#7C3AED] font-bold text-base uppercase tracking-widest mb-2 text-center">{t('footer.navigation', 'Navigation')}</h3>
             <nav className="grid grid-cols-2 gap-3 text-xs uppercase tracking-wider font-medium justify-center text-white" style={{ justifyItems: 'center'}} aria-label={t('footer.navAria')}>
               <NavLink href="#about" delay={0.5}>{t('footer.nav.about')}</NavLink>
               <NavLink href="#work" delay={0.6}>{t('footer.nav.work')}</NavLink>
@@ -208,12 +208,12 @@ export default function Footer() {
             <div className="flex justify-center mt-3">
               <span
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="text-sm text-[#B71C1C] cursor-pointer font-semibold hover:underline flex items-center gap-1 select-none transition-all duration-200"
+                className="text-sm text-[#7C3AED] cursor-pointer font-semibold hover:underline flex items-center gap-1 select-none transition-all duration-200"
                 style={{ letterSpacing: '0.12em' }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden className="inline-block">
-                  <path d="M12 6v12" stroke="#B71C1C" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M17 11.5l-5-5-5 5" stroke="#B71C1C" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M12 6v12" stroke="#7C3AED" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M17 11.5l-5-5-5 5" stroke="#7C3AED" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 {t('footer.scrollToTop', 'Scroll to top')}
               </span>
@@ -222,18 +222,18 @@ export default function Footer() {
 
           {/* Contact & Social Card */}
           <div className="bg-[#2e2f31] border border-white/10 rounded-lg p-6 flex flex-col gap-6 h-full">
-            <h3 className="text-[#B71C1C] font-bold text-base uppercase tracking-widest mb-2 text-center">{t('footer.connect', 'Connect')}</h3>
+            <h3 className="text-[#7C3AED] font-bold text-base uppercase tracking-widest mb-2 text-center">{t('footer.connect', 'Connect')}</h3>
             <div className="space-y-3">
               <div className="flex items-center gap-3 justify-center">
-                <Mail className="w-4 h-4 text-[#B71C1C]" />
+                <Mail className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-sm text-zinc-300">arthalimi989@gmail.com</span>
               </div>
               <div className="flex items-center gap-3 justify-center">
-                <Linkedin className="w-4 h-4 text-[#B71C1C]" />
+                <Linkedin className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-sm text-zinc-300">/in/arthalimi</span>
               </div>
               <div className="flex items-center gap-3 justify-center">
-                <Github className="w-4 h-4 text-[#B71C1C]" />
+                <Github className="w-4 h-4 text-[#7C3AED]" />
                 <span className="text-sm text-zinc-300">@ArtHalimi7</span>
               </div>
             </div>
@@ -270,7 +270,7 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 text-zinc-400 text-xs">
             <span>&copy; {new Date().getFullYear()}</span>
-            <span className="w-1 h-1 bg-[#B71C1C] rounded-full inline-block" />
+            <span className="w-1 h-1 bg-[#7C3AED] rounded-full inline-block" />
             <span className="font-medium">{t('footer.copyrightName')}</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-zinc-400">
@@ -281,8 +281,8 @@ export default function Footer() {
       </div>
 
       {/* Decorative corner elements */}
-      <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-[#B71C1C]/20 rounded-tl-lg" />
-      <div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-[#B71C1C]/20 rounded-br-lg" />
+      <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-[#7C3AED]/20 rounded-tl-lg" />
+      <div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-[#7C3AED]/20 rounded-br-lg" />
     </footer>
   );
 }
