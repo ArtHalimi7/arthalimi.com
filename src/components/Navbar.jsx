@@ -94,14 +94,13 @@ export default function Navbar({ formatted }) {
                       onClick={() => scrollToId(item.id)}
                       className="group relative flex items-center"
                     >
-                      <span className={`text-4xl font-extralight tracking-tight transition-all duration-700 ${
-                        active === item.id ? 'text-white translate-x-4' : 'text-white/20 group-hover:text-white/60'
-                      }`}>
+                      <span className={`text-4xl font-extralight tracking-tight transition-all duration-700 ${active === item.id ? 'text-white translate-x-4' : 'text-white/20 group-hover:text-white/60'
+                        }`}>
                         {item.label}
                       </span>
                       {active === item.id && (
-                        <motion.div 
-                          layoutId="sidebar-active" 
+                        <motion.div
+                          layoutId="sidebar-active"
                           className="absolute -left-6 w-1 h-10 bg-purple-500 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.6)]"
                         />
                       )}
@@ -117,11 +116,10 @@ export default function Navbar({ formatted }) {
                     <button
                       key={lng}
                       onClick={() => { i18n.changeLanguage(lng); setSidebarOpen(false); }}
-                      className={`py-4 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 ${
-                        i18n.language === lng 
-                        ? 'bg-purple-600 text-white shadow-lg' 
-                        : 'text-white/20 hover:text-white/40'
-                      }`}
+                      className={`py-4 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 ${i18n.language === lng
+                          ? 'bg-purple-600 text-white shadow-lg'
+                          : 'text-white/20 hover:text-white/40'
+                        }`}
                     >
                       {lng}
                     </button>
@@ -134,11 +132,11 @@ export default function Navbar({ formatted }) {
       </AnimatePresence>
 
       <motion.div className="fixed top-0 inset-x-0 z-50 flex justify-center p-0 md:p-6 pointer-events-none">
-        <header 
+        <header
           className={`
             h-20 md:h-16 flex items-center justify-between w-full pointer-events-auto transition-all duration-1000
-            ${isScrolled 
-              ? 'bg-[#050505]/80 backdrop-blur-3xl border-b border-white/10 md:border md:rounded-full md:max-w-6xl shadow-2xl' 
+            ${isScrolled
+              ? 'bg-[#050505]/80 backdrop-blur-3xl border-b border-white/10 md:border md:rounded-full md:max-w-6xl shadow-2xl'
               : 'bg-transparent border-transparent md:bg-black/10 md:backdrop-blur-md md:border-white/5 md:rounded-full md:max-w-6xl'
             }
             px-8 md:px-12
@@ -156,9 +154,8 @@ export default function Navbar({ formatted }) {
               <button
                 key={item.id}
                 onClick={() => scrollToId(item.id)}
-                className={`text-[10px] font-bold uppercase tracking-[0.3em] transition-all relative py-2 ${
-                  active === item.id ? 'text-white' : 'text-white/30 hover:text-white'
-                }`}
+                className={`text-[10px] font-bold uppercase tracking-[0.3em] transition-all relative py-2 ${active === item.id ? 'text-white' : 'text-white/30 hover:text-white'
+                  }`}
               >
                 {item.label}
                 {active === item.id && (
@@ -175,9 +172,8 @@ export default function Navbar({ formatted }) {
                 <button
                   key={lng}
                   onClick={() => i18n.changeLanguage(lng)}
-                  className={`text-[10px] font-black uppercase tracking-widest transition-all ${
-                    i18n.language === lng ? 'text-purple-400' : 'text-white/10 hover:text-white/50'
-                  }`}
+                  className={`text-[10px] font-black uppercase tracking-widest transition-all ${i18n.language === lng ? 'text-purple-400' : 'text-white/10 hover:text-white/50'
+                    }`}
                 >
                   {lng}
                 </button>

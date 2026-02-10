@@ -13,7 +13,7 @@ import arsaImg from "../assets/arsa.png";
 
 const projectsData = [
   { id: 1, titleKey: 'projects.tafa.title', image: tafaImg, year: '2025', descriptionKey: 'projects.tafa.description', tech: 'projects.tafa.tech', link: 'https://tafaleka.com', color: '#080808' },
-  { id: 2, titleKey: 'projects.lb.title',   image: lbImg, year: '2025', descriptionKey: 'projects.lb.description', tech: 'projects.lb.tech', link: 'https://lbhairdesign.ch', color: '#0B080C' },
+  { id: 2, titleKey: 'projects.lb.title', image: lbImg, year: '2025', descriptionKey: 'projects.lb.description', tech: 'projects.lb.tech', link: 'https://lbhairdesign.ch', color: '#0B080C' },
   { id: 3, titleKey: 'projects.andi.title', image: andiImg, year: '2025', descriptionKey: 'projects.andi.description', tech: 'Portfolio', link: 'https://andishkodra.com', color: '#08090C' },
   { id: 4, titleKey: 'projects.arsa.title', image: arsaImg, year: '2025', descriptionKey: 'projects.arsa.description', tech: 'Architecture', link: 'https://arsagipser.ch', color: '#080A08' },
 ];
@@ -23,13 +23,13 @@ function ProjectCard({ project, index }) {
 
   return (
     <div className="sticky top-0 h-screen w-full flex items-center justify-center px-4 md:px-10">
-      <motion.div 
+      <motion.div
         initial={{ transform: "scale(0.9) translateZ(0)", opacity: 0 }}
         whileInView={{ transform: "scale(1) translateZ(0)", opacity: 1 }}
         viewport={{ margin: "-5%" }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         style={{ backgroundColor: project.color, willChange: "transform, opacity" }}
-        className="relative w-full max-w-7xl h-[80vh] rounded-[32px] border border-white/5 flex flex-col md:flex-row items-center p-8 md:p-14 gap-8 md:gap-16 shadow-[0_40px_100px_rgba(0,0,0,0.7)] overflow-hidden"
+        className="relative w-full max-w-7xl h-[80vh] rounded-[32px] border border-white/[0.07] flex flex-col md:flex-row items-center p-8 md:p-14 gap-8 md:gap-16 shadow-[0_0_80px_rgba(168,85,247,0.04),0_40px_100px_rgba(0,0,0,0.7)] overflow-hidden"
       >
         <div className="w-full md:w-[35%] flex flex-col justify-between h-full z-10 overflow-hidden">
           <div className="overflow-hidden">
@@ -50,25 +50,25 @@ function ProjectCard({ project, index }) {
             </div>
 
             <div className="shrink-0">
-                <span className="inline-block px-4 py-1.5 rounded-full border border-white/10 text-[9px] text-zinc-500 uppercase tracking-widest font-medium">
-                  {t(project.tech)}
-                </span>
+              <span className="inline-block px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] text-[9px] text-zinc-400 uppercase tracking-widest font-medium">
+                {t(project.tech)}
+              </span>
             </div>
           </div>
 
           <a href={project.link} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-5 text-white w-fit pt-6 shrink-0">
-            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500 transform group-hover:scale-110">
+            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all duration-500 transform group-hover:scale-110">
               <ArrowUpRight size={22} />
             </div>
             <span className="text-[10px] font-bold tracking-[0.4em] uppercase">View Case</span>
           </a>
         </div>
 
-        <div className="w-full md:w-[65%] h-[40vh] md:h-full relative rounded-2xl overflow-hidden bg-zinc-900/40 border border-white/5 flex-grow">
+        <div className="w-full md:w-[65%] h-[40vh] md:h-full relative rounded-2xl overflow-hidden bg-zinc-900/40 border border-white/[0.07] flex-grow">
           {/* OPTIMIZATION: Added loading="lazy" and decoding="async" */}
-          <motion.img 
-            src={project.image} 
-            alt={t(project.titleKey)} 
+          <motion.img
+            src={project.image}
+            alt={t(project.titleKey)}
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-1000"
@@ -87,8 +87,9 @@ export function Projects() {
   const yParallax = useTransform(scrollYProgress, [0, 0.2], [0, -40]);
 
   return (
-    <section id="projects" className="bg-black relative">
-      <div className="h-[35vh] w-full flex flex-col justify-center items-center px-6 text-center overflow-hidden">
+    <section id="projects" className="bg-black relative pt-32">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_30%_at_50%_0%,rgba(168,85,247,0.03),transparent)] pointer-events-none" />
+      <div className="h-[35vh] w-full flex flex-col justify-center items-center px-6 text-center overflow-hidden relative z-10">
         <motion.div style={{ y: yParallax, willChange: "transform" }} className="flex flex-col items-center">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-10 h-[1px] bg-purple-500/50" />

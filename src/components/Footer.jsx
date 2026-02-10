@@ -12,7 +12,7 @@ function SocialIcon({ href, icon: Icon, label }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="p-2.5 bg-white/[0.02] border border-white/5 rounded-lg hover:border-purple-500/30 transition-all duration-300 text-zinc-500 hover:text-white"
+      className="p-2.5 bg-white/[0.03] border border-white/[0.07] rounded-lg hover:border-purple-500/30 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)] transition-all duration-300 text-zinc-500 hover:text-white"
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.95 }}
       aria-label={label}
@@ -30,11 +30,12 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#020202] pt-16 pb-8 overflow-hidden border-t border-white/5">
+    <footer className="relative bg-[#020202] pt-16 pb-8 overflow-hidden border-t border-white/[0.06]">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(168,85,247,0.025),transparent)] pointer-events-none" />
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        
+
         <div className="flex flex-col lg:flex-row lg:justify-between items-center lg:items-start gap-12 mb-16 text-center lg:text-left">
-          
+
           {/* Brand Section */}
           <div className="flex flex-col items-center lg:items-start max-w-xs">
             <div className="flex items-center gap-3 mb-6">
@@ -52,9 +53,9 @@ export default function Footer() {
           {/* Minimal Navigation */}
           <nav className="flex flex-wrap justify-center gap-x-8 gap-y-4">
             {['about', 'work', 'projects', 'contact'].map((item) => (
-              <a 
+              <a
                 key={item}
-                href={`#${item}`} 
+                href={`#${item}`}
                 className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors"
               >
                 {t(`footer.nav.${item}`, item)}
@@ -77,13 +78,13 @@ export default function Footer() {
         </div>
 
         {/* --- Lower Utility Bar --- */}
-        <div className="pt-8 border-t border-white/[0.03] flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="pt-8 border-t border-white/[0.04] flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col md:flex-row items-center gap-4 text-center">
             <span className="text-[9px] text-zinc-700 font-mono tracking-widest uppercase">
               &copy; {new Date().getFullYear()} AH_SYSTEMS
             </span>
             <div className="hidden md:block w-1 h-1 bg-zinc-800 rounded-full" />
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.01] border border-white/[0.03]">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.02] border border-white/[0.05]">
               <div className="w-1 h-1 bg-emerald-500/60 rounded-full animate-pulse" />
               <span className="text-[8px] uppercase tracking-[0.2em] text-zinc-500">
                 {t('footer.available', 'Ready for new projects')}

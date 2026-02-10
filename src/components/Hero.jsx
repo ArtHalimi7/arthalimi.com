@@ -9,12 +9,12 @@ import { ArrowRight, Terminal, Plus } from 'lucide-react';
 export default function HeroWithGridLines() {
   const { t } = useTranslation();
   const containerRef = useRef(null);
-  
+
   return (
     <section id="home" ref={containerRef} className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
       <div aria-hidden className="absolute inset-0 z-0 pointer-events-none opacity-40">
         <ColorBends
-          rotation={45} speed={0.2} colors={["#3300ff","#FF9FFC"]}
+          rotation={45} speed={0.2} colors={["#3300ff", "#FF9FFC"]}
           transparent autoRotate={0} scale={1} frequency={1}
           warpStrength={1} mouseInfluence={1} parallax={0.5} noise={0.1}
         />
@@ -22,25 +22,24 @@ export default function HeroWithGridLines() {
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center">
-          
+
           {/* Left Column: Text Content */}
           <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left gap-8 md:gap-10 order-1 lg:order-1">
             <header className="space-y-3">
-               <motion.p 
+              <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-[13px] md:text-sm font-bold text-purple-400 tracking-[0.4em] uppercase font-mono"
-               >
+              >
                 {t('hi')} <span className="text-white">Art Halimi</span>
               </motion.p>
-              
+
               <h1
-                className="font-extrabold uppercase leading-[0.85] tracking-[-0.04em] text-[clamp(2.8rem,12vw,5.5rem)] text-white"
-                style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+                className="font-extralight uppercase leading-[0.85] tracking-tighter text-[clamp(2.5rem,10vw,6.5rem)] text-white"
               >
                 <AnimatedStagger stagger={120} initialDelay={200}>
                   <span className="block">{t('title1')}</span>
-                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/20">
+                  <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-300 to-purple-500 pb-2 pr-4">
                     {t('title2')}
                   </span>
                   <span className="block opacity-90">{t('title3')}</span>
@@ -48,7 +47,7 @@ export default function HeroWithGridLines() {
               </h1>
             </header>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
@@ -90,7 +89,7 @@ export default function HeroWithGridLines() {
               className="relative w-full max-w-[480px] aspect-[4/3] group"
             >
               <div className="absolute -inset-[1px] rounded-[2rem] bg-purple-500/0 group-hover:bg-purple-500/20 transition-colors duration-500 blur-[2px]" />
-              
+
               <div className="relative h-full w-full rounded-[2rem] bg-black/40 backdrop-blur-2xl border border-white/10 overflow-hidden flex flex-col">
                 <div className="flex-none h-12 border-b border-white/5 flex items-center px-6 gap-3 bg-white/[0.02]">
                   <div className="flex gap-1.5">
@@ -103,7 +102,7 @@ export default function HeroWithGridLines() {
                   </div>
                   <Terminal size={12} className="text-zinc-600" />
                 </div>
-                
+
                 <div className="flex-1 p-6 md:p-10 flex items-start justify-start overflow-hidden">
                   <AnimatedCodeSnippet />
                 </div>
@@ -119,14 +118,14 @@ export default function HeroWithGridLines() {
 function AnimatedStagger({ children, stagger = 100, initialDelay = 0 }) {
   const items = Array.isArray(children) ? children : [children];
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden py-4 px-12 -mx-12">
       {items.map((child, i) => (
         <motion.span
           key={i}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.8, 
+          transition={{
+            duration: 0.8,
             delay: (initialDelay / 1000) + (i * stagger / 1000),
             ease: [0.22, 1, 0.36, 1]
           }}
@@ -143,22 +142,22 @@ function AnimatedStagger({ children, stagger = 100, initialDelay = 0 }) {
 const TOKEN_REGEX = /(\b(?:class|extends|constructor|this|return|new)\b)|('[^']*')|(\{|\}|\(|\)|\[|\]|;)/g;
 
 function highlightSyntax(text) {
-    const parts = [];
-    let lastIndex = 0;
-    let match;
-    
-    // Create a fresh regex instance for each execution to reset state
-    const regex = new RegExp(TOKEN_REGEX);
-    
-    while ((match = regex.exec(text)) !== null) {
-      if (match.index > lastIndex) parts.push({ text: text.slice(lastIndex, match.index), type: 'plain' });
-      if (match[1]) parts.push({ text: match[1], type: 'keyword' });
-      else if (match[2]) parts.push({ text: match[2], type: 'string' });
-      else if (match[3]) parts.push({ text: match[3], type: 'brace' });
-      lastIndex = match.index + match[0].length;
-    }
-    if (lastIndex < text.length) parts.push({ text: text.slice(lastIndex), type: 'plain' });
-    return parts;
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+
+  // Create a fresh regex instance for each execution to reset state
+  const regex = new RegExp(TOKEN_REGEX);
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) parts.push({ text: text.slice(lastIndex, match.index), type: 'plain' });
+    if (match[1]) parts.push({ text: match[1], type: 'keyword' });
+    else if (match[2]) parts.push({ text: match[2], type: 'string' });
+    else if (match[3]) parts.push({ text: match[3], type: 'brace' });
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) parts.push({ text: text.slice(lastIndex), type: 'plain' });
+  return parts;
 }
 // --- OPTIMIZATION END ---
 
@@ -182,8 +181,8 @@ function AnimatedCodeSnippet() {
 
   // Memoize the highlighted parts to avoid calculation on every render
   const highlightedParts = useMemo(() => {
-      // We process the full text once, effectively
-      return highlightSyntax(fullText.slice(0, pos));
+    // We process the full text once, effectively
+    return highlightSyntax(fullText.slice(0, pos));
   }, [fullText, pos]);
 
   useEffect(() => {
@@ -210,7 +209,7 @@ function AnimatedCodeSnippet() {
         if (p.type === 'brace') return <span key={i} className="text-blue-400">{p.text}</span>;
         return <span key={i} className="text-zinc-500">{p.text}</span>;
       })}
-      <motion.span 
+      <motion.span
         animate={{ opacity: [0, 1, 0] }}
         transition={{ repeat: Infinity, duration: 0.8 }}
         className="inline-block w-[6px] h-[14px] md:h-[18px] bg-purple-500/60 ml-1 align-middle"

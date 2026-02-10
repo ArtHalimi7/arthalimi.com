@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Award } from 'lucide-react';
 
 const ExperienceRow = ({ id, role, company, years, summary, skills, achievements, isActive, onClick, index, isEducation, details }) => {
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -13,18 +14,27 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.8 }}
       onClick={onClick}
-      className="relative group cursor-pointer py-10 border-b border-white/5 last:border-b-0"
+      className={`relative group cursor-pointer py-10 border-b-0 transition-all duration-500`}
     >
-      <span className="absolute -left-4 top-8 text-7xl font-bold text-white/[0.02] select-none pointer-events-none transition-colors duration-700 group-hover:text-purple-500/[0.03]">
+      {/* Bottom glow line that fades upward */}
+      <div className={`absolute bottom-0 left-0 right-0 h-px transition-all duration-500 ${isActive
+          ? 'bg-gradient-to-r from-transparent via-purple-500/30 to-transparent shadow-[0_0_15px_rgba(168,85,247,0.15)]'
+          : 'bg-white/[0.06]'
+        }`} />
+      {/* Upward-fading ambient glow on active */}
+      {isActive && (
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-purple-500/[0.04] to-transparent pointer-events-none" />
+      )}
+      <span className="absolute -left-4 top-1/2 -translate-y-1/4 text-7xl font-bold text-white/[0.04] select-none pointer-events-none transition-colors duration-700 group-hover:text-purple-500/[0.06]">
         0{index + 1}
       </span>
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-3 flex items-center gap-4">
-          <motion.div 
-            animate={{ 
+          <motion.div
+            animate={{
               width: isActive ? 40 : 0,
-              backgroundColor: isActive ? "#a855f7" : "#52525b" 
+              backgroundColor: isActive ? "#a855f7" : "#52525b"
             }}
             className="h-[1px] hidden md:block"
           />
@@ -41,10 +51,10 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
             <div className="flex items-center gap-3 mt-2">
               <span className="text-xs font-medium text-zinc-400 uppercase tracking-widest">{company}</span>
               {isEducation && (
-                <span className="text-[9px] font-mono text-purple-500/50 border border-purple-500/20 px-2 py-0.5 uppercase tracking-tighter">Academic_Track</span>
+                <span className="text-[9px] font-mono text-purple-500/50 border border-purple-500/20 px-2 py-0.5 uppercase tracking-tighter">{t('work.academic_track')}</span>
               )}
               {isActive && (
-                <motion.span 
+                <motion.span
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_10px_#a855f7]"
@@ -52,7 +62,7 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
               )}
             </div>
           </div>
-          
+
           <AnimatePresence>
             {isActive && (
               <motion.div
@@ -62,7 +72,7 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
               >
-                <div className="pt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="pt-8 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gradient-to-br from-white/[0.02] to-transparent rounded-xl p-6 -mx-2">
                   <div className="space-y-4">
                     <p className={`text-zinc-400 font-light leading-relaxed text-base ${isEducation ? 'italic border-l border-purple-500/20 pl-6' : ''}`}>
                       {isEducation ? `"${details}"` : summary}
@@ -75,11 +85,11 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4 border-l border-white/5 pl-6">
                     {isEducation && (
                       <h4 className="text-[10px] font-mono text-purple-400 uppercase tracking-widest flex items-center gap-2 mb-2">
-                        <Award size={12} /> Key_Distinctions
+                        <Award size={12} /> {t('work.key_distinctions')}
                       </h4>
                     )}
                     <ul className="space-y-4">
@@ -156,25 +166,28 @@ export default function WorkExperiences() {
   return (
     // TIGHTENED: pb-12 pulls the TechStack section up significantly
     <section id="work" className="relative pt-24 pb-12 bg-[#020202] overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_70%_20%,rgba(168,85,247,0.03),transparent)] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/[0.05] blur-[180px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-purple-900/[0.03] blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute left-6 top-1/2 -rotate-90 origin-left hidden xl:block">
-        <span className="text-[10px] font-mono tracking-[1em] text-zinc-800 uppercase">Archive_Sequence</span>
+        <span className="text-[10px] font-mono tracking-[1em] text-zinc-800 uppercase">{t('work.archive_sequence')}</span>
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="mb-20 flex flex-col items-center text-center lg:items-start lg:text-left">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic"
           >
-            History <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">Theory</span>
+            {t('work.section_title1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('work.section_title2')}</span>
           </motion.h2>
           <p className="mt-6 text-zinc-500 font-mono text-[11px] tracking-[0.3em] uppercase">
-            Curated Professional & Academic Path
+            {t('work.section_subtitle')}
           </p>
         </div>
 
-        <div className="border-t border-white/5">
+        <div className="border-t border-white/[0.06]">
           {timelineEntries.map((exp, index) => (
             <ExperienceRow
               key={exp.id}

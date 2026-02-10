@@ -25,6 +25,11 @@ html {
   scroll-behavior: smooth;
 }
 
+::selection {
+  background: #a855f7; /* Purple-500 */
+  color: white;
+}
+
 :root {
   --blue-rgb: 237 245 255;
   --green-rgb: 125 161 35;

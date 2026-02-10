@@ -2,56 +2,162 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
-import { Mail, MapPin, User, FileText, CheckCircle, ArrowRight, XCircle, Loader2, Zap } from 'lucide-react';
+import { Mail, MapPin, User, ArrowRight, Loader2, CheckCircle, XCircle, Github, Linkedin, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import EmailModal from './EmailModal';
 import { useTranslation } from 'react-i18next';
 
-// Minimal Input Component
-function InputField({ label, name, type = 'text', required = false, icon: Icon, placeholder, value, onChange }) {
-  return (
-    <div className="group border-b border-white/5 py-6 transition-colors duration-500 focus-within:border-purple-500/50">
-      <label className="text-[10px] uppercase tracking-[0.4em] text-zinc-600 mb-4 block font-mono transition-colors group-focus-within:text-purple-500 text-center lg:text-left">
-        {label}
-      </label>
-      <div className="relative flex items-center">
-        {Icon && <Icon className="absolute left-0 w-4 h-4 text-zinc-700 transition-colors group-focus-within:text-purple-500 hidden lg:block" />}
-        <input
-          name={name}
-          type={type}
-          required={required}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          className={`w-full bg-transparent p-0 text-sm text-zinc-100 text-center lg:text-left focus:outline-none placeholder:text-zinc-800 transition-all ${Icon ? 'lg:pl-8' : ''}`}
-        />
+// --- Components ---
+
+const ContactInfo = ({ t }) => (
+  <div className="space-y-12">
+    <div>
+      <h3 className="text-2xl font-light text-white mb-6 flex items-center gap-3">
+        {t('contact.infoHeading')}
+      </h3>
+      <p className="text-zinc-400 font-light leading-relaxed max-w-sm">
+        {t('contact.sub_lead') || "Ready to build something extraordinary? I'm currently available for freelance projects and open to full-time opportunities."}
+      </p>
+    </div>
+
+    <div className="space-y-6">
+      <div className="flex items-start gap-4 group">
+        <div className="p-3 rounded-full bg-white/[0.03] border border-white/[0.06] group-hover:border-purple-500/30 group-hover:bg-purple-500/[0.05] transition-colors duration-300">
+          <Mail size={18} className="text-zinc-400 group-hover:text-purple-400 transition-colors" />
+        </div>
+        <div>
+          <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">{t('contact.emailLabel')}</span>
+          <a href="mailto:arthalimi989@gmail.com" className="text-lg text-white font-light hover:text-purple-400 transition-colors">
+            arthalimi989@gmail.com
+          </a>
+        </div>
+      </div>
+
+      <div className="flex items-start gap-4 group">
+        <div className="p-3 rounded-full bg-white/[0.03] border border-white/[0.06] group-hover:border-purple-500/30 group-hover:bg-purple-500/[0.05] transition-colors duration-300">
+          <MapPin size={18} className="text-zinc-400 group-hover:text-purple-400 transition-colors" />
+        </div>
+        <div>
+          <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">{t('about_contact_location')}</span>
+          <span className="text-lg text-white font-light">Prishtina, Kosovo</span>
+        </div>
       </div>
     </div>
+
+    {/* Socials row */}
+    <div className="pt-8 border-t border-white/[0.06]">
+      <div className="flex gap-4">
+        {[
+          { icon: Github, href: "https://github.com/arthalimi", label: "GitHub" },
+          { icon: Linkedin, href: "https://www.linkedin.com/in/art-halimi", label: "LinkedIn" },
+        ].map((social, idx) => (
+          <a
+            key={idx}
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-3 px-5 py-3 rounded-full bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-purple-500/30 transition-all duration-300"
+          >
+            <social.icon size={18} className="text-zinc-400 group-hover:text-purple-400 transition-colors" />
+            <span className="text-xs font-mono uppercase tracking-widest text-zinc-500 group-hover:text-white transition-colors">{social.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+const ContactForm = ({ t, formData, handleInputChange, handleSubmit, status }) => {
+  return (
+    <div className="relative p-8 md:p-10 rounded-3xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-white/[0.005] shadow-[0_0_40px_rgba(168,85,247,0.03)] backdrop-blur-sm">
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="group space-y-2">
+            <label className="text-xs font-mono uppercase tracking-widest text-zinc-500 group-focus-within:text-purple-400 transition-colors">{t('contact.label_identity')}</label>
+            <input
+              type="text"
+              required
+              placeholder={t('contact.placeholder_name')}
+              value={formData.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              className="w-full bg-black/20 border border-white/[0.1] rounded-lg px-4 py-3 text-white placeholder-zinc-700 focus:outline-none focus:border-purple-500/50 focus:bg-purple-500/[0.02] transition-all duration-300"
+            />
+          </div>
+          <div className="group space-y-2">
+            <label className="text-xs font-mono uppercase tracking-widest text-zinc-500 group-focus-within:text-purple-400 transition-colors">{t('contact.emailLabel')}</label>
+            <input
+              type="email"
+              required
+              placeholder={t('contact.placeholder_email')}
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              className="w-full bg-black/20 border border-white/[0.1] rounded-lg px-4 py-3 text-white placeholder-zinc-700 focus:outline-none focus:border-purple-500/50 focus:bg-purple-500/[0.02] transition-all duration-300"
+            />
+          </div>
+        </div>
+
+        <div className="group space-y-2">
+          <label className="text-xs font-mono uppercase tracking-widest text-zinc-500 group-focus-within:text-purple-400 transition-colors">{t('contact.label_message')}</label>
+          <textarea
+            required
+            rows={4}
+            placeholder={t('contact.placeholder_message')}
+            value={formData.message}
+            onChange={(e) => handleInputChange('message', e.target.value)}
+            className="w-full bg-black/20 border border-white/[0.1] rounded-lg px-4 py-3 text-white placeholder-zinc-700 focus:outline-none focus:border-purple-500/50 focus:bg-purple-500/[0.02] transition-all duration-300 resize-none"
+          />
+        </div>
+
+        <motion.button
+          type="submit"
+          disabled={status === 'sending'}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          className={`w-full py-4 rounded-lg font-medium tracking-widest text-xs uppercase flex items-center justify-center gap-3 transition-all duration-300 ${status === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
+            status === 'error' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
+              'bg-white text-black hover:bg-purple-50 border border-white'
+            }`}
+        >
+          {status === 'idle' && (
+            <>
+              {t('contact.btn_idle')} <ArrowRight size={14} />
+            </>
+          )}
+          {status === 'sending' && (
+            <>
+              {t('contact.btn_sending')} <Loader2 size={14} className="animate-spin" />
+            </>
+          )}
+          {status === 'success' && (
+            <>
+              {t('contact.btn_success')} <CheckCircle size={14} />
+            </>
+          )}
+          {status === 'error' && (
+            <>
+              {t('contact.btn_error')} <XCircle size={14} />
+            </>
+          )}
+        </motion.button>
+      </form>
+    </div>
   );
-}
+};
 
 export default function Contact() {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState('idle'); 
-  const [isTyping, setIsTyping] = useState(false);
+  const [status, setStatus] = useState('idle');
   const [showModal, setShowModal] = useState({ open: false, type: 'info', title: '', message: '' });
-
-  useEffect(() => {
-    if (!isTyping) return;
-    const timeout = setTimeout(() => setIsTyping(false), 1000);
-    return () => clearTimeout(timeout);
-  }, [isTyping]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    setIsTyping(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
-    setShowModal({ open: true, type: 'info', title: 'UPLINK_INITIATED', message: 'Syncing message with secure gateway...' });
+    // setShowModal({ open: true, type: 'info', title: t('contact.modal_sending_title'), message: t('contact.modal_sending_msg') });
 
     try {
       await emailjs.sendForm(
@@ -61,126 +167,77 @@ export default function Contact() {
         import.meta.env.VITE_EMAILJS_PUBLIC
       );
       setStatus('success');
-      setShowModal({ open: true, type: 'success', title: 'DATA_ARCHIVED', message: 'Inquiry successfully transmitted.' });
+      setShowModal({ open: true, type: 'success', title: t('contact.modal_success_title'), message: t('contact.modal_success_msg') });
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setStatus('idle'), 5000);
     } catch (err) {
       setStatus('error');
-      setShowModal({ open: true, type: 'error', title: 'SIGNAL_LOSS', message: 'Transmission failed. Please retry.' });
+      setShowModal({ open: true, type: 'error', title: t('contact.modal_error_title'), message: t('contact.modal_error_msg') });
       setTimeout(() => setStatus('idle'), 5000);
     }
   };
 
   return (
-    <section id="contact" className="relative py-24 md:py-48 bg-[#020202] text-zinc-100 overflow-hidden">
-      <span className="absolute right-[-2%] bottom-1/4 text-[15vw] font-bold text-white/[0.01] pointer-events-none select-none tracking-tighter leading-none">
-        CONNECT
-      </span>
+    <section id="contact" className="relative py-32 bg-[#020202] text-zinc-100 overflow-hidden">
+      {/* Ambient background */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/[0.05] blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/[0.02] blur-[150px] rounded-full pointer-events-none" />
 
-      <div className="relative mx-auto max-w-7xl px-6">
-        {/* Header - Centered on mobile */}
-        <div className="mb-24 text-center lg:text-left">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex items-center justify-center lg:justify-start gap-3 mb-6">
-            <div className="w-8 h-px bg-purple-500/50" />
-            <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase italic">Inquiry_Module</span>
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
+        {/* Header */}
+        <div className="mb-24">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex items-center gap-4 mb-6">
+            <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase">{t('contact.section_tag')}</span>
+            <div className="h-px w-24 bg-gradient-to-r from-purple-500/50 to-transparent" />
           </motion.div>
-          <h2 className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic">
-            Start <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">Sync</span>
-          </h2>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-5xl md:text-7xl font-light tracking-tight text-white uppercase"
+          >
+            {t('contact.heading1')} <span className="text-zinc-600 font-extralight italic">&</span> <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600 font-normal">{t('contact.heading2')}</span>
+          </motion.h2>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-16 items-start">
-          <div className="lg:col-span-7">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <InputField label="01. Identity" name="name" required icon={User} placeholder="Who are you?" value={formData.name} onChange={(e) => handleInputChange('name', e.target.value)} />
-              <InputField label="02. Return Address" name="email" type="email" required icon={Mail} placeholder="email@example.com" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} />
-              
-              <div className="group border-b border-white/5 py-8 transition-colors focus-within:border-purple-500/50">
-                <label className="text-[10px] uppercase tracking-[0.4em] text-zinc-600 mb-4 block font-mono group-focus-within:text-purple-500 text-center lg:text-left">03. Message_Payload</label>
-                <div className="relative">
-                  <FileText className="absolute left-0 top-1 w-4 h-4 text-zinc-700 transition-colors group-focus-within:text-purple-500 hidden lg:block" />
-                  <textarea 
-                    name="message" 
-                    rows={5} 
-                    value={formData.message} 
-                    onChange={(e) => handleInputChange('message', e.target.value)} 
-                    className="w-full bg-transparent p-0 lg:pl-8 text-sm text-zinc-100 text-center lg:text-left focus:outline-none placeholder:text-zinc-800 resize-none transition-all" 
-                    placeholder="Describe the vision..." 
-                    required 
-                  />
-                </div>
-              </div>
+        {/* Content Grid */}
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+          {/* Left: Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ContactInfo t={t} />
+          </motion.div>
 
-              {/* Centered Button on Mobile */}
-              <div className="pt-12 flex justify-center lg:justify-start">
-                <motion.button
-                  type="submit"
-                  disabled={status === 'sending'}
-                  className={`group relative flex items-center gap-8 px-14 py-7 font-medium overflow-hidden rounded-full transition-all duration-500 ${
-                    status === 'success' ? 'bg-green-500 text-white' : 
-                    status === 'error' ? 'bg-red-500 text-white' : 'bg-white text-black'
-                  }`}
-                >
-                  <span className="relative z-10 uppercase tracking-[0.3em] text-[10px] font-bold">
-                    {status === 'idle' && 'Initialize Uplink'}
-                    {status === 'sending' && 'Transmitting...'}
-                    {status === 'success' && 'Confirmed'}
-                    {status === 'error' && 'Retry'}
-                  </span>
-                  <div className="relative z-10 transition-transform group-hover:translate-x-1">
-                    {status === 'idle' && <ArrowRight size={16} />}
-                    {status === 'sending' && <Loader2 size={16} className="animate-spin" />}
-                    {status === 'success' && <CheckCircle size={16} />}
-                    {status === 'error' && <XCircle size={16} />}
-                  </div>
-                  {status === 'idle' && (
-                    <div className="absolute inset-0 bg-purple-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                  )}
-                </motion.button>
-              </div>
-            </form>
-          </div>
-
-          {/* Interactive Preview - centered text internally for consistency */}
-          <div className="lg:col-span-5 lg:sticky lg:top-32">
-            <div className="relative border border-white/5 bg-white/[0.01] p-10 overflow-hidden">
-              <div className="flex items-center justify-between mb-12 border-b border-white/5 pb-6">
-                <div className="flex items-center gap-2">
-                  <div className={`w-1.5 h-1.5 rounded-full ${isTyping ? 'bg-purple-500 animate-pulse' : 'bg-zinc-800'}`} />
-                  <span className="text-[9px] font-mono uppercase tracking-[0.3em] text-zinc-600">Live_Draft.exe</span>
-                </div>
-                <Zap size={12} className={isTyping ? 'text-purple-500' : 'text-zinc-800'} />
-              </div>
-
-              <div className="space-y-10 min-h-[300px]">
-                <div className="space-y-4">
-                  <div className="flex items-baseline justify-center lg:justify-start gap-4">
-                    <span className="text-[9px] font-mono text-zinc-700 uppercase">From:</span>
-                    <span className="text-xs text-zinc-400 font-light tracking-wide">{formData.name || '---'}</span>
-                  </div>
-                  <div className="flex items-baseline justify-center lg:justify-start gap-4">
-                    <span className="text-[9px] font-mono text-zinc-700 uppercase">Mail:</span>
-                    <span className="text-xs text-zinc-400 font-light tracking-wide">{formData.email || '---'}</span>
-                  </div>
-                </div>
-
-                <div className="border-t border-white/5 pt-8 text-center lg:text-left">
-                  <p className="text-sm text-zinc-500 font-light italic leading-relaxed whitespace-pre-wrap">
-                    {formData.message || "Awaiting message payload input..."}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-12 pt-6 border-t border-white/5 flex justify-between items-center">
-                <span className="text-[9px] font-mono text-zinc-800 uppercase">Chars: {formData.message.length}</span>
-                <span className="text-[9px] font-mono text-zinc-800 uppercase">Status: {status.toUpperCase()}</span>
-              </div>
-            </div>
-          </div>
+          {/* Right: Form */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ContactForm
+              t={t}
+              formData={formData}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+              status={status}
+            />
+          </motion.div>
         </div>
       </div>
 
-      <EmailModal open={showModal.open} type={showModal.type} title={showModal.title} message={showModal.message} onClose={() => setShowModal({ ...showModal, open: false })} />
+      <EmailModal
+        open={showModal.open}
+        type={showModal.type}
+        title={showModal.title}
+        message={showModal.message}
+        onClose={() => setShowModal({ ...showModal, open: false })}
+      />
     </section>
   );
 }

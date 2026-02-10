@@ -8,17 +8,18 @@ export default function AboutMe() {
   const { t } = useTranslation();
 
   const principles = [
-    { icon: Zap, title: "High-Performance", desc: "Optimizing for sub-second latency and fluid interaction cycles across all devices." },
-    { icon: ShieldCheck, title: "Architectural Integrity", desc: "Building secure, type-safe, and maintainable systems designed for structural longevity." },
-    { icon: Globe, title: "Universal Design", desc: "Engineering accessible, inclusive solutions that resonate with a global, diverse audience." },
+    { icon: Zap, title: t('about.principle1.title'), desc: t('about.principle1.desc') },
+    { icon: ShieldCheck, title: t('about.principle2.title'), desc: t('about.principle2.desc') },
+    { icon: Globe, title: t('about.principle3.title'), desc: t('about.principle3.desc') },
   ];
 
   return (
-    <section id="about" className="relative py-24 lg:py-56 bg-transparent text-white border-y border-white/[0.03]">
+    <section id="about" className="relative py-24 lg:py-56 bg-transparent text-white border-y border-white/[0.04]">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(168,85,247,0.04),transparent)] pointer-events-none" />
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-start">
-          
+
           {/* LEFT SIDE: THE NARRATIVE (Cols 1-6) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -29,14 +30,14 @@ export default function AboutMe() {
           >
             <div>
               <div className="flex items-center gap-4 mb-10">
-                <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase">System_Overview</span>
+                <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase">{t('about.system_overview')}</span>
                 <div className="h-[1px] w-16 bg-gradient-to-r from-purple-500/50 to-transparent" />
               </div>
 
               <h3 className="text-6xl md:text-8xl font-extralight tracking-tighter leading-[0.9] mb-10">
-                Architecting <br />
-                <span className="text-zinc-700 italic">Precision</span> <br />
-                Interfaces.
+                {t('about.architecting')} <br />
+                <span className="text-zinc-700 italic">{t('about.precision')}</span> <br />
+                {t('about.interfaces')}
               </h3>
 
               <div className="space-y-8 max-w-xl">
@@ -45,13 +46,14 @@ export default function AboutMe() {
                 </p>
                 <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
                 <p className="text-zinc-500 font-light leading-relaxed text-base italic border-l-2 border-purple-500/20 pl-8">
-                  I specialize in the intersection of high-fidelity design and rigorous software engineering.
+                  {t('about.specialization')}
                 </p>
               </div>
             </div>
 
             <motion.a
-              href="/resume.pdf"
+              href="/arthalimi.docx"
+              download="Art_Halimi_CV.docx"
               whileHover={{ scale: 1.05, x: 10 }}
               className="inline-flex items-center gap-6 w-fit group"
             >
@@ -59,8 +61,8 @@ export default function AboutMe() {
                 <Download size={20} strokeWidth={1.5} />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] font-bold tracking-[0.3em] uppercase">Download Dossier</span>
-                <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">PDF // 1.2MB</span>
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase">{t('about.download_dossier')}</span>
+                <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">{t('about.download_pdf')}</span>
               </div>
             </motion.a>
           </motion.div>
@@ -75,10 +77,10 @@ export default function AboutMe() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: i * 0.15 }}
                 viewport={{ once: true }}
-                className="group relative p-8 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500"
+                className="group relative p-8 rounded-xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.015] hover:from-white/[0.06] hover:to-white/[0.03] hover:border-purple-500/15 transition-all duration-500 hover:shadow-[0_0_30px_rgba(168,85,247,0.06),0_0_60px_rgba(168,85,247,0.03)]"
               >
                 <div className="flex items-start gap-8">
-                  <span className="text-[10px] font-mono text-zinc-800 mt-1">0{i+1}</span>
+                  <span className="text-[10px] font-mono text-zinc-800 mt-1">0{i + 1}</span>
                   <div className="flex-1">
                     <h4 className="text-xl font-light mb-3 tracking-tight group-hover:text-purple-400 transition-colors">
                       {item.title}
@@ -95,16 +97,16 @@ export default function AboutMe() {
         </div>
 
         {/* BOTTOM STATS BAR */}
-        <div className="mt-32 pt-16 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-12">
+        <div className="mt-32 pt-16 border-t border-white/[0.06] grid grid-cols-2 md:grid-cols-4 gap-12">
           {[
-            { label: "Deployment_Index", val: t('stats.projects_value_short') },
-            { label: "Structural_Uptime", val: "100%" },
-            { label: "Active_Experience", val: "4+YRS" },
-            { label: "Response_Protocol", val: "24/7" }
+            { label: t('about.deployment_index'), val: t('stats.projects_value_short') },
+            { label: t('about.structural_uptime'), val: t('about.stats.uptime_value') },
+            { label: t('about.active_experience'), val: t('about.stats.experience_value') },
+            { label: t('about.response_protocol'), val: t('about.stats.response_value') }
           ].map((stat, i) => (
             <div key={i} className="flex flex-col">
-              <span className="text-[8px] font-mono text-zinc-800 tracking-[0.4em] uppercase mb-3">{stat.label}</span>
-              <span className="text-4xl font-extralight text-zinc-200 tracking-tighter tabular-nums italic">
+              <span className="text-[8px] font-mono text-zinc-700 tracking-[0.4em] uppercase mb-3">{stat.label}</span>
+              <span className="text-4xl font-extralight text-zinc-200 tracking-tighter tabular-nums italic" style={{ textShadow: '0 0 20px rgba(168,85,247,0.12)' }}>
                 {stat.val}
               </span>
             </div>

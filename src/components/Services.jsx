@@ -15,13 +15,11 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.8 }}
-      className="relative border-t border-white/5 last:border-b last:border-white/5 group"
+      className="relative border-t border-white/[0.06] last:border-b last:border-white/[0.06] group"
     >
-      <span className="absolute right-0 top-1/2 -translate-y-1/2 text-7xl font-bold text-white/[0.01] pointer-events-none select-none group-hover:text-purple-500/[0.03] transition-colors duration-700">
-        0{index + 1}
-      </span>
 
-      <div 
+
+      <div
         onClick={() => setActiveIndex(isActive ? null : index)}
         className="relative z-10 py-12 cursor-pointer grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
       >
@@ -29,7 +27,7 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
           <span className={`font-mono text-xs ${isActive ? 'text-purple-500' : 'text-zinc-700'}`}>
             {String(index + 1).padStart(2, '0')}
           </span>
-          <div className={`p-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-purple-500/10 text-purple-400' : 'bg-white/5 text-zinc-500 group-hover:text-zinc-300'}`}>
+          <div className={`p-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-purple-500/10 text-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.15)]' : 'bg-white/5 text-zinc-500 group-hover:text-zinc-300'}`}>
             <Icon size={24} strokeWidth={1.2} />
           </div>
         </div>
@@ -69,9 +67,9 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
         </div>
 
         <div className="lg:col-span-1 flex justify-end">
-           <div className={`transition-colors duration-500 ${isActive ? 'text-purple-500' : 'text-zinc-800'}`}>
-             {isActive ? <Minus size={32} strokeWidth={1} /> : <Plus size={32} strokeWidth={1} />}
-           </div>
+          <div className={`transition-colors duration-500 ${isActive ? 'text-purple-500' : 'text-zinc-800'}`}>
+            {isActive ? <Minus size={32} strokeWidth={1} /> : <Plus size={32} strokeWidth={1} />}
+          </div>
         </div>
       </div>
     </motion.div>
@@ -87,27 +85,28 @@ export function ServicesSection() {
       icon: Code,
       titleKey: 'services.frontend.title',
       descriptionKey: 'services.frontend.description',
-      capabilities: ['Interface Architecture', 'Motion Design', 'Responsive Logic'],
+      capabilities: [t('services.frontend.cap1'), t('services.frontend.cap2'), t('services.frontend.cap3')],
     },
     {
       icon: Zap,
       titleKey: 'services.backend.title',
       descriptionKey: 'services.backend.description',
-      capabilities: ['Scalable API Design', 'Data Integrity', 'Cloud Workflows'],
+      capabilities: [t('services.backend.cap1'), t('services.backend.cap2'), t('services.backend.cap3')],
     },
     {
       icon: Palette,
       titleKey: 'services.tools.title',
       descriptionKey: 'services.tools.description',
-      capabilities: ['Design Engineering', 'Product Strategy', 'System Audits'],
+      capabilities: [t('services.tools.cap1'), t('services.tools.cap2'), t('services.tools.cap3')],
     },
   ];
 
   return (
     // TIGHTENED: Reduced top padding (pt-12) to meet the previous section better
     <section id="services" className="relative pt-12 pb-24 md:pb-48 bg-transparent overflow-hidden">
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-900/5 blur-[150px] rounded-full pointer-events-none" />
-      
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-800/[0.07] blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_30%_at_80%_10%,rgba(168,85,247,0.03),transparent)] pointer-events-none" />
+
       <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-24 flex flex-col items-center text-center lg:items-start lg:text-left">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex items-center gap-3 mb-6">
@@ -125,7 +124,7 @@ export function ServicesSection() {
           ))}
         </div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="mt-32 flex flex-col md:flex-row items-center justify-between gap-12 border-t border-white/5 pt-16">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="mt-32 flex flex-col md:flex-row items-center justify-between gap-12 border-t border-white/[0.06] pt-16">
           <div className="max-w-md">
             <h4 className="text-2xl font-light text-white italic mb-4">{t('services.cta_title')}</h4>
             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest leading-relaxed">{t('services.cta_sub')}</p>
