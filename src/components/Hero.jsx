@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import ColorBends from './ColorBendsFallback';
@@ -48,7 +48,6 @@ export default function HeroWithGridLines() {
               </h1>
             </header>
 
-            {/* UPDATED BUTTONS TO MATCH OTHER COMPONENTS */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -140,6 +139,29 @@ function AnimatedStagger({ children, stagger = 100, initialDelay = 0 }) {
   );
 }
 
+// --- OPTIMIZATION START: Moved regex logic outside component to prevent re-parsing on every tick ---
+const TOKEN_REGEX = /(\b(?:class|extends|constructor|this|return|new)\b)|('[^']*')|(\{|\}|\(|\)|\[|\]|;)/g;
+
+function highlightSyntax(text) {
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+    
+    // Create a fresh regex instance for each execution to reset state
+    const regex = new RegExp(TOKEN_REGEX);
+    
+    while ((match = regex.exec(text)) !== null) {
+      if (match.index > lastIndex) parts.push({ text: text.slice(lastIndex, match.index), type: 'plain' });
+      if (match[1]) parts.push({ text: match[1], type: 'keyword' });
+      else if (match[2]) parts.push({ text: match[2], type: 'string' });
+      else if (match[3]) parts.push({ text: match[3], type: 'brace' });
+      lastIndex = match.index + match[0].length;
+    }
+    if (lastIndex < text.length) parts.push({ text: text.slice(lastIndex), type: 'plain' });
+    return parts;
+}
+// --- OPTIMIZATION END ---
+
 function AnimatedCodeSnippet() {
   const lines = [
     "class ArtHalimi extends Dev {",
@@ -158,6 +180,12 @@ function AnimatedCodeSnippet() {
   const [pos, setPos] = useState(0);
   const [direction, setDirection] = useState(1);
 
+  // Memoize the highlighted parts to avoid calculation on every render
+  const highlightedParts = useMemo(() => {
+      // We process the full text once, effectively
+      return highlightSyntax(fullText.slice(0, pos));
+  }, [fullText, pos]);
+
   useEffect(() => {
     const tick = () => {
       if (direction === 1) {
@@ -174,30 +202,14 @@ function AnimatedCodeSnippet() {
     return () => clearTimeout(timer);
   }, [pos, direction, fullText]);
 
-  const renderHighlighted = (s) => {
-    const tokenRegex = /(\b(?:class|extends|constructor|this|return|new)\b)|('[^']*')|(\{|\}|\(|\)|\[|\]|;)/g;
-    const parts = [];
-    let lastIndex = 0;
-    let match;
-    while ((match = tokenRegex.exec(s)) !== null) {
-      if (match.index > lastIndex) parts.push({ text: s.slice(lastIndex, match.index), type: 'plain' });
-      if (match[1]) parts.push({ text: match[1], type: 'keyword' });
-      else if (match[2]) parts.push({ text: match[2], type: 'string' });
-      else if (match[3]) parts.push({ text: match[3], type: 'brace' });
-      lastIndex = match.index + match[0].length;
-    }
-    if (lastIndex < s.length) parts.push({ text: s.slice(lastIndex), type: 'plain' });
-    return parts.map((p, i) => {
-      if (p.type === 'keyword') return <span key={i} className="text-purple-400 font-bold">{p.text}</span>;
-      if (p.type === 'string') return <span key={i} className="text-emerald-400">{p.text}</span>;
-      if (p.type === 'brace') return <span key={i} className="text-blue-400">{p.text}</span>;
-      return <span key={i} className="text-zinc-500">{p.text}</span>;
-    });
-  };
-
   return (
     <div className="font-mono text-[11px] sm:text-xs md:text-sm leading-[1.8] whitespace-pre select-none text-left w-full h-full">
-      {renderHighlighted(fullText.slice(0, pos))}
+      {highlightedParts.map((p, i) => {
+        if (p.type === 'keyword') return <span key={i} className="text-purple-400 font-bold">{p.text}</span>;
+        if (p.type === 'string') return <span key={i} className="text-emerald-400">{p.text}</span>;
+        if (p.type === 'brace') return <span key={i} className="text-blue-400">{p.text}</span>;
+        return <span key={i} className="text-zinc-500">{p.text}</span>;
+      })}
       <motion.span 
         animate={{ opacity: [0, 1, 0] }}
         transition={{ repeat: Infinity, duration: 0.8 }}

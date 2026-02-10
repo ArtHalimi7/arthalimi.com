@@ -79,6 +79,7 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
 };
 
 export function ServicesSection() {
+  const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const services = [
@@ -111,10 +112,10 @@ export function ServicesSection() {
         <div className="mb-24 flex flex-col items-center text-center lg:items-start lg:text-left">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-purple-500/50" />
-            <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase italic">Solution_Models</span>
+            <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase italic">{t('services.section_tag')}</span>
           </motion.div>
           <h2 className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic">
-            Services <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">Expertise</span>
+            {t('services.section_title1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('services.section_title2')}</span>
           </h2>
         </div>
 
@@ -126,11 +127,11 @@ export function ServicesSection() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="mt-32 flex flex-col md:flex-row items-center justify-between gap-12 border-t border-white/5 pt-16">
           <div className="max-w-md">
-            <h4 className="text-2xl font-light text-white italic mb-4">Ready to build something iconic?</h4>
-            <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest leading-relaxed">Available for selective projects where design meets technical excellence.</p>
+            <h4 className="text-2xl font-light text-white italic mb-4">{t('services.cta_title')}</h4>
+            <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest leading-relaxed">{t('services.cta_sub')}</p>
           </div>
           <motion.a href="#contact" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="group relative flex items-center gap-6 px-12 py-6 bg-white text-black font-medium overflow-hidden rounded-full">
-            <span className="relative z-10 uppercase tracking-widest text-xs">Start a Conversation</span>
+            <span className="relative z-10 uppercase tracking-widest text-xs">{t('services.cta_btn')}</span>
             <ArrowRight className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-2" />
             <div className="absolute inset-0 bg-purple-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
           </motion.a>

@@ -2,18 +2,18 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, Plus } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 
 // --- DATA ASSETS ---
-import illyonImg from "../assets/illyon.png";
-import zahlxImg from "../assets/zahlx.png";
+import tafaImg from "../assets/tafa.png";
+import lbImg from "../assets/lb.png";
 import andiImg from "../assets/andi.png";
 import arsaImg from "../assets/arsa.png";
 
 const projectsData = [
-  { id: 1, titleKey: 'projects.illyon.title', image: illyonImg, year: '2025', descriptionKey: 'projects.illyon.description', tech: 'E-commerce', link: 'https://illyon.netlify.app', color: '#080808' },
-  { id: 2, titleKey: 'projects.zahlx.title', image: zahlxImg, year: '2025', descriptionKey: 'projects.zahlx.description', tech: 'AI Analytics', link: 'https://zahlx.netlify.app', color: '#0B080C' },
+  { id: 1, titleKey: 'projects.tafa.title', image: tafaImg, year: '2025', descriptionKey: 'projects.tafa.description', tech: 'projects.tafa.tech', link: 'https://tafaleka.com', color: '#080808' },
+  { id: 2, titleKey: 'projects.lb.title',   image: lbImg, year: '2025', descriptionKey: 'projects.lb.description', tech: 'projects.lb.tech', link: 'https://lbhairdesign.ch', color: '#0B080C' },
   { id: 3, titleKey: 'projects.andi.title', image: andiImg, year: '2025', descriptionKey: 'projects.andi.description', tech: 'Portfolio', link: 'https://andishkodra.com', color: '#08090C' },
   { id: 4, titleKey: 'projects.arsa.title', image: arsaImg, year: '2025', descriptionKey: 'projects.arsa.description', tech: 'Architecture', link: 'https://arsagipser.ch', color: '#080A08' },
 ];
@@ -50,9 +50,9 @@ function ProjectCard({ project, index }) {
             </div>
 
             <div className="shrink-0">
-              <span className="inline-block px-4 py-1.5 rounded-full border border-white/10 text-[9px] text-zinc-500 uppercase tracking-widest font-medium">
-                  {project.tech}
-              </span>
+                <span className="inline-block px-4 py-1.5 rounded-full border border-white/10 text-[9px] text-zinc-500 uppercase tracking-widest font-medium">
+                  {t(project.tech)}
+                </span>
             </div>
           </div>
 
@@ -65,9 +65,12 @@ function ProjectCard({ project, index }) {
         </div>
 
         <div className="w-full md:w-[65%] h-[40vh] md:h-full relative rounded-2xl overflow-hidden bg-zinc-900/40 border border-white/5 flex-grow">
+          {/* OPTIMIZATION: Added loading="lazy" and decoding="async" */}
           <motion.img 
             src={project.image} 
             alt={t(project.titleKey)} 
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-1000"
             style={{ willChange: "transform" }}
           />
@@ -85,24 +88,20 @@ export function Projects() {
 
   return (
     <section id="projects" className="bg-black relative">
-      {/* CENTRALIZED HEADER: 
-          Reduced height from 50vh to 35vh and items-end to items-center 
-      */}
       <div className="h-[35vh] w-full flex flex-col justify-center items-center px-6 text-center overflow-hidden">
         <motion.div style={{ y: yParallax, willChange: "transform" }} className="flex flex-col items-center">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-10 h-[1px] bg-purple-500/50" />
-            <span className="text-purple-500/80 text-[10px] font-bold tracking-[0.6em] uppercase italic">Works</span>
+            <span className="text-purple-500/80 text-[10px] font-bold tracking-[0.6em] uppercase italic">{t('projects.section_tag')}</span>
             <div className="w-10 h-[1px] bg-purple-500/50" />
           </div>
-          
-          {/* FONT SCALE MATCHED TO CONTACT FORM */}
+
           <h2 className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic leading-[0.85]">
-            Recent <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">Projects</span>
+            {t('projects.section_title1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('projects.section_title2')}</span>
           </h2>
-          
+
           <p className="mt-6 text-zinc-500 text-base md:text-lg font-light max-w-xl leading-relaxed italic">
-            High-performance digital architecture built with intent.
+            {t('projects.section_lead')}
           </p>
         </motion.div>
       </div>
