@@ -9,16 +9,28 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
   const Icon = service.icon;
   const isActive = activeIndex === index;
 
+  // Shared content for render efficiency
+  const CapabilitiesList = () => (
+    <div className="pt-6 md:pt-10 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+      {service.capabilities.map((cap, i) => (
+        <div key={i} className="flex items-center gap-4 group/cap">
+          <div className="w-1 h-1 rounded-full bg-purple-500/40 group-hover/cap:bg-purple-500 transition-colors" />
+          <span className="text-sm font-light text-zinc-400 group-hover/cap:text-white transition-colors uppercase tracking-widest">
+            {cap}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.8 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ delay: index * 0.1, duration: 0.6 }}
       className="relative border-t border-white/[0.06] last:border-b last:border-white/[0.06] group"
     >
-
-
       <div
         onClick={() => setActiveIndex(isActive ? null : index)}
         className="relative z-10 py-12 cursor-pointer grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
@@ -27,7 +39,7 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
           <span className={`font-mono text-xs ${isActive ? 'text-purple-500' : 'text-zinc-700'}`}>
             {String(index + 1).padStart(2, '0')}
           </span>
-          <div className={`p-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-purple-500/10 text-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.15)]' : 'bg-white/5 text-zinc-500 group-hover:text-zinc-300'}`}>
+          <div className={`p-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-purple-500/10 text-purple-400' : 'bg-white/5 text-zinc-500 group-hover:text-zinc-300'}`}>
             <Icon size={24} strokeWidth={1.2} />
           </div>
         </div>
@@ -42,31 +54,30 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
             </p>
           </div>
 
-          <AnimatePresence>
-            {isActive && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="overflow-hidden"
-              >
-                <div className="pt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {service.capabilities.map((cap, i) => (
-                    <div key={i} className="flex items-center gap-4 group/cap">
-                      <div className="w-1 h-1 rounded-full bg-purple-500/40 group-hover/cap:bg-purple-500 transition-colors" />
-                      <span className="text-sm font-light text-zinc-400 group-hover/cap:text-white transition-colors uppercase tracking-widest">
-                        {cap}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* --- MOBILE: STATIC (Always Open) --- */}
+          <div className="block md:hidden opacity-100">
+            <CapabilitiesList />
+          </div>
+
+          {/* --- DESKTOP: ANIMATED --- */}
+          <div className="hidden md:block">
+            <AnimatePresence>
+                {isActive && (
+                <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "circOut" }}
+                    className="overflow-hidden"
+                >
+                    <CapabilitiesList />
+                </motion.div>
+                )}
+            </AnimatePresence>
+          </div>
         </div>
 
-        <div className="lg:col-span-1 flex justify-end">
+        <div className="hidden lg:flex lg:col-span-1 justify-end">
           <div className={`transition-colors duration-500 ${isActive ? 'text-purple-500' : 'text-zinc-800'}`}>
             {isActive ? <Minus size={32} strokeWidth={1} /> : <Plus size={32} strokeWidth={1} />}
           </div>
@@ -102,17 +113,9 @@ export function ServicesSection() {
   ];
 
   return (
-    // TIGHTENED: Reduced top padding (pt-12) to meet the previous section better
     <section id="services" className="relative pt-12 pb-24 md:pb-48 bg-transparent overflow-hidden">
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-800/[0.07] blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_30%_at_80%_10%,rgba(168,85,247,0.03),transparent)] pointer-events-none" />
-
       <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-24 flex flex-col items-center text-center lg:items-start lg:text-left">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-purple-500/50" />
-            <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase italic">{t('services.section_tag')}</span>
-          </motion.div>
           <h2 className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic">
             {t('services.section_title1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('services.section_title2')}</span>
           </h2>
@@ -124,12 +127,12 @@ export function ServicesSection() {
           ))}
         </div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="mt-32 flex flex-col md:flex-row items-center justify-between gap-12 border-t border-white/[0.06] pt-16">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-32 flex flex-col md:flex-row items-center justify-between gap-12 border-t border-white/[0.06] pt-16">
           <div className="max-w-md">
             <h4 className="text-2xl font-light text-white italic mb-4">{t('services.cta_title')}</h4>
             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest leading-relaxed">{t('services.cta_sub')}</p>
           </div>
-          <motion.a href="#contact" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="group relative flex items-center gap-6 px-12 py-6 bg-white text-black font-medium overflow-hidden rounded-full">
+          <motion.a href="#contact" className="group relative flex items-center gap-6 px-12 py-6 bg-white text-black font-medium overflow-hidden rounded-full">
             <span className="relative z-10 uppercase tracking-widest text-xs">{t('services.cta_btn')}</span>
             <ArrowRight className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-2" />
             <div className="absolute inset-0 bg-purple-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
