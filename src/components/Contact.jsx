@@ -193,7 +193,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-light tracking-tight text-white uppercase"
+            className="text-4xl md:text-7xl font-light tracking-tight text-white uppercase"
           >
             {t('contact.heading1')} <span className="text-zinc-600 font-extralight italic">&</span> <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600 font-normal">{t('contact.heading2')}</span>
           </motion.h2>

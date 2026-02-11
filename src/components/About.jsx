@@ -38,7 +38,7 @@ export default function AboutMe() {
                 <div className="h-[1px] w-16 bg-gradient-to-r from-purple-500/50 to-transparent" />
               </div>
 
-              <h3 className="text-6xl md:text-8xl font-extralight tracking-tighter leading-[0.9] mb-10">
+              <h3 className="text-4xl md:text-8xl font-extralight tracking-tighter leading-[0.9] mb-10">
                 {t('about.architecting')} <br />
                 <span className="text-zinc-700 italic">{t('about.precision')}</span> <br />
                 {t('about.interfaces')}
@@ -75,9 +75,9 @@ export default function AboutMe() {
             {principles.map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7, delay: i * 0.15 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
                 viewport={{ once: true }}
                 className="group relative p-8 rounded-xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.015] hover:from-white/[0.06] hover:to-white/[0.03] hover:border-purple-500/15 transition-all duration-500"
               >

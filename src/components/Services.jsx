@@ -120,7 +120,7 @@ export function ServicesSection() {
       <div className="hidden md:block absolute bottom-[20%] right-[10%] w-[250px] h-[250px] bg-purple-500/[0.025] rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-24 flex flex-col items-center text-center lg:items-start lg:text-left">
-          <h2 className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic">
+          <h2 className="text-4xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic">
             {t('services.section_title1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('services.section_title2')}</span>
           </h2>
         </div>

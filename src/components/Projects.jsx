@@ -104,7 +104,7 @@ export function Projects() {
             <div className="w-10 h-[1px] bg-purple-500/50" />
           </div>
 
-          <h2 className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic leading-[0.85]">
+          <h2 className="text-4xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic leading-[0.85]">
             {t('projects.section_title1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('projects.section_title2')}</span>
           </h2>
 

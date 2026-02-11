@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Terminal, Plus } from 'lucide-react';
 
 // Lazy-load the heavy WebGL component so it's never bundled on mobile
-const ColorBends = lazy(() => import('./ColorBendsFallback'));
+const FloatingLines = lazy(() => import('./FloatingLines'));
 
 // Simple check — runs once at module level
 const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -27,10 +27,15 @@ export default function HeroWithGridLines() {
       ) : (
         <div aria-hidden className="absolute inset-0 z-0 pointer-events-none opacity-50">
           <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-purple-900/15 via-transparent to-blue-900/8" />}>
-            <ColorBends
-              rotation={45} speed={0.2} colors={["#3300ff", "#FF9FFC"]}
-              transparent autoRotate={0} scale={1} frequency={1}
-              warpStrength={1} mouseInfluence={1} parallax={0.5} noise={0.1}
+            <FloatingLines
+              linesGradient={["#8c00ff", "#9b73f7"]}
+              animationSpeed={1}
+              interactive
+              bendRadius={5}
+              bendStrength={-0.5}
+              mouseDamping={0.05}
+              parallax
+              parallaxStrength={0.2}
             />
           </Suspense>
         </div>
@@ -137,7 +142,7 @@ export default function HeroWithGridLines() {
 function AnimatedStagger({ children, stagger = 100, initialDelay = 0 }) {
   const items = Array.isArray(children) ? children : [children];
   return (
-    <div className="overflow-hidden py-4 px-12 -mx-12">
+    <div className="overflow-hidden py-4 px-6 -mx-6 md:px-12 md:-mx-12">
       {items.map((child, i) => (
         <motion.span
           key={i}

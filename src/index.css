@@ -374,6 +374,8 @@ body {
   /* Firefox */
   -ms-overflow-style: none;
   /* IE 10+ */
+  overflow-x: hidden;
+  width: 100%;
 }
 
 html::-webkit-scrollbar,

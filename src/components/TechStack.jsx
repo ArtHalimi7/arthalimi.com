@@ -122,7 +122,7 @@ export function TechStack() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-24">
-          <h2 className="text-6xl md:text-9xl font-extralight tracking-tighter text-white leading-none uppercase">
+          <h2 className="text-4xl md:text-9xl font-extralight tracking-tighter text-white leading-none uppercase">
             {t('tech.heading1')} <br />
             <span className="text-zinc-800 italic">{t('tech.heading2')}</span> <br />
             <span className="text-zinc-200">{t('tech.heading3')}</span>
