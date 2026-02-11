@@ -3,22 +3,19 @@
 import React from 'react';
 import { Mail, Github, Linkedin, Globe, ArrowUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
 import Alogo from '../assets/Alogo.png';
 
 function SocialIcon({ href, icon: Icon, label }) {
   return (
-    <motion.a
+    <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="p-2.5 bg-white/[0.03] border border-white/[0.07] rounded-lg hover:border-purple-500/30 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)] transition-all duration-300 text-zinc-500 hover:text-white"
-      whileHover={{ y: -2 }}
-      whileTap={{ scale: 0.95 }}
+      className="p-2.5 bg-white/[0.03] border border-white/[0.07] rounded-lg hover:border-purple-500/30 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)] hover:-translate-y-0.5 active:scale-95 transition-all duration-300 text-zinc-500 hover:text-white"
       aria-label={label}
     >
       <Icon className="w-4 h-4" />
-    </motion.a>
+    </a>
   );
 }
 
@@ -33,6 +30,8 @@ export default function Footer() {
     <footer className="relative bg-[#020202] pt-16 pb-8 overflow-hidden border-t border-white/[0.06]">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(168,85,247,0.04),transparent)] pointer-events-none" />
       <div className="hidden md:block absolute top-0 left-[40%] w-[300px] h-[200px] bg-white/[0.01] rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
+      {/* White neon accent line */}
+      <div className="neon-line w-48 mx-auto absolute top-0 left-1/2 -translate-x-1/2" />
       <div className="relative z-10 max-w-7xl mx-auto px-6">
 
         <div className="flex flex-col lg:flex-row lg:justify-between items-center lg:items-start gap-12 mb-16 text-center lg:text-left">

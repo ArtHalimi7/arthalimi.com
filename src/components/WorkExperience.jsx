@@ -65,6 +65,7 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
           <div
             className={`h-[1px] hidden md:block transition-all duration-500 ${isActive ? 'w-10 bg-purple-500' : 'w-0 bg-zinc-600'}`}
           />
+          {isActive && <div className="neon-dot hidden md:block" />}
           <span className={`text-[11px] font-mono tracking-[0.3em] uppercase transition-colors duration-500 ${isActive ? 'text-purple-400' : 'text-zinc-600'}`}>
             {years}
           </span>
@@ -137,7 +138,7 @@ export default function WorkExperiences() {
       company: t('work.experiences.2.company'),
       years: t('work.experiences.2.years'),
       summary: t('work.experiences.2.summary'),
-      skills: ["Node.js", "TypeScript", "PostgreSQL"],
+      skills: ["Node.js", "TypeScript", "MySQL"],
       achievements: [t('work.experiences.2.achievements.1'), t('work.experiences.2.achievements.2')],
       isEducation: false,
     },

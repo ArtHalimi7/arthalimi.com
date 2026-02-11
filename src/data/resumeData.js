@@ -128,7 +128,7 @@ export const resumeData = {
   projects: [
     {
       id: 'p1',
-      year: 2025,
+      year: 2026,
       title: 'projects.illyon.title',
       company: 'projects.illyon.title',
       role: 'projects.illyon.role',
@@ -137,7 +137,7 @@ export const resumeData = {
     },
     {
       id: 'p2',
-      year: 2025,
+      year: 2026,
       title: 'projects.zahlx.title',
       company: 'projects.zahlx.title',
       role: 'projects.zahlx.role',

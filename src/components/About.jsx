@@ -1,17 +1,18 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Zap, ShieldCheck, Globe } from 'lucide-react';
+import cvPdf from '../assets/ArtHalimiCV.pdf';
 
 export default function AboutMe() {
   const { t } = useTranslation();
 
-  const principles = [
+  const principles = useMemo(() => [
     { icon: Zap, title: t('about.principle1.title'), desc: t('about.principle1.desc') },
     { icon: ShieldCheck, title: t('about.principle2.title'), desc: t('about.principle2.desc') },
     { icon: Globe, title: t('about.principle3.title'), desc: t('about.principle3.desc') },
-  ];
+  ], [t]);
 
   return (
     <section id="about" className="section-glow relative py-24 lg:py-56 bg-transparent text-white border-y border-white/[0.04]">
@@ -55,8 +56,8 @@ export default function AboutMe() {
             </div>
 
             <motion.a
-              href="/arthalimi.docx"
-              download="Art_Halimi_CV.docx"
+              href={cvPdf}
+              download="Art_Halimi_CV.pdf"
               whileHover={{ scale: 1.05, x: 10 }}
               className="inline-flex items-center gap-6 w-fit group"
             >
@@ -83,6 +84,7 @@ export default function AboutMe() {
               >
                 <div className="flex items-start gap-8">
                   <span className="text-[10px] font-mono text-zinc-800 mt-1">0{i + 1}</span>
+                  <div className="neon-dot mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="flex-1">
                     <h4 className="text-xl font-light mb-3 tracking-tight group-hover:text-purple-400 transition-colors">
                       {item.title}

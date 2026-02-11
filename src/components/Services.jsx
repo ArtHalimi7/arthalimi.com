@@ -2,15 +2,15 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Code, Palette, Zap, ArrowRight, Plus, Minus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
   const { t } = useTranslation();
   const Icon = service.icon;
   const isActive = activeIndex === index;
 
-  // Shared content for render efficiency
-  const CapabilitiesList = () => (
+  // Memoized content for render efficiency
+  const CapabilitiesList = useMemo(() => () => (
     <div className="pt-6 md:pt-10 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
       {service.capabilities.map((cap, i) => (
         <div key={i} className="flex items-center gap-4 group/cap">
@@ -21,7 +21,7 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
         </div>
       ))}
     </div>
-  );
+  ), [service.capabilities]);
 
   return (
     <motion.div
@@ -39,8 +39,9 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
           <span className={`font-mono text-xs ${isActive ? 'text-purple-500' : 'text-zinc-700'}`}>
             {String(index + 1).padStart(2, '0')}
           </span>
-          <div className={`p-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-purple-500/10 text-purple-400' : 'bg-white/5 text-zinc-500 group-hover:text-zinc-300'}`}>
+          <div className={`relative p-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-purple-500/10 text-purple-400' : 'bg-white/5 text-zinc-500 group-hover:text-zinc-300'}`}>
             <Icon size={24} strokeWidth={1.2} />
+            {isActive && <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_2px_rgba(168,85,247,0.7)]" />}
           </div>
         </div>
 

@@ -180,8 +180,8 @@ export default function Contact() {
   return (
     <section id="contact" className="section-glow relative py-32 bg-[#020202] text-zinc-100 overflow-hidden">
       {/* Ambient background — hidden on mobile for performance (blur-[150px] is very expensive) */}
-      <div className="hidden md:block absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/[0.06] rounded-full pointer-events-none" style={{ filter: 'blur(150px)' }} />
-      <div className="hidden md:block absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/[0.025] rounded-full pointer-events-none" style={{ filter: 'blur(150px)' }} />
+      <div className="hidden md:block absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/[0.06] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
+      <div className="hidden md:block absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/[0.025] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
         {/* Header */}
@@ -199,6 +199,8 @@ export default function Contact() {
           >
             {t('contact.heading1')} <span className="text-zinc-600 font-extralight italic">&</span> <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600 font-normal">{t('contact.heading2')}</span>
           </motion.h2>
+          {/* White neon accent line */}
+          <div className="neon-line w-40 mt-6" />
         </div>
 
         {/* Content Grid */}

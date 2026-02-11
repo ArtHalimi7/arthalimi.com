@@ -24,9 +24,8 @@ const EducationRow = ({ title, subtitle, years, location, details, courses, achi
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Timeline/Meta Column */}
         <div className="lg:col-span-3 flex items-center gap-4">
-          <motion.div 
-            animate={{ width: isActive ? 40 : 0, backgroundColor: isActive ? "#a855f7" : "#52525b" }}
-            className="h-[1px] hidden md:block"
+          <div
+            className={`h-[1px] hidden md:block transition-all duration-500 ${isActive ? 'w-10 bg-purple-500' : 'w-0 bg-zinc-600'}`}
           />
           <div className="flex flex-col">
             <span className={`text-[11px] font-mono tracking-[0.3em] uppercase transition-colors duration-500 ${isActive ? 'text-purple-400' : 'text-zinc-600'}`}>
@@ -47,7 +46,7 @@ const EducationRow = ({ title, subtitle, years, location, details, courses, achi
               {isActive && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-1 h-1 rounded-full bg-purple-500 shadow-[0_0_8px_#a855f7]" />}
             </p>
           </div>
-          
+
           <AnimatePresence>
             {isActive && (
               <motion.div
@@ -71,7 +70,7 @@ const EducationRow = ({ title, subtitle, years, location, details, courses, achi
                       ))}
                     </div>
                   </div>
-                  
+
                   {/* Milestones/Achievements */}
                   <div className="space-y-6">
                     <h4 className="text-[10px] font-mono text-purple-400 uppercase tracking-widest flex items-center gap-2">
@@ -124,12 +123,14 @@ export function Education() {
     <section id="education" className="relative pt-12 pb-32 md:pb-48 bg-[#020202] overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-purple-500/20 to-transparent hidden lg:block" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-900/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="hidden md:block absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-900/5 rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
+      {/* White neon accent line */}
+      <div className="neon-line w-32 mx-auto mb-4" />
 
       <div className="relative max-w-7xl mx-auto px-6">
         {/* Header - Matching Experience Styling */}
         <div className="mb-24 flex flex-col items-center text-center lg:items-start lg:text-left">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             className="flex items-center gap-3 mb-6"
@@ -139,7 +140,7 @@ export function Education() {
               Academic_Archive
             </span>
           </motion.div>
-          
+
           <h2 className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic">
             Foundation <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">Theory</span>
           </h2>

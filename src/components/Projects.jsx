@@ -12,8 +12,8 @@ import andiImg from "../assets/andi.png";
 import arsaImg from "../assets/arsa.png";
 
 const projectsData = [
-  { id: 1, titleKey: 'projects.tafa.title', image: tafaImg, year: '2025', descriptionKey: 'projects.tafa.description', tech: 'projects.tafa.tech', link: 'https://tafaleka.com', color: '#080808' },
-  { id: 2, titleKey: 'projects.lb.title', image: lbImg, year: '2025', descriptionKey: 'projects.lb.description', tech: 'projects.lb.tech', link: 'https://lbhairdesign.ch', color: '#0B080C' },
+  { id: 1, titleKey: 'projects.tafa.title', image: tafaImg, year: '2026', descriptionKey: 'projects.tafa.description', tech: 'projects.tafa.tech', link: 'https://tafaleka.com', color: '#080808' },
+  { id: 2, titleKey: 'projects.lb.title', image: lbImg, year: '2026', descriptionKey: 'projects.lb.description', tech: 'projects.lb.tech', link: 'https://lbhairdesign.ch', color: '#0B080C' },
   { id: 3, titleKey: 'projects.andi.title', image: andiImg, year: '2025', descriptionKey: 'projects.andi.description', tech: 'Portfolio', link: 'https://andishkodra.com', color: '#08090C' },
   { id: 4, titleKey: 'projects.arsa.title', image: arsaImg, year: '2025', descriptionKey: 'projects.arsa.description', tech: 'Architecture', link: 'https://arsagipser.ch', color: '#080A08' },
 ];
@@ -29,7 +29,7 @@ function ProjectCard({ project, index }) {
         viewport={{ margin: "-5%" }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         style={{ backgroundColor: project.color, willChange: "transform, opacity" }}
-        className="relative w-full max-w-7xl h-[80vh] rounded-[32px] border border-white/[0.07] flex flex-col md:flex-row items-center p-8 md:p-14 gap-8 md:gap-16 shadow-[0_0_80px_rgba(168,85,247,0.04),0_40px_100px_rgba(0,0,0,0.7)] overflow-hidden"
+        className="relative w-full max-w-7xl h-[80vh] rounded-[32px] border border-white/[0.07] flex flex-col md:flex-row items-center p-8 md:p-14 gap-8 md:gap-16 shadow-[0_0_80px_rgba(168,85,247,0.04),0_40px_100px_rgba(0,0,0,0.7)] hover:shadow-[0_0_80px_rgba(168,85,247,0.04),0_40px_100px_rgba(0,0,0,0.7),0_0_1px_rgba(255,255,255,0.15),0_0_15px_rgba(255,255,255,0.04)] hover:border-white/[0.12] transition-all duration-700 overflow-hidden"
       >
         <div className="w-full md:w-[35%] flex flex-col justify-between h-full z-10 overflow-hidden">
           <div className="overflow-hidden">

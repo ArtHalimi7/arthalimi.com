@@ -4,6 +4,9 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 import { Cpu, Globe, Database } from "lucide-react";
+import mysqlIcon from "../assets/mysql.png";
+import nodeIcon from "../assets/node.png";
+import dockerIcon from "../assets/docker.png";
 
 const TechCard = ({ tech, index, categoryIdx }) => {
   const { t } = useTranslation();
@@ -40,6 +43,7 @@ const TechCard = ({ tech, index, categoryIdx }) => {
                 src={tech.icon}
                 alt={tech.name}
                 loading="lazy"
+                decoding="async"
                 className="w-5 h-5 object-contain opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
               />
             </div>
@@ -122,8 +126,8 @@ export function TechStack() {
       nameKey: 'tech.cat.backend',
       icon: Database,
       technologies: [
-        { name: t('tech.item.node'), level: 88, icon: "https://images.seeklogo.com/logo-png/27/1/node-js-logo-png_seeklogo-273749.png" },
-        { name: t('tech.item.postgres'), level: 80, icon: "https://static-00.iconduck.com/assets.00/postgresql-icon-1987x2048-v29is76n.png" },
+        { name: t('tech.item.node'), level: 88, icon: nodeIcon },
+        { name: t('tech.item.postgres'), level: 80, icon: mysqlIcon },
         { name: t('tech.item.mongo'), level: 75, icon: "https://images.seeklogo.com/logo-png/48/2/mongodb-logo-png_seeklogo-481256.png" },
         { name: t('tech.item.express'), level: 85, icon: "https://cdn.worldvectorlogo.com/logos/expressjs.svg" },
       ]
@@ -133,7 +137,7 @@ export function TechStack() {
       nameKey: 'tech.cat.infra',
       icon: Cpu,
       technologies: [
-        { name: t('tech.item.docker'), level: 75, icon: "https://images.icon-icons.com/2108/PNG/512/docker_icon_130955.png" },
+        { name: t('tech.item.docker'), level: 75, icon: dockerIcon },
         { name: t('tech.item.aws'), level: 70, icon: "https://images.seeklogo.com/logo-png/31/2/amazon-web-services-aws-logo-png_seeklogo-319188.png" },
         { name: t('tech.item.git'), level: 90, icon: "https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png" },
         { name: t('tech.item.vite'), level: 85, icon: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Vitejs-logo.svg" },
@@ -158,7 +162,10 @@ export function TechStack() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
           {techCategories.map((category, idx) => (
-            <CategorySection key={category.id} category={category} idx={idx} />
+            <div key={category.id}>
+              {idx > 0 && <div className="neon-line w-full mb-12 lg:hidden" />}
+              <CategorySection category={category} idx={idx} />
+            </div>
           ))}
         </div>
       </div>
