@@ -8,12 +8,26 @@ import { ArrowRight, Terminal, Plus } from 'lucide-react';
 // Lazy-load the heavy WebGL component so it's never bundled on mobile
 const FloatingLines = lazy(() => import('./FloatingLines'));
 
-// Simple check — runs once at module level
-const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-
 export default function HeroWithGridLines() {
   const { t } = useTranslation();
   const containerRef = useRef(null);
+
+  // Initialize isMobile to true to ensure we don't eagerly load heavyweight 3D assets.
+  // This will be updated in useEffect on the client.
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Check on mount
+    checkMobile();
+
+    // Re-check on resize
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <section id="home" ref={containerRef} className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
