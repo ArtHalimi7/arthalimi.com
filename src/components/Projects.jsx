@@ -87,8 +87,9 @@ export function Projects() {
   const yParallax = useTransform(scrollYProgress, [0, 0.2], [0, -40]);
 
   return (
-    <section id="projects" className="bg-black relative pt-32">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_30%_at_50%_0%,rgba(168,85,247,0.03),transparent)] pointer-events-none" />
+    <section id="projects" className="section-glow bg-black relative pt-32">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_30%_at_50%_0%,rgba(168,85,247,0.05),transparent)] pointer-events-none" />
+      <div className="hidden md:block absolute top-[5%] right-[20%] w-[350px] h-[350px] bg-white/[0.012] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
       <div className="h-[35vh] w-full flex flex-col justify-center items-center px-6 text-center overflow-hidden relative z-10">
         <motion.div style={{ y: yParallax, willChange: "transform" }} className="flex flex-col items-center">
           <div className="flex items-center gap-4 mb-4">

@@ -14,9 +14,12 @@ export default function AboutMe() {
   ];
 
   return (
-    <section id="about" className="relative py-24 lg:py-56 bg-transparent text-white border-y border-white/[0.04]">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(168,85,247,0.04),transparent)] pointer-events-none" />
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="about" className="section-glow relative py-24 lg:py-56 bg-transparent text-white border-y border-white/[0.04]">
+      {/* Brighter ambient glow — purple + white */}
+      <div className="hidden md:block absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(168,85,247,0.06),transparent)] pointer-events-none" />
+      <div className="hidden md:block absolute top-[30%] right-[10%] w-[350px] h-[350px] bg-white/[0.02] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-start">
 
@@ -68,7 +71,6 @@ export default function AboutMe() {
           </motion.div>
 
           {/* RIGHT SIDE: PRINCIPLE CARDS (Cols 8-12) */}
-          {/* NOTICE: lg:pt-32 moves the right side down on desktop to create the "balanced stagger" */}
           <div className="lg:col-start-8 lg:col-span-5 flex flex-col space-y-6 lg:pt-40">
             {principles.map((item, i) => (
               <motion.div
@@ -77,7 +79,7 @@ export default function AboutMe() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: i * 0.15 }}
                 viewport={{ once: true }}
-                className="group relative p-8 rounded-xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.015] hover:from-white/[0.06] hover:to-white/[0.03] hover:border-purple-500/15 transition-all duration-500 hover:shadow-[0_0_30px_rgba(168,85,247,0.06),0_0_60px_rgba(168,85,247,0.03)]"
+                className="group relative p-8 rounded-xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.015] hover:from-white/[0.06] hover:to-white/[0.03] hover:border-purple-500/15 transition-all duration-500"
               >
                 <div className="flex items-start gap-8">
                   <span className="text-[10px] font-mono text-zinc-800 mt-1">0{i + 1}</span>
@@ -106,7 +108,7 @@ export default function AboutMe() {
           ].map((stat, i) => (
             <div key={i} className="flex flex-col">
               <span className="text-[8px] font-mono text-zinc-700 tracking-[0.4em] uppercase mb-3">{stat.label}</span>
-              <span className="text-4xl font-extralight text-zinc-200 tracking-tighter tabular-nums italic" style={{ textShadow: '0 0 20px rgba(168,85,247,0.12)' }}>
+              <span className="text-4xl font-extralight text-zinc-200 tracking-tighter tabular-nums italic" style={{ textShadow: '0 0 25px rgba(168,85,247,0.15), 0 0 60px rgba(255,255,255,0.04)' }}>
                 {stat.val}
               </span>
             </div>

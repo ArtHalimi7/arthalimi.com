@@ -178,10 +178,10 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-32 bg-[#020202] text-zinc-100 overflow-hidden">
-      {/* Ambient background */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/[0.05] blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/[0.02] blur-[150px] rounded-full pointer-events-none" />
+    <section id="contact" className="section-glow relative py-32 bg-[#020202] text-zinc-100 overflow-hidden">
+      {/* Ambient background — hidden on mobile for performance (blur-[150px] is very expensive) */}
+      <div className="hidden md:block absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/[0.06] rounded-full pointer-events-none" style={{ filter: 'blur(150px)' }} />
+      <div className="hidden md:block absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/[0.025] rounded-full pointer-events-none" style={{ filter: 'blur(150px)' }} />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
         {/* Header */}

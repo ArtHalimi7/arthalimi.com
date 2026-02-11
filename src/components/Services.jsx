@@ -62,17 +62,17 @@ const ServiceItem = ({ service, index, activeIndex, setActiveIndex }) => {
           {/* --- DESKTOP: ANIMATED --- */}
           <div className="hidden md:block">
             <AnimatePresence>
-                {isActive && (
+              {isActive && (
                 <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4, ease: "circOut" }}
-                    className="overflow-hidden"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.4, ease: "circOut" }}
+                  className="overflow-hidden"
                 >
-                    <CapabilitiesList />
+                  <CapabilitiesList />
                 </motion.div>
-                )}
+              )}
             </AnimatePresence>
           </div>
         </div>
@@ -113,8 +113,11 @@ export function ServicesSection() {
   ];
 
   return (
-    <section id="services" className="relative pt-12 pb-24 md:pb-48 bg-transparent overflow-hidden">
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
+    <section id="services" className="section-glow relative pt-12 pb-24 md:pb-48 bg-transparent overflow-hidden">
+      {/* White + purple ambient glow — desktop only */}
+      <div className="hidden md:block absolute top-[15%] left-[15%] w-[350px] h-[350px] bg-white/[0.012] rounded-full pointer-events-none" style={{ filter: 'blur(90px)' }} />
+      <div className="hidden md:block absolute bottom-[20%] right-[10%] w-[250px] h-[250px] bg-purple-500/[0.025] rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-24 flex flex-col items-center text-center lg:items-start lg:text-left">
           <h2 className="text-5xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic">
             {t('services.section_title1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('services.section_title2')}</span>

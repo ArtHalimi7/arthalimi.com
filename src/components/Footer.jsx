@@ -31,7 +31,8 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-[#020202] pt-16 pb-8 overflow-hidden border-t border-white/[0.06]">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(168,85,247,0.025),transparent)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(168,85,247,0.04),transparent)] pointer-events-none" />
+      <div className="hidden md:block absolute top-0 left-[40%] w-[300px] h-[200px] bg-white/[0.01] rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
       <div className="relative z-10 max-w-7xl mx-auto px-6">
 
         <div className="flex flex-col lg:flex-row lg:justify-between items-center lg:items-start gap-12 mb-16 text-center lg:text-left">

@@ -1,13 +1,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 import { Cpu, Globe, Database } from "lucide-react";
 
 const TechCard = ({ tech, index, categoryIdx }) => {
   const { t } = useTranslation();
-  const [isHovered, setIsHovered] = useState(false);
   const percentage = tech.level;
 
   return (
@@ -16,21 +15,18 @@ const TechCard = ({ tech, index, categoryIdx }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className="group relative h-52 will-change-transform"
     >
-      <div className="relative h-full p-6 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.04] to-white/[0.01] transition-all duration-500 overflow-hidden flex flex-col justify-between">
+      <div className="relative h-full p-6 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.04] to-white/[0.01] hover:border-purple-500/20 transition-all duration-500 overflow-hidden flex flex-col justify-between">
         <div>
           <div className="flex items-start justify-between mb-5">
             <div className="relative w-12 h-12 flex items-center justify-center">
               <svg className="absolute inset-0 w-12 h-12 -rotate-90" viewBox="0 0 48 48">
                 <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="2" />
-                {/* Simplified Circle Animation */}
                 <motion.circle
                   cx="24" cy="24" r="20"
                   fill="none"
-                  stroke="rgba(168,85,247,0.5)"
+                  stroke="rgba(168,85,247,0.6)"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeDasharray={`${2 * Math.PI * 20}`}
@@ -43,7 +39,7 @@ const TechCard = ({ tech, index, categoryIdx }) => {
               <img
                 src={tech.icon}
                 alt={tech.name}
-                loading="lazy" 
+                loading="lazy"
                 className="w-5 h-5 object-contain opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
               />
             </div>
@@ -70,7 +66,7 @@ const TechCard = ({ tech, index, categoryIdx }) => {
           />
         </div>
 
-        {/* Disabled Glow on Mobile for Performance */}
+        {/* Glow on hover — desktop only */}
         <div className="hidden md:block absolute -bottom-8 -right-8 w-24 h-24 bg-purple-500/[0.06] blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
       </div>
     </motion.div>
@@ -109,7 +105,7 @@ const CategorySection = ({ category, idx }) => {
 export function TechStack() {
   const { t } = useTranslation();
 
-  const techCategories = [
+  const techCategories = useMemo(() => [
     {
       id: 1,
       nameKey: 'tech.cat.frontend',
@@ -143,11 +139,15 @@ export function TechStack() {
         { name: t('tech.item.vite'), level: 85, icon: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Vitejs-logo.svg" },
       ]
     }
-  ];
+  ], [t]);
 
   return (
-    <section id="tech-stack" className="relative pt-8 pb-8 bg-transparent overflow-hidden">
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
+    <section id="tech-stack" className="section-glow relative pt-8 pb-8 bg-transparent overflow-hidden">
+      {/* White + purple ambient glow — desktop only for performance */}
+      <div className="hidden md:block absolute top-[10%] left-[20%] w-[400px] h-[400px] bg-white/[0.015] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
+      <div className="hidden md:block absolute bottom-[10%] right-[10%] w-[300px] h-[300px] bg-purple-500/[0.03] rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-24">
           <h2 className="text-6xl md:text-9xl font-extralight tracking-tighter text-white leading-none uppercase">
             {t('tech.heading1')} <br />

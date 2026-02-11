@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Award } from 'lucide-react';
 
 const ExperienceRow = ({ id, role, company, years, summary, skills, achievements, isActive, onClick, index, isEducation, details }) => {
   const { t } = useTranslation();
-  
+
   // Shared Content Component to avoid duplication
-  const DetailContent = () => (
+  const DetailContent = useMemo(() => () => (
     <div className="pt-4 md:pt-8 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gradient-to-br from-white/[0.02] to-transparent rounded-xl p-4 md:p-6 -mx-2">
       <div className="space-y-4">
         <p className={`text-zinc-400 font-light leading-relaxed text-base ${isEducation ? 'italic border-l border-purple-500/20 pl-6' : ''}`}>
@@ -39,7 +39,7 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
         </ul>
       </div>
     </div>
-  );
+  ), [summary, details, skills, achievements, isEducation, t]);
 
   return (
     <motion.div
@@ -52,11 +52,11 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
     >
       {/* Simplified Glow for Performance */}
       <div className={`absolute bottom-0 left-0 right-0 h-px transition-all duration-500 ${isActive
-          ? 'bg-purple-500/30'
-          : 'bg-white/[0.06]'
+        ? 'bg-purple-500/30'
+        : 'bg-white/[0.06]'
         }`} />
 
-      <span className="absolute -left-4 top-1/2 -translate-y-1/4 text-7xl font-bold text-white/[0.04] select-none pointer-events-none">
+      <span className="absolute -left-4 top-1/2 -translate-y-1/4 text-7xl font-bold text-white/[0.06] select-none pointer-events-none">
         0{index + 1}
       </span>
 
@@ -85,7 +85,7 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
 
           {/* --- MOBILE: ALWAYS OPEN (High Performance) --- */}
           <div className="block md:hidden mt-6 opacity-100">
-             <DetailContent />
+            <DetailContent />
           </div>
 
           {/* --- DESKTOP: ANIMATED ACCORDION --- */}
@@ -164,10 +164,11 @@ export default function WorkExperiences() {
   ];
 
   return (
-    <section id="work" className="relative pt-24 pb-12 bg-[#020202] overflow-hidden">
-      {/* Optimized Background Elements - Reduced Blur/Opacity for Mobile */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_70%_20%,rgba(168,85,247,0.03),transparent)] pointer-events-none" />
-      
+    <section id="work" className="section-glow relative pt-24 pb-12 bg-[#020202] overflow-hidden">
+      {/* Ambient glow — purple + white, desktop only for heavy blurs */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_70%_20%,rgba(168,85,247,0.05),transparent)] pointer-events-none" />
+      <div className="hidden md:block absolute top-[20%] right-[5%] w-[300px] h-[300px] bg-white/[0.015] rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
+
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="mb-20 flex flex-col items-center text-center lg:items-start lg:text-left">
           <motion.h2

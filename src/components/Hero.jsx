@@ -1,10 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, lazy, Suspense } from "react";
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import ColorBends from './ColorBendsFallback';
 import { ArrowRight, Terminal, Plus } from 'lucide-react';
+
+// Lazy-load the heavy WebGL component so it's never bundled on mobile
+const ColorBends = lazy(() => import('./ColorBendsFallback'));
+
+// Simple check — runs once at module level
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
 export default function HeroWithGridLines() {
   const { t } = useTranslation();
@@ -12,13 +17,27 @@ export default function HeroWithGridLines() {
 
   return (
     <section id="home" ref={containerRef} className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
-      <div aria-hidden className="absolute inset-0 z-0 pointer-events-none opacity-40">
-        <ColorBends
-          rotation={45} speed={0.2} colors={["#3300ff", "#FF9FFC"]}
-          transparent autoRotate={0} scale={1} frequency={1}
-          warpStrength={1} mouseInfluence={1} parallax={0.5} noise={0.1}
-        />
-      </div>
+      {/* Background: WebGL on desktop, lightweight CSS gradient on mobile */}
+      {isMobile ? (
+        <div aria-hidden className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/10" />
+          <div className="absolute top-1/4 left-1/3 w-[300px] h-[300px] bg-purple-600/8 rounded-full" style={{ filter: 'blur(80px)' }} />
+          <div className="absolute bottom-1/4 right-1/4 w-[200px] h-[200px] bg-white/[0.03] rounded-full" style={{ filter: 'blur(60px)' }} />
+        </div>
+      ) : (
+        <div aria-hidden className="absolute inset-0 z-0 pointer-events-none opacity-50">
+          <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-purple-900/15 via-transparent to-blue-900/8" />}>
+            <ColorBends
+              rotation={45} speed={0.2} colors={["#3300ff", "#FF9FFC"]}
+              transparent autoRotate={0} scale={1} frequency={1}
+              warpStrength={1} mouseInfluence={1} parallax={0.5} noise={0.1}
+            />
+          </Suspense>
+        </div>
+      )}
+
+      {/* White ambient glow for premium feel */}
+      <div className="hidden md:block absolute top-[10%] right-[15%] w-[400px] h-[400px] bg-white/[0.02] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center">
@@ -181,7 +200,6 @@ function AnimatedCodeSnippet() {
 
   // Memoize the highlighted parts to avoid calculation on every render
   const highlightedParts = useMemo(() => {
-    // We process the full text once, effectively
     return highlightSyntax(fullText.slice(0, pos));
   }, [fullText, pos]);
 
