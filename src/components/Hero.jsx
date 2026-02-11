@@ -1,62 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useEffect, useState, useRef, useMemo, lazy, Suspense } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ArrowRight, Terminal, Plus } from 'lucide-react';
 
-// Lazy-load the heavy WebGL component so it's never bundled on mobile
-const FloatingLines = lazy(() => import('./FloatingLines'));
-
 export default function HeroWithGridLines() {
   const { t } = useTranslation();
-  const containerRef = useRef(null);
-
-  // Initialize isMobile to true to ensure we don't eagerly load heavyweight 3D assets.
-  // This will be updated in useEffect on the client.
-  const [isMobile, setIsMobile] = useState(true);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    // Check on mount
-    checkMobile();
-
-    // Re-check on resize
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   return (
-    <section id="home" ref={containerRef} className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
-      {/* Background: WebGL on desktop, lightweight CSS gradient on mobile */}
-      {isMobile ? (
-        <div aria-hidden className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/10" />
-          <div className="absolute top-1/4 left-1/3 w-[300px] h-[300px] bg-purple-600/8 rounded-full" style={{ filter: 'blur(80px)' }} />
-          <div className="absolute bottom-1/4 right-1/4 w-[200px] h-[200px] bg-white/[0.03] rounded-full" style={{ filter: 'blur(60px)' }} />
-        </div>
-      ) : (
-        <div aria-hidden className="absolute inset-0 z-0 pointer-events-none opacity-50">
-          <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-purple-900/15 via-transparent to-blue-900/8" />}>
-            <FloatingLines
-              linesGradient={["#8c00ff", "#9b73f7"]}
-              animationSpeed={1}
-              interactive
-              bendRadius={5}
-              bendStrength={-0.5}
-              mouseDamping={0.05}
-              parallax
-              parallaxStrength={0.2}
-            />
-          </Suspense>
-        </div>
-      )}
+    <section id="home" className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
+      {/* Background: Lightweight CSS gradient */}
+      <div aria-hidden className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/10" />
+        <div className="absolute top-1/4 left-1/3 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[80px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[200px] h-[200px] bg-white/5 rounded-full blur-[60px]" />
+      </div>
 
       {/* White ambient glow for premium feel */}
-      <div className="hidden md:block absolute top-[10%] right-[15%] w-[400px] h-[400px] bg-white/[0.02] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
+      <div className="hidden md:block absolute top-[10%] right-[15%] w-[400px] h-[400px] bg-white/[0.02] rounded-full pointer-events-none blur-[100px]" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center">
