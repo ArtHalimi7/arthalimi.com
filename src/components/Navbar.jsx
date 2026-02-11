@@ -37,7 +37,7 @@ export default function Navbar({ formatted }) {
       setTime(`${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`);
     };
     tick();
-    const id = setInterval(tick, 1000);
+    const id = setInterval(tick, 60000);
     return () => clearInterval(id);
   }, []);
 
@@ -117,8 +117,8 @@ export default function Navbar({ formatted }) {
                       key={lng}
                       onClick={() => { i18n.changeLanguage(lng); setSidebarOpen(false); }}
                       className={`py-4 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 ${i18n.language === lng
-                          ? 'bg-purple-600 text-white shadow-lg'
-                          : 'text-white/20 hover:text-white/40'
+                        ? 'bg-purple-600 text-white shadow-lg'
+                        : 'text-white/20 hover:text-white/40'
                         }`}
                     >
                       {lng}
@@ -131,7 +131,7 @@ export default function Navbar({ formatted }) {
         )}
       </AnimatePresence>
 
-      <motion.div className="fixed top-0 inset-x-0 z-50 flex justify-center p-0 md:p-6 pointer-events-none">
+      <div className="fixed top-0 inset-x-0 z-50 flex justify-center p-0 md:p-6 pointer-events-none">
         <header
           className={`
             h-20 md:h-16 flex items-center justify-between w-full pointer-events-auto transition-all duration-1000
@@ -187,7 +187,7 @@ export default function Navbar({ formatted }) {
             </button>
           </div>
         </header>
-      </motion.div>
+      </div>
     </>
   );
 }

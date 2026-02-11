@@ -108,12 +108,10 @@ const ContactForm = ({ t, formData, handleInputChange, handleSubmit, status }) =
           />
         </div>
 
-        <motion.button
+        <button
           type="submit"
           disabled={status === 'sending'}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
-          className={`w-full py-4 rounded-lg font-medium tracking-widest text-xs uppercase flex items-center justify-center gap-3 transition-all duration-300 ${status === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
+          className={`w-full py-4 rounded-lg font-medium tracking-widest text-xs uppercase flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] ${status === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
             status === 'error' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
               'bg-white text-black hover:bg-purple-50 border border-white'
             }`}
@@ -138,7 +136,7 @@ const ContactForm = ({ t, formData, handleInputChange, handleSubmit, status }) =
               {t('contact.btn_error')} <XCircle size={14} />
             </>
           )}
-        </motion.button>
+        </button>
       </form>
     </div>
   );

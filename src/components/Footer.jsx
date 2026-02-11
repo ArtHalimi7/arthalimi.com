@@ -72,7 +72,7 @@ export default function Footer() {
               <SocialIcon href="https://arthalimi.netlify.app" icon={Globe} label="Live" />
             </div>
             <p className="text-[10px] text-zinc-600 font-mono tracking-tighter uppercase italic">
-              Prishtina, XK // 2026
+              Prishtina, Kosovo // 2026
             </p>
           </div>
         </div>

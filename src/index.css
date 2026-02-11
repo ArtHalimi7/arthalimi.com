@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @tailwind base;
@@ -10,6 +9,7 @@
     opacity: 0;
     transform: translateX(-40px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -17,7 +17,7 @@
 }
 
 .animate-cookies-in {
-  animation: cookies-in 0.4s cubic-bezier(.4,0,.2,1) forwards;
+  animation: cookies-in 0.4s cubic-bezier(.4, 0, .2, 1) forwards;
 }
 
 /* Smooth in-page anchor scrolling */
@@ -26,7 +26,8 @@ html {
 }
 
 ::selection {
-  background: #a855f7; /* Purple-500 */
+  background: #a855f7;
+  /* Purple-500 */
   color: white;
 }
 
@@ -64,7 +65,7 @@ body:has(.card[data-color="green"]:hover) {
   /* custom shadow utility used by form controls */
   .shadow-card {
     /* subtle card shadow */
-    box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.12);
   }
 
   .input {
@@ -76,22 +77,26 @@ body:has(.card[data-color="green"]:hover) {
   }
 
   .btn {
-    @apply text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
+    @apply text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
   }
 
   .header {
-    @apply flex justify-between items-center  px-10 py-6 w-full mx-auto bg-white z-10;
+    @apply flex justify-between items-center px-10 py-6 w-full mx-auto bg-white z-10;
   }
 
 }
 
 /* Utility to hide scrollbars for overflow containers (works for WebKit, Firefox, Edge) */
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
 .no-scrollbar::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none;
+  /* Safari and Chrome */
 }
 
 .nav-link {
@@ -105,62 +110,71 @@ body:has(.card[data-color="green"]:hover) {
   justify-content: space-between;
   padding: 20px;
 }
-.about-us-section{
+
+.about-us-section {
   background-color: #F8F4E3;
 }
+
 .image-container {
   flex: 1;
 }
 
-img {
-  width: 100%; 
+.image-container img {
+  width: 100%;
 }
 
 
 
-.background1{
+.background1 {
   background-color: #000000;
 }
 
-.pic1{
+.pic1 {
   width: 450px;
   height: 800px;
 }
-.pic2{
+
+.pic2 {
   width: 450px;
   height: 800px;
 }
-.storeimg{
+
+.storeimg {
   background-color: rgb(255, 233, 203);
 }
-.shadow-store{
+
+.shadow-store {
   box-shadow: 3 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .social-icons {
   display: flex;
   align-items: center;
 }
 
 .icon {
-  width: 30px; 
-  height: 30px; 
-  margin-right: 10px; 
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
   display: inline;
   display: flex;
 }
+
 .footer {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
+
 .section-full-screen {
-  height: 80vh; 
+  height: 80vh;
 }
 
 @media (max-width: 768px) {
   .logo-container {
-    margin-top: 20px; /* Adjust the margin-top for smaller screens */
+    margin-top: 20px;
+    /* Adjust the margin-top for smaller screens */
   }
 }
 
@@ -169,35 +183,38 @@ img {
     height: 100vh;
   }
 }
+
 .custom-slider-image {
   width: 100%;
   height: 100%;
-  max-width: 1200px; 
-  margin: 0; 
+  max-width: 1200px;
+  margin: 0;
   object-fit: cover;
-  margin-left: 100px; 
-  margin-right: 100px; 
+  margin-left: 100px;
+  margin-right: 100px;
 }
+
 .nav-link {
-  margin-right: 10px; 
+  margin-right: 10px;
   cursor: pointer;
-  color: #705c54; 
+  color: #705c54;
   transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #4a5568; 
+  color: #4a5568;
 }
 
 @media only screen and (max-width: 600px) {
   .hide-on-mobile {
-    display: block; 
+    display: block;
   }
 
   .show-on-mobile {
-    display: none; 
+    display: none;
   }
 }
+
 .grid-item {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
@@ -206,6 +223,7 @@ img {
 .animate {
   opacity: 1;
 }
+
 .image-item {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
@@ -214,6 +232,7 @@ img {
 .animate {
   opacity: 1;
 }
+
 .animate {
   animation: fadeInUp 1s ease-in-out;
   opacity: 1;
@@ -233,6 +252,7 @@ img {
     opacity: 0;
     transform: translateX(12px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -246,6 +266,7 @@ img {
   justify-content: center;
   transition: transform 180ms ease, background-color 180ms ease;
 }
+
 .close-btn:active {
   transform: scale(0.95) rotate(-10deg);
 }
@@ -262,7 +283,7 @@ img {
 }
 
 .lang-pill:focus {
-  outline: 2px solid rgba(255,255,255,0.12);
+  outline: 2px solid rgba(255, 255, 255, 0.12);
   transform: translateY(-2px) scale(1.02);
 }
 
@@ -273,7 +294,7 @@ img {
 /* When header is sticky, add subtle backdrop and blur so content scrolls under */
 .sidebar-sticky {
   backdrop-filter: blur(4px);
-  background: linear-gradient(180deg, rgba(31,31,31,0.6), rgba(22,22,22,0.4));
+  background: linear-gradient(180deg, rgba(31, 31, 31, 0.6), rgba(22, 22, 22, 0.4));
 }
 
 @keyframes fadeInUp {
@@ -281,16 +302,19 @@ img {
     opacity: 0;
     transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -310,14 +334,17 @@ img {
 /* simple fade-in utility used for app entrance (kept short and subtle) */
 .animate-fade-in {
   opacity: 0;
-  animation: fadeIn 900ms cubic-bezier(.2,.8,.2,1) forwards;
+  animation: fadeIn 900ms cubic-bezier(.2, .8, .2, 1) forwards;
 }
+
 .custom-scroll-rail {
   position: fixed;
-  right: 0; /* flush to the right edge */
+  right: 0;
+  /* flush to the right edge */
   top: 0;
   height: 100vh;
-  width: 16px; /* slightly wider rail */
+  width: 16px;
+  /* slightly wider rail */
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -326,61 +353,85 @@ img {
 }
 
 .custom-scroll-thumb {
-  width: 6px; /* thinner thumb */
-  min-height: 72px; /* a bit longer */
-  border-radius: 2px; /* nearly square corners */
-  background: #8B0000; /* solid dark red */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  width: 6px;
+  /* thinner thumb */
+  min-height: 72px;
+  /* a bit longer */
+  border-radius: 2px;
+  /* nearly square corners */
+  background: #8B0000;
+  /* solid dark red */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   cursor: pointer;
   transition: background 120ms ease, transform 80ms ease;
 }
 
 
 /* Hide native scrollbar for most browsers */
-html, body {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+html,
+body {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE 10+ */
 }
-html::-webkit-scrollbar, body::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
 }
+
 /* Minimal gray scrollbar for Hiring Mode panel only */
 .hiring-panel-scroll {
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #252525 transparent; /* thumb color, track transparent */
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: #252525 transparent;
+  /* thumb color, track transparent */
 }
+
 .hiring-panel-scroll::-webkit-scrollbar {
   width: 8px;
 }
+
 .hiring-panel-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .hiring-panel-scroll::-webkit-scrollbar-thumb {
-  background-color: #353535; /* subtle gray */
+  background-color: #353535;
+  /* subtle gray */
   border-radius: 6px;
-  border: 2px solid rgba(0,0,0,0.05);
+  border: 2px solid rgba(0, 0, 0, 0.05);
 }
+
 /* Print styles to limit output to the Hiring Mode panel and improve layout */
 @media print {
+
   /* Hide everything by default (use visibility so nested .hiring-print can be shown) */
-  body * { visibility: hidden !important; }
+  body * {
+    visibility: hidden !important;
+  }
 
   /* Show only the hiring panel wrapper and its children */
-  .hiring-print, .hiring-print * {
+  .hiring-print,
+  .hiring-print * {
     visibility: visible !important;
   }
 
   /* Center and compact the hiring panel for print */
   .hiring-print {
     display: block !important;
-    position: fixed !important; /* use fixed so it prints independently of ancestor layout */
+    position: fixed !important;
+    /* use fixed so it prints independently of ancestor layout */
     left: 50% !important;
     top: 50% !important;
     transform: translate(-50%, -50%) scale(0.9) !important;
     transform-origin: center center !important;
     width: 100% !important;
     max-width: 820px !important;
-    background: #ffffff !important; /* white paper-friendly background */
+    background: #ffffff !important;
+    /* white paper-friendly background */
     color: #000000 !important;
     box-shadow: none !important;
     border: none !important;
@@ -391,23 +442,54 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   }
 
   /* Hide images to save ink and reduce layout height */
-  .hiring-print img, .hiring-print svg { display: none !important; }
+  .hiring-print img,
+  .hiring-print svg {
+    display: none !important;
+  }
 
   /* Convert multi-column grids to single column for print */
-  .hiring-print .grid { grid-template-columns: 1fr !important; }
+  .hiring-print .grid {
+    grid-template-columns: 1fr !important;
+  }
 
   /* Reduce spacing and padding to pack content into a single page */
-  .hiring-print .p-6 { padding: 8px !important; }
-  .hiring-print .p-4 { padding: 6px !important; }
-  .hiring-print .mb-4 { margin-bottom: 6px !important; }
-  .hiring-print .gap-3 { gap: 6px !important; }
+  .hiring-print .p-6 {
+    padding: 8px !important;
+  }
+
+  .hiring-print .p-4 {
+    padding: 6px !important;
+  }
+
+  .hiring-print .mb-4 {
+    margin-bottom: 6px !important;
+  }
+
+  .hiring-print .gap-3 {
+    gap: 6px !important;
+  }
 
   /* Typography reductions */
-  .hiring-print h2 { font-size: 18px !important; margin-bottom: 6px !important; }
-  .hiring-print h3 { font-size: 14px !important; }
-  .hiring-print .text-2xl { font-size: 18px !important; }
-  .hiring-print .text-sm { font-size: 11px !important; }
-  .hiring-print .text-xs { font-size: 10px !important; }
+  .hiring-print h2 {
+    font-size: 18px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .hiring-print h3 {
+    font-size: 14px !important;
+  }
+
+  .hiring-print .text-2xl {
+    font-size: 18px !important;
+  }
+
+  .hiring-print .text-sm {
+    font-size: 11px !important;
+  }
+
+  .hiring-print .text-xs {
+    font-size: 10px !important;
+  }
 
   /* Ensure printed sections are white and text is black to save color */
   /* Force white backgrounds and black text for all inner elements */
@@ -419,47 +501,82 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   }
 
   /* Tailwind utility overrides to ensure white backgrounds and black text */
-  .hiring-print .bg-\#232425, .hiring-print .bg-\#000000, .hiring-print .bg-\#7C3AED {
+  .hiring-print .bg-\#232425,
+  .hiring-print .bg-\#000000,
+  .hiring-print .bg-\#7C3AED {
     background: #ffffff !important;
   }
-  .hiring-print .text-white { color: #000 !important; }
+
+  .hiring-print .text-white {
+    color: #000 !important;
+  }
 
   /* Print-only clamp for long summary paragraphs to keep the hire panel to one page */
   .hiring-print .print-clamp {
     /* Prefer modern clamping */
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
-  -webkit-line-clamp: 6 !important; /* clamp to ~6 lines */
-  line-clamp: 6 !important;
+    -webkit-line-clamp: 6 !important;
+    /* clamp to ~6 lines */
+    line-clamp: 6 !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    max-height: calc(1.15em * 6) !important; /* fallback for browsers without -webkit-line-clamp */
+    max-height: calc(1.15em * 6) !important;
+    /* fallback for browsers without -webkit-line-clamp */
   }
 
   /* Hide UI elements not needed in print */
-  .hiring-print .close-btn, .hiring-print button, .hiring-print .no-print {
+  .hiring-print .close-btn,
+  .hiring-print button,
+  .hiring-print .no-print {
     display: none !important;
   }
 
   /* Page settings */
-  @page { size: A4 portrait; margin: 8mm; }
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
 }
+
 /* Subtle periodic shake for attention (used on the briefcase in navbar) */
 /* Occasional side-to-side rotating shake for the briefcase icon.
    The animation is mostly idle, then performs a short rotate/translate shake
    near the end of each cycle so it feels occasional (every 8s by default). */
 @keyframes briefcase-occasional-shake {
-  0%, 78%, 100% { transform: rotate(0deg) translateX(0); }
-  80% { transform: rotate(-6deg) translateX(-5px); }
-  84% { transform: rotate(6deg) translateX(6px); }
-  88% { transform: rotate(-4deg) translateX(-4px); }
-  92% { transform: rotate(3deg) translateX(3px); }
-  96% { transform: rotate(0deg) translateX(0); }
+
+  0%,
+  78%,
+  100% {
+    transform: rotate(0deg) translateX(0);
+  }
+
+  80% {
+    transform: rotate(-6deg) translateX(-5px);
+  }
+
+  84% {
+    transform: rotate(6deg) translateX(6px);
+  }
+
+  88% {
+    transform: rotate(-4deg) translateX(-4px);
+  }
+
+  92% {
+    transform: rotate(3deg) translateX(3px);
+  }
+
+  96% {
+    transform: rotate(0deg) translateX(0);
+  }
 }
+
 .shake-briefcase {
   transform-origin: center;
   animation: briefcase-occasional-shake 8s ease-in-out infinite;
 }
+
 .loader {
   position: fixed;
   top: 50%;
@@ -490,7 +607,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   outline: none;
 }
 
-.price-list-table{
+.price-list-table {
   margin: 3px;
 }
 
@@ -499,7 +616,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   border: 4px solid #e0d9cf;
   padding: 8px;
   text-align: center;
@@ -525,7 +643,7 @@ th {
   border-color: #6e5e4c;
 }
 
-.contact-button{
+.contact-button {
   width: 320px;
   background-color: #e0d9cf;
   height: 59px;
@@ -542,21 +660,32 @@ th {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg,#7C3AED,#981313);
+  background: linear-gradient(180deg, #7C3AED, #981313);
   color: white;
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(183,28,28,0.18), 0 2px 6px rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.04);
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease, background 160ms ease, transform 160ms ease;
+  box-shadow: 0 8px 24px rgba(183, 28, 28, 0.18), 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: transform 260ms cubic-bezier(.2, .9, .2, 1), opacity 220ms ease, background 160ms ease, transform 160ms ease;
   cursor: pointer;
   z-index: 60;
 }
-.scroll-top:hover { transform: translateY(-4px) scale(1.02); }
-.scroll-top svg { display: block; }
+
+.scroll-top:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.scroll-top svg {
+  display: block;
+}
 
 /* hidden/visible helpers */
-.scroll-top.opacity-0 { opacity: 0; }
-.scroll-top.opacity-100 { opacity: 1; }
+.scroll-top.opacity-0 {
+  opacity: 0;
+}
+
+.scroll-top.opacity-100 {
+  opacity: 1;
+}
 
 @layer base {
   :root {
@@ -586,6 +715,7 @@ th {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -618,6 +748,7 @@ th {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -626,7 +757,7 @@ th {
 
 .bg-architecture {
   background-color: #020202;
-  background-image: 
+  background-image:
     radial-gradient(circle at 2px 2px, rgba(124, 58, 237, 0.05) 1px, transparent 0);
   background-size: 40px 40px;
 }
@@ -635,40 +766,52 @@ th {
 .section-glow {
   position: relative;
 }
+
 .section-glow::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 40% at 50% 20%, rgba(168,85,247,0.045), transparent 70%),
-              radial-gradient(ellipse 50% 50% at 80% 80%, rgba(255,255,255,0.015), transparent 70%);
+  background: radial-gradient(ellipse 70% 40% at 50% 20%, rgba(168, 85, 247, 0.045), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(255, 255, 255, 0.015), transparent 70%);
   pointer-events: none;
   z-index: 0;
+  contain: layout style paint;
 }
 
 /* ── White Neon / Tron accent utilities ── */
 .neon-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-  box-shadow: 0 0 6px rgba(255,255,255,0.15), 0 0 20px rgba(255,255,255,0.06);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.15), 0 0 20px rgba(255, 255, 255, 0.06);
 }
+
 .neon-line-v {
   width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.4), transparent);
-  box-shadow: 0 0 6px rgba(255,255,255,0.12), 0 0 18px rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.12), 0 0 18px rgba(255, 255, 255, 0.04);
 }
+
 .neon-dot {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.7);
-  box-shadow: 0 0 6px rgba(255,255,255,0.5), 0 0 14px rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5), 0 0 14px rgba(255, 255, 255, 0.2);
 }
 
 /* Pure CSS cursor blink — replaces framer-motion infinite loop */
 @keyframes cursor-blink {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
+
 .cursor-blink {
   animation: cursor-blink 0.8s step-end infinite;
 }
@@ -682,10 +825,13 @@ th {
   pointer-events: none;
   z-index: 50;
   opacity: 0.02;
+  will-change: transform;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 /* Reduce grain on mobile for GPU compositing savings */
 @media (max-width: 768px) {
-  .bg-grain { opacity: 0.008; }
+  .bg-grain {
+    opacity: 0.008;
+  }
 }

@@ -32,7 +32,7 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
         )}
         <ul className="space-y-4">
           {achievements.map((item, i) => (
-            <li key={i} className="text-xs text-zinc-500 font-light leading-snug group/item">
+            <li key={i} className="text-xs text-zinc-400 font-light leading-snug group/item">
               <span className="text-purple-500 mr-2">—</span> {item}
             </li>
           ))}
@@ -66,18 +66,18 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
             className={`h-[1px] hidden md:block transition-all duration-500 ${isActive ? 'w-10 bg-purple-500' : 'w-0 bg-zinc-600'}`}
           />
           {isActive && <div className="neon-dot hidden md:block" />}
-          <span className={`text-[11px] font-mono tracking-[0.3em] uppercase transition-colors duration-500 ${isActive ? 'text-purple-400' : 'text-zinc-600'}`}>
+          <span className={`text-[11px] font-mono tracking-[0.3em] uppercase transition-colors duration-500 ${isActive ? 'text-purple-400' : 'text-zinc-500'}`}>
             {years}
           </span>
         </div>
 
         <div className="lg:col-span-8">
           <div className="flex flex-col">
-            <h3 className={`text-3xl md:text-5xl font-light tracking-tighter transition-all duration-500 ${isActive ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+            <h3 className={`text-3xl md:text-5xl font-light tracking-tighter transition-all duration-500 ${isActive ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
               {role}
             </h3>
             <div className="flex items-center gap-3 mt-2">
-              <span className="text-xs font-medium text-zinc-400 uppercase tracking-widest">{company}</span>
+              <span className="text-xs font-medium text-zinc-300 uppercase tracking-widest">{company}</span>
               {isEducation && (
                 <span className="text-[9px] font-mono text-purple-500/50 border border-purple-500/20 px-2 py-0.5 uppercase tracking-tighter">{t('work.academic_track')}</span>
               )}

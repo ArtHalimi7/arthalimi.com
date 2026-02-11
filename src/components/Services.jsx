@@ -136,11 +136,11 @@ export function ServicesSection() {
             <h4 className="text-2xl font-light text-white italic mb-4">{t('services.cta_title')}</h4>
             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest leading-relaxed">{t('services.cta_sub')}</p>
           </div>
-          <motion.a href="#contact" className="group relative flex items-center gap-6 px-12 py-6 bg-white text-black font-medium overflow-hidden rounded-full">
+          <a href="#contact" className="group relative flex items-center gap-6 px-12 py-6 bg-white text-black font-medium overflow-hidden rounded-full">
             <span className="relative z-10 uppercase tracking-widest text-xs">{t('services.cta_btn')}</span>
             <ArrowRight className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-2" />
             <div className="absolute inset-0 bg-purple-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-          </motion.a>
+          </a>
         </motion.div>
       </div>
     </section>

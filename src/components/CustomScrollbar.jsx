@@ -1,33 +1,41 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 
 export default function CustomScrollbar() {
   const thumbRef = useRef(null);
-  const [thumbHeight, setThumbHeight] = useState(0);
-  const [thumbTop, setThumbTop] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const railRef = useRef(null);
   const dragging = useRef(false);
   const startY = useRef(0);
   const startTop = useRef(0);
+  const thumbHeightRef = useRef(0);
+  const thumbTopRef = useRef(0);
+  const isHovered = useRef(false);
+
+  // Direct DOM update — no React re-render
+  const applyThumbStyle = useCallback(() => {
+    const el = thumbRef.current;
+    if (!el) return;
+    el.style.height = `${thumbHeightRef.current}px`;
+    el.style.transform = `translateY(${thumbTopRef.current}px)`;
+  }, []);
 
   useEffect(() => {
     const update = () => {
       const doc = document.documentElement;
       const windowHeight = window.innerHeight;
       const scrollHeight = doc.scrollHeight;
-      
-      // Calculate height ratio
+
       const ratio = windowHeight / scrollHeight;
-      const h = Math.max(ratio * windowHeight, 40); // Minimum 40px thumb
-      
-      // Calculate top position based on scroll progress
+      const h = Math.max(ratio * windowHeight, 40);
+
       const maxScroll = scrollHeight - windowHeight;
       const scrollProgress = window.scrollY / Math.max(maxScroll, 1);
       const top = scrollProgress * (windowHeight - h);
-      
-      setThumbHeight(h);
-      setThumbTop(isFinite(top) ? top : 0);
+
+      thumbHeightRef.current = h;
+      thumbTopRef.current = isFinite(top) ? top : 0;
+      applyThumbStyle();
     };
 
     update();
@@ -37,20 +45,20 @@ export default function CustomScrollbar() {
       window.removeEventListener('scroll', update);
       window.removeEventListener('resize', update);
     };
-  }, []);
+  }, [applyThumbStyle]);
 
   useEffect(() => {
     const onMouseMove = (e) => {
       if (!dragging.current) return;
-      
+
       const dy = e.clientY - startY.current;
       const windowHeight = window.innerHeight;
-      const maxThumbTop = windowHeight - thumbHeight;
+      const maxThumbTop = windowHeight - thumbHeightRef.current;
       const newTop = Math.min(Math.max(0, startTop.current + dy), maxThumbTop);
-      
+
       const scrollable = document.documentElement.scrollHeight - windowHeight;
       const ratio = newTop / Math.max(maxThumbTop, 1);
-      
+
       window.scrollTo({ top: ratio * scrollable, behavior: 'auto' });
     };
 
@@ -66,13 +74,13 @@ export default function CustomScrollbar() {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
     };
-  }, [thumbHeight]);
+  }, []);
 
   const onThumbMouseDown = (e) => {
-    e.stopPropagation(); // Prevents rail click from firing
+    e.stopPropagation();
     dragging.current = true;
     startY.current = e.clientY;
-    startTop.current = thumbTop;
+    startTop.current = thumbTopRef.current;
     document.body.style.userSelect = 'none';
     document.body.style.cursor = 'grabbing';
   };
@@ -80,49 +88,57 @@ export default function CustomScrollbar() {
   const onRailClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const clickY = e.clientY - rect.top;
-    const newTop = Math.min(Math.max(0, clickY - thumbHeight / 2), window.innerHeight - thumbHeight);
+    const h = thumbHeightRef.current;
+    const newTop = Math.min(Math.max(0, clickY - h / 2), window.innerHeight - h);
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    const ratio = newTop / Math.max(window.innerHeight - thumbHeight, 1);
-    
+    const ratio = newTop / Math.max(window.innerHeight - h, 1);
+
     window.scrollTo({ top: ratio * scrollable, behavior: 'smooth' });
+  };
+
+  const onEnter = () => {
+    isHovered.current = true;
+    const rail = railRef.current;
+    const thumb = thumbRef.current;
+    if (rail) rail.style.width = '12px';
+    if (thumb) thumb.style.background = '#7C3AED';
+  };
+  const onLeave = () => {
+    isHovered.current = false;
+    const rail = railRef.current;
+    const thumb = thumbRef.current;
+    if (rail) rail.style.width = '6px';
+    if (thumb) thumb.style.background = '#3f3f46';
   };
 
   const rail = (
     <div
+      ref={railRef}
       className="fixed right-0 top-0 bottom-0 z-[99999] flex justify-center transition-all duration-500"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
       onMouseDown={onRailClick}
       aria-hidden
-      style={{ 
-        width: isHovered ? '12px' : '6px', 
+      style={{
+        width: '6px',
         background: 'rgba(255,255,255,0.02)',
         borderLeft: '1px solid rgba(255,255,255,0.05)'
       }}
     >
-      {/* Decorative Track Line */}
       <div className="absolute inset-y-0 w-px bg-white/5 left-1/2 -translate-x-1/2" />
-
-      {/* The Architectural Thumb */}
       <div
         ref={thumbRef}
         onMouseDown={onThumbMouseDown}
         className="relative transition-colors duration-300"
         style={{
-          height: `${thumbHeight}px`,
-          transform: `translateY(${thumbTop}px)`,
-          background: isHovered ? '#7C3AED' : '#3f3f46', // Purple when active
-          width: '2px', // Razor thin like your grid lines
+          height: 0,
+          transform: 'translateY(0px)',
+          background: '#3f3f46',
+          width: '2px',
           cursor: 'pointer',
         }}
       >
-        {/* Invisible hit area for better UX on thin line */}
         <div className="absolute inset-y-0 -left-4 -right-4 cursor-pointer" />
-        
-        {/* Glow effect when hovered */}
-        {isHovered && (
-          <div className="absolute inset-0 bg-purple-500 blur-sm opacity-50" />
-        )}
       </div>
     </div>
   );

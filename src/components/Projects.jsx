@@ -10,33 +10,40 @@ import tafaImg from "../assets/tafa.png";
 import lbImg from "../assets/lb.png";
 import andiImg from "../assets/andi.png";
 import arsaImg from "../assets/arsa.png";
+import swissFlag from "../assets/swiss.png";
 
 const projectsData = [
   { id: 1, titleKey: 'projects.tafa.title', image: tafaImg, year: '2026', descriptionKey: 'projects.tafa.description', tech: 'projects.tafa.tech', link: 'https://tafaleka.com', color: '#080808' },
-  { id: 2, titleKey: 'projects.lb.title', image: lbImg, year: '2026', descriptionKey: 'projects.lb.description', tech: 'projects.lb.tech', link: 'https://lbhairdesign.ch', color: '#0B080C' },
+  { id: 2, titleKey: 'projects.lb.title', image: lbImg, year: '2026', descriptionKey: 'projects.lb.description', tech: 'projects.lb.tech', link: 'https://lbhairdesign.ch', color: '#0B080C', flag: swissFlag },
   { id: 3, titleKey: 'projects.andi.title', image: andiImg, year: '2025', descriptionKey: 'projects.andi.description', tech: 'Portfolio', link: 'https://andishkodra.com', color: '#08090C' },
-  { id: 4, titleKey: 'projects.arsa.title', image: arsaImg, year: '2025', descriptionKey: 'projects.arsa.description', tech: 'Architecture', link: 'https://arsagipser.ch', color: '#080A08' },
+  { id: 4, titleKey: 'projects.arsa.title', image: arsaImg, year: '2025', descriptionKey: 'projects.arsa.description', tech: 'Architecture', link: 'https://arsagipser.ch', color: '#080A08', flag: swissFlag },
 ];
 
 function ProjectCard({ project, index }) {
   const { t } = useTranslation();
 
   return (
-    <div className="sticky top-0 h-screen w-full flex items-center justify-center px-4 md:px-10">
+    <div className="group sticky top-0 h-screen w-full flex items-center justify-center px-4 md:px-10">
       <motion.div
-        initial={{ transform: "scale(0.9) translateZ(0)", opacity: 0 }}
-        whileInView={{ transform: "scale(1) translateZ(0)", opacity: 1 }}
-        viewport={{ margin: "-5%" }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        style={{ backgroundColor: project.color, willChange: "transform, opacity" }}
-        className="relative w-full max-w-7xl h-[80vh] rounded-[32px] border border-white/[0.07] flex flex-col md:flex-row items-center p-8 md:p-14 gap-8 md:gap-16 shadow-[0_0_80px_rgba(168,85,247,0.04),0_40px_100px_rgba(0,0,0,0.7)] hover:shadow-[0_0_80px_rgba(168,85,247,0.04),0_40px_100px_rgba(0,0,0,0.7),0_0_1px_rgba(255,255,255,0.15),0_0_15px_rgba(255,255,255,0.04)] hover:border-white/[0.12] transition-all duration-700 overflow-hidden"
+        initial={{ scale: 0.93, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        style={{ backgroundColor: project.color }}
+        className="relative w-full max-w-7xl h-[80vh] rounded-[32px] border border-white/[0.07] flex flex-col md:flex-row items-center p-8 md:p-14 gap-8 md:gap-16 shadow-[0_40px_100px_rgba(0,0,0,0.7)] hover:shadow-[0_40px_100px_rgba(0,0,0,0.7),0_0_1px_rgba(255,255,255,0.15)] hover:border-white/[0.12] transition-all duration-700 overflow-hidden"
       >
-        <div className="w-full md:w-[35%] flex flex-col justify-between h-full z-10 overflow-hidden">
+        <div className="w-full md:w-[35%] flex flex-col justify-between h-full z-10">
           <div className="overflow-hidden">
             <div className="flex items-center gap-3 mb-6 shrink-0">
               <span className="text-purple-500/80 text-[10px] font-bold tracking-[0.5em] uppercase italic">0{index + 1}</span>
               <div className="h-[1px] w-8 bg-zinc-800" />
               <span className="text-zinc-600 text-[10px] font-medium tracking-widest">{project.year}</span>
+              {project.flag && (
+                <img
+                  src={project.flag}
+                  alt=""
+                  className="w-5 h-5 object-contain opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-70 transition-all duration-500"
+                />
+              )}
             </div>
 
             <h3 className="text-4xl md:text-5xl lg:text-6xl font-extralight italic tracking-tighter text-white mb-6 leading-[1.05] shrink-0">
@@ -56,8 +63,8 @@ function ProjectCard({ project, index }) {
             </div>
           </div>
 
-          <a href={project.link} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-5 text-white w-fit pt-6 shrink-0">
-            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all duration-500 transform group-hover:scale-110">
+          <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-5 text-white w-fit pb-2 shrink-0">
+            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all duration-500">
               <ArrowUpRight size={22} />
             </div>
             <span className="text-[10px] font-bold tracking-[0.4em] uppercase">View Case</span>
@@ -72,7 +79,6 @@ function ProjectCard({ project, index }) {
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-1000"
-            style={{ willChange: "transform" }}
           />
           <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.2)] pointer-events-none" />
         </div>

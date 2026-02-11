@@ -55,11 +55,10 @@ export default function AboutMe() {
               </div>
             </div>
 
-            <motion.a
+            <a
               href={cvPdf}
               download="Art_Halimi_CV.pdf"
-              whileHover={{ scale: 1.05, x: 10 }}
-              className="inline-flex items-center gap-6 w-fit group"
+              className="inline-flex items-center gap-6 w-fit group hover:scale-105 hover:translate-x-2.5 transition-transform duration-300"
             >
               <div className="flex items-center justify-center w-14 h-14 rounded-full border border-white/10 group-hover:bg-white group-hover:text-black transition-all duration-500">
                 <Download size={20} strokeWidth={1.5} />
@@ -68,7 +67,7 @@ export default function AboutMe() {
                 <span className="text-[10px] font-bold tracking-[0.3em] uppercase">{t('about.download_dossier')}</span>
                 <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">{t('about.download_pdf')}</span>
               </div>
-            </motion.a>
+            </a>
           </motion.div>
 
           {/* RIGHT SIDE: PRINCIPLE CARDS (Cols 8-12) */}

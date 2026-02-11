@@ -213,7 +213,7 @@ function AnimatedCodeSnippet() {
         else setDirection(1);
       }
     };
-    const delay = direction === 1 ? 50 : 30;
+    const delay = direction === 1 ? 70 : 50;
     const pause = pos === fullText.length ? 3000 : pos === 0 ? 1000 : delay;
     const timer = setTimeout(tick, pause);
     return () => clearTimeout(timer);
@@ -227,10 +227,8 @@ function AnimatedCodeSnippet() {
         if (p.type === 'brace') return <span key={i} className="text-blue-400">{p.text}</span>;
         return <span key={i} className="text-zinc-500">{p.text}</span>;
       })}
-      <motion.span
-        animate={{ opacity: [0, 1, 0] }}
-        transition={{ repeat: Infinity, duration: 0.8 }}
-        className="inline-block w-[6px] h-[14px] md:h-[18px] bg-purple-500/60 ml-1 align-middle"
+      <span
+        className="cursor-blink inline-block w-[6px] h-[14px] md:h-[18px] bg-purple-500/60 ml-1 align-middle"
       />
     </div>
   );
