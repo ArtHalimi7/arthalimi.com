@@ -23,7 +23,10 @@ function ProjectCard({ project, index }) {
   const { t } = useTranslation();
 
   return (
-    <div className="group sticky top-0 h-screen w-full flex items-center justify-center px-4 md:px-10">
+    <div
+      className="group sticky h-screen w-full flex items-center justify-center px-4 md:px-10"
+      style={{ top: index * 30, zIndex: index + 1 }}
+    >
       <motion.div
         initial={{ scale: 0.93, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}

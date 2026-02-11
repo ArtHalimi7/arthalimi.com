@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './index.css';
 import Home from './pages/Home';
@@ -10,7 +10,7 @@ import CustomScrollbar from './components/CustomScrollbar';
 import ScrollTop from './components/ScrollTop';
 import SplashScreen from './components/SplashScreen';
 import HiringModePanel from './components/HiringModePanel';
-import Analytics from './pages/Analytics';
+
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -30,9 +30,9 @@ const App = () => {
       <Router>
         <Navbar />
         <HiringModePanel />
-        
+
         {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
-        
+
         {appReady && (
           <>
             <div className="opacity-0 animate-fade-in relative z-10">
@@ -40,7 +40,6 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="*" element={<NotFound />} />
-                <Route path="/analytics" element={<Analytics />} />
               </Routes>
               <ScrollTop />
             </div>
