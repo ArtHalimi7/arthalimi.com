@@ -31,7 +31,7 @@ This is a Node.js + Express + MySQL backend for portfolio analytics.
   - Body: `{ country, timestamp, page }`
 - `GET /api/visits` — Get all visit records
 
-CORS is enabled for `arthalimi.netlify.app` and localhost.
+CORS is enabled for `arthalimi.com` and localhost.
 
 ---
 

@@ -31,8 +31,8 @@ app.use(express.json());
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://arthalimi.netlify.app',
-    'https://www.arthalimi.netlify.app'
+    'https://arthalimi.com',
+    'https://www.arthalimi.com'
   ],
   credentials: true
 }));

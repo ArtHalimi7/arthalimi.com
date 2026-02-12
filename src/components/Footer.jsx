@@ -69,7 +69,7 @@ export default function Footer() {
               <SocialIcon href="https://github.com/ArtHalimi7" icon={Github} label="GitHub" />
               <SocialIcon href="https://linkedin.com/in/arthalimi" icon={Linkedin} label="LinkedIn" />
               <SocialIcon href="mailto:arthalimi989@gmail.com" icon={Mail} label="Email" />
-              <SocialIcon href="https://arthalimi.netlify.app" icon={Globe} label="Live" />
+              <SocialIcon href="https://arthalimi.com" icon={Globe} label="Live" />
             </div>
             <p className="text-[10px] text-zinc-600 font-mono tracking-tighter uppercase italic">
               Prishtina, Kosovo // 2026

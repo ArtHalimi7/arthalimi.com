@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Zap, ShieldCheck, Globe } from 'lucide-react';
-import cvPdf from '../assets/ArtHalimiCV.pdf';
+import cvPdf from '../assets/Art_Halimi_CV.pdf';
 
 export default function AboutMe() {
   const { t } = useTranslation();
