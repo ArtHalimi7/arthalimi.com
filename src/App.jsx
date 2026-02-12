@@ -13,10 +13,7 @@ import HiringModePanel from './components/HiringModePanel';
 
 const App = () => {
   return (
-    // CHANGE: Added bg-architecture here
     <main className='bg-architecture min-h-screen relative'>
-      {/* NEW: The Grain Overlay (Always visible, sits on top but ignores clicks) */}
-      <div className="bg-grain" />
 
       <Router>
         <Navbar />

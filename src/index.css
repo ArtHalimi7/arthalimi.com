@@ -816,25 +816,7 @@ th {
   animation: cursor-blink 0.8s step-end infinite;
 }
 
-/* Subtle grain texture to make the black feel "premium" */
-.bg-grain {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 50;
-  opacity: 0.02;
-  will-change: transform;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
 
-/* Reduce grain on mobile for GPU compositing savings */
-@media (max-width: 768px) {
-  .bg-grain {
-    opacity: 0.008;
-  }
-}
 
 /* ── Grainient WebGL background container ── */
 .grainient-container {
@@ -842,4 +824,104 @@ th {
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+/* ── Hero Accent Animations (GPU-only: transform + opacity) ── */
+
+/* Pulsing emerald dot for "Available" badge */
+@keyframes hero-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 5px rgba(52, 211, 153, 0);
+  }
+}
+
+.hero-pulse-dot {
+  animation: hero-pulse 2.5s ease-in-out infinite;
+}
+
+/* Floating accent 1 — slow-rotating diamond outline */
+@keyframes hero-drift-1 {
+
+  0%,
+  100% {
+    transform: rotate(45deg) translateY(0px);
+    opacity: 0.4;
+  }
+
+  50% {
+    transform: rotate(45deg) translateY(-18px);
+    opacity: 0.7;
+  }
+}
+
+.hero-float-1 {
+  animation: hero-drift-1 10s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Floating accent 2 — gently pulsing circle */
+@keyframes hero-drift-2 {
+
+  0%,
+  100% {
+    transform: scale(1) translateY(0px);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: scale(1.3) translateY(-12px);
+    opacity: 0.6;
+  }
+}
+
+.hero-float-2 {
+  animation: hero-drift-2 12s ease-in-out infinite;
+  animation-delay: -4s;
+  will-change: transform, opacity;
+}
+
+/* Floating accent 3 — drifting vertical line */
+@keyframes hero-drift-3 {
+
+  0%,
+  100% {
+    transform: translateX(0px) scaleY(1);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translateX(6px) scaleY(1.15);
+    opacity: 0.45;
+  }
+}
+
+.hero-float-3 {
+  animation: hero-drift-3 14s ease-in-out infinite;
+  animation-delay: -7s;
+  will-change: transform, opacity;
+}
+
+/* Scroll indicator — gentle bounce */
+@keyframes hero-scroll-bounce {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: translateY(6px);
+    opacity: 0.7;
+  }
+}
+
+.hero-scroll-indicator {
+  animation: hero-scroll-bounce 2.8s ease-in-out infinite;
 }

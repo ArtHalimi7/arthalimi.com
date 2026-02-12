@@ -1,8 +1,7 @@
-import { useState, useMemo, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ArrowRight, Plus } from 'lucide-react';
-import macbook from '../assets/macbook.webp';
 
 const Grainient = lazy(() => import('./Grainient'));
 
@@ -11,9 +10,14 @@ export default function HeroWithGridLines() {
   const [shouldRenderWebGL, setShouldRenderWebGL] = useState(false);
 
   useEffect(() => {
-    // Delay WebGL initialization slightly to prioritize initial paint
-    const timer = setTimeout(() => setShouldRenderWebGL(true), 150);
-    return () => clearTimeout(timer);
+    // Defer WebGL until browser is idle — prevents shader compilation from blocking main thread
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(() => setShouldRenderWebGL(true), { timeout: 3000 });
+      return () => window.cancelIdleCallback(id);
+    } else {
+      const timer = setTimeout(() => setShouldRenderWebGL(true), 3000);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   return (
@@ -50,10 +54,10 @@ export default function HeroWithGridLines() {
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
-          {/* Left Column: Text Content */}
-          <div className="col-span-1 lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left gap-8 md:gap-10 order-1 lg:order-1">
+          {/* Left Column — Text content */}
+          <div className="col-span-1 lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left gap-8 md:gap-10">
             <header className="space-y-3">
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
@@ -109,30 +113,57 @@ export default function HeroWithGridLines() {
             </motion.div>
           </div>
 
-          {/* Right Column: Terminal Window (hidden on mobile) */}
-          <div className="hidden lg:flex lg:col-span-5 relative order-2 lg:order-2 justify-center lg:justify-end">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.5, ease: "circOut" }}
-              className="relative w-full max-w-[580px]"
-            >
-              {/* MacBook Image */}
-              <img
-                src={macbook}
-                alt="Art Halimi Fullstack Developer Projects"
-                loading="lazy"
-                className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(151,82,248,0.3)]"
-              />
+          {/* Right Column — Glassmorphic stats grid (desktop only) */}
+          <div className="hidden lg:flex lg:col-span-5 justify-center lg:justify-end">
+            <div className="grid grid-cols-2 gap-4 w-full max-w-[420px]">
+              {[
+                { value: '5+', label: 'Years', sub: 'Experience' },
+                { value: '10+', label: 'Projects', sub: 'Delivered' },
+                { value: '12+', label: 'Technologies', sub: 'Mastered' },
+                { value: '100%', label: 'Client', sub: 'Satisfaction' },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{
+                    duration: 0.7,
+                    delay: 0.4 + i * 0.12,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl p-7 overflow-hidden transition-all duration-500 hover:scale-[1.03] hover:-translate-y-1 hover:border-white/[0.12] hover:bg-white/[0.05] cursor-default"
+                >
+                  {/* ── Glowing corner accents ── */}
+                  {/* Top-left corner glow */}
+                  <div className="absolute -top-px -left-px w-12 h-12 pointer-events-none">
+                    <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-purple-400/40 to-transparent" />
+                    <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-purple-400/40 to-transparent" />
+                    <div className="absolute top-0 left-0 w-3 h-3 rounded-tl-2xl bg-purple-400/[0.06] blur-sm group-hover:bg-purple-400/[0.15] transition-all duration-700" />
+                  </div>
+                  {/* Bottom-right corner glow */}
+                  <div className="absolute -bottom-px -right-px w-12 h-12 pointer-events-none">
+                    <div className="absolute bottom-0 right-0 w-full h-px bg-gradient-to-l from-purple-400/30 to-transparent" />
+                    <div className="absolute bottom-0 right-0 h-full w-px bg-gradient-to-t from-purple-400/30 to-transparent" />
+                    <div className="absolute bottom-0 right-0 w-3 h-3 rounded-br-2xl bg-purple-400/[0.04] blur-sm group-hover:bg-purple-400/[0.12] transition-all duration-700" />
+                  </div>
 
-              {/* Code Screen Overlay */}
-              <div className="absolute top-[16%] left-[13.3%] w-[73.5%] h-[63%] z-10 overflow-hidden sm:rounded-sm">
-                <div className="w-full h-full p-2 sm:p-4 md:p-6 overflow-hidden">
-                  <AnimatedCodeSnippet />
-                </div>
-              </div>
-            </motion.div>
+                  {/* ── Card content (centered) ── */}
+                  <div className="relative z-10 flex flex-col items-center text-center">
+                    <span className="block text-3xl font-extralight tracking-tight text-white mb-1.5 transition-all duration-500 group-hover:text-purple-100 group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.25)]">
+                      {stat.value}
+                    </span>
+                    <span className="block text-[11px] font-mono tracking-[0.2em] text-purple-300/60 uppercase">
+                      {stat.label}
+                    </span>
+                    <span className="block text-[9px] font-mono tracking-[0.15em] text-zinc-600 uppercase mt-0.5 transition-colors duration-500 group-hover:text-zinc-400">
+                      {stat.sub}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -158,83 +189,6 @@ function AnimatedStagger({ children, stagger = 100, initialDelay = 0 }) {
           {child}
         </motion.span>
       ))}
-    </div>
-  );
-}
-
-// --- OPTIMIZATION START: Moved regex logic outside component to prevent re-parsing on every tick ---
-const TOKEN_REGEX = /(\b(?:class|extends|constructor|this|return|new)\b)|('[^']*')|(\{|\}|\(|\)|\[|\]|;)/g;
-
-function highlightSyntax(text) {
-  const parts = [];
-  let lastIndex = 0;
-  let match;
-
-  // Create a fresh regex instance for each execution to reset state
-  const regex = new RegExp(TOKEN_REGEX);
-
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIndex) parts.push({ text: text.slice(lastIndex, match.index), type: 'plain' });
-    if (match[1]) parts.push({ text: match[1], type: 'keyword' });
-    else if (match[2]) parts.push({ text: match[2], type: 'string' });
-    else if (match[3]) parts.push({ text: match[3], type: 'brace' });
-    lastIndex = match.index + match[0].length;
-  }
-  if (lastIndex < text.length) parts.push({ text: text.slice(lastIndex), type: 'plain' });
-  return parts;
-}
-// --- OPTIMIZATION END ---
-
-function AnimatedCodeSnippet() {
-  const lines = [
-    "class ArtHalimi extends Dev {",
-    "  constructor() {",
-    "    this.role = 'Full Stack';",
-    "    this.tech = ['React', 'Node', 'Express'];",
-    "    this.focus = 'Performance';",
-    "  }",
-    "  build() {",
-    "    return 'Clean Code';",
-    "  }",
-    "};"
-  ];
-
-  const fullText = lines.join('\n');
-  const [pos, setPos] = useState(0);
-  const [direction, setDirection] = useState(1);
-
-  // Memoize the highlighted parts to avoid calculation on every render
-  const highlightedParts = useMemo(() => {
-    return highlightSyntax(fullText.slice(0, pos));
-  }, [fullText, pos]);
-
-  useEffect(() => {
-    const tick = () => {
-      if (direction === 1) {
-        if (pos < fullText.length) setPos(p => p + 1);
-        else setDirection(-1);
-      } else {
-        if (pos > 0) setPos(p => p - 1);
-        else setDirection(1);
-      }
-    };
-    const delay = direction === 1 ? 70 : 50;
-    const pause = pos === fullText.length ? 3000 : pos === 0 ? 1000 : delay;
-    const timer = setTimeout(tick, pause);
-    return () => clearTimeout(timer);
-  }, [pos, direction, fullText]);
-
-  return (
-    <div className="font-mono text-[11px] sm:text-xs md:text-sm leading-[1.8] whitespace-pre select-none text-left w-full h-full">
-      {highlightedParts.map((p, i) => {
-        if (p.type === 'keyword') return <span key={i} className="text-purple-400 font-bold">{p.text}</span>;
-        if (p.type === 'string') return <span key={i} className="text-emerald-400">{p.text}</span>;
-        if (p.type === 'brace') return <span key={i} className="text-blue-400">{p.text}</span>;
-        return <span key={i} className="text-zinc-500">{p.text}</span>;
-      })}
-      <span
-        className="cursor-blink inline-block w-[6px] h-[14px] md:h-[18px] bg-purple-500/60 ml-1 align-middle"
-      />
     </div>
   );
 }
