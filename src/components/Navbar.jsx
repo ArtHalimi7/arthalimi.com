@@ -111,8 +111,8 @@ export default function Navbar({ formatted }) {
 
               <div className="pb-8">
                 <p className="text-[9px] uppercase tracking-[0.4em] text-white/20 mb-4 font-bold px-2">Select Language</p>
-                <div className="grid grid-cols-3 gap-2 p-1.5 bg-white/5 rounded-2xl border border-white/5">
-                  {['en', 'sq', 'de'].map((lng) => (
+                <div className="grid grid-cols-2 gap-2 p-1.5 bg-white/5 rounded-2xl border border-white/5">
+                  {['en', 'de'].map((lng) => (
                     <button
                       key={lng}
                       onClick={() => { i18n.changeLanguage(lng); setSidebarOpen(false); }}
@@ -134,12 +134,12 @@ export default function Navbar({ formatted }) {
       <div className="fixed top-0 inset-x-0 z-50 flex justify-center p-0 md:p-6 pointer-events-none">
         <header
           className={`
-            h-20 md:h-16 flex items-center justify-between w-full pointer-events-auto transition-all duration-1000
+            h-20 md:h-14 flex items-center justify-between w-full pointer-events-auto transition-all duration-1000
             ${isScrolled
-              ? 'bg-[#050505]/80 backdrop-blur-3xl border-b border-white/10 md:border md:rounded-full md:max-w-6xl shadow-2xl'
-              : 'bg-transparent border-transparent md:bg-black/10 md:backdrop-blur-md md:border-white/5 md:rounded-full md:max-w-6xl'
+              ? 'bg-[#050505]/80 backdrop-blur-3xl border-b border-white/10 md:border md:rounded-full md:max-w-5xl shadow-2xl'
+              : 'bg-transparent border-transparent md:bg-black/10 md:backdrop-blur-md md:border-white/5 md:rounded-full md:max-w-5xl'
             }
-            px-8 md:px-12
+            px-6 md:px-8
           `}
         >
           {/* Left: Logo */}
@@ -149,12 +149,12 @@ export default function Navbar({ formatted }) {
             </a>
           </div>
 
-          <nav className="hidden md:flex items-center gap-14">
+          <nav className="hidden md:flex items-center gap-10">
             {menuItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToId(item.id)}
-                className={`text-[10px] font-bold uppercase tracking-[0.3em] transition-all relative py-2 ${active === item.id ? 'text-white' : 'text-white/30 hover:text-white'
+                className={`text-[10px] font-bold uppercase tracking-[0.3em] transition-all relative py-2 ${active === item.id ? 'text-purple-400' : 'text-white hover:text-purple-400'
                   }`}
               >
                 {item.label}
@@ -166,9 +166,9 @@ export default function Navbar({ formatted }) {
           </nav>
 
           {/* Right: Tools (Language + Clock) */}
-          <div className="flex items-center gap-8">
-            <div className="hidden md:flex items-center gap-5 border-l border-white/10 pl-8">
-              {['en', 'sq', 'de'].map((lng) => (
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-4 border-l border-white/10 pl-3">
+              {['en', 'de'].map((lng) => (
                 <button
                   key={lng}
                   onClick={() => i18n.changeLanguage(lng)}
@@ -180,7 +180,7 @@ export default function Navbar({ formatted }) {
               ))}
             </div>
 
-            <span className="hidden md:block text-[11px] font-mono text-white/20 tracking-[0.2em] pt-0.5 border-l border-white/10 pl-8">{time}</span>
+            <span className="hidden md:block text-[11px] font-mono text-white/20 tracking-[0.2em] pt-0.5 border-l border-white/10 pl-5">{time}</span>
 
             <button onClick={() => setSidebarOpen(true)} className="md:hidden p-3 text-white/50 hover:text-white transition-colors">
               <MenuIcon />
