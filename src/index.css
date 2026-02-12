@@ -663,13 +663,7 @@ th {
 
 
 
-/* ── Grainient WebGL background container ── */
-.grainient-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+
 
 /* ── Hero Accent Animations (GPU-only: transform + opacity) ── */
 

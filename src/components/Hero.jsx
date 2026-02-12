@@ -1,56 +1,20 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import heroBg from '../assets/herobg.png';
+
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ArrowRight, Plus } from 'lucide-react';
 
-const Grainient = lazy(() => import('./Grainient'));
-
 export default function HeroWithGridLines() {
   const { t } = useTranslation();
-  const [shouldRenderWebGL, setShouldRenderWebGL] = useState(false);
-
-  useEffect(() => {
-    // Defer WebGL until browser is idle — prevents shader compilation from blocking main thread
-    if (typeof window.requestIdleCallback === 'function') {
-      const id = window.requestIdleCallback(() => setShouldRenderWebGL(true), { timeout: 3000 });
-      return () => window.cancelIdleCallback(id);
-    } else {
-      const timer = setTimeout(() => setShouldRenderWebGL(true), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
-      {/* Background: Grainient WebGL gradient (Lazy Loaded & Deferred) */}
       <div aria-hidden className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#050505]">
-        {shouldRenderWebGL && (
-          <Suspense fallback={<div className="absolute inset-0 bg-[#050505]" />}>
-            <Grainient
-              color1="#000000"
-              color2="#9752f8ff"
-              timeSpeed={0.25}
-              colorBalance={0}
-              warpStrength={1}
-              warpFrequency={5}
-              warpSpeed={2}
-              warpAmplitude={50}
-              blendAngle={0}
-              blendSoftness={0.05}
-              rotationAmount={500}
-              noiseScale={2}
-              grainAmount={0.1}
-              grainScale={2}
-              grainAnimated={false}
-              contrast={1.5}
-              gamma={1}
-              saturation={1}
-              centerX={0}
-              centerY={0}
-              zoom={0.9}
-            />
-          </Suspense>
-        )}
+        <img
+          src={heroBg}
+          alt="Hero background"
+          className="w-full h-full object-cover opacity-60"
+        />
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
