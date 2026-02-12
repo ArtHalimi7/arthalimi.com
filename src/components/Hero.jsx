@@ -2,42 +2,51 @@ import { useState, useMemo, useEffect, lazy, Suspense } from "react";
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ArrowRight, Plus } from 'lucide-react';
-import macbook from '../assets/macbook.png';
+import macbook from '../assets/macbook.webp';
 
 const Grainient = lazy(() => import('./Grainient'));
 
 export default function HeroWithGridLines() {
   const { t } = useTranslation();
+  const [shouldRenderWebGL, setShouldRenderWebGL] = useState(false);
+
+  useEffect(() => {
+    // Delay WebGL initialization slightly to prioritize initial paint
+    const timer = setTimeout(() => setShouldRenderWebGL(true), 150);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
-      {/* Background: Grainient WebGL gradient (Lazy Loaded) */}
+      {/* Background: Grainient WebGL gradient (Lazy Loaded & Deferred) */}
       <div aria-hidden className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#050505]">
-        <Suspense fallback={<div className="absolute inset-0 bg-[#050505]" />}>
-          <Grainient
-            color1="#000000"
-            color2="#9752f8ff"
-            timeSpeed={0.25}
-            colorBalance={0}
-            warpStrength={1}
-            warpFrequency={5}
-            warpSpeed={2}
-            warpAmplitude={50}
-            blendAngle={0}
-            blendSoftness={0.05}
-            rotationAmount={500}
-            noiseScale={2}
-            grainAmount={0.1}
-            grainScale={2}
-            grainAnimated={false}
-            contrast={1.5}
-            gamma={1}
-            saturation={1}
-            centerX={0}
-            centerY={0}
-            zoom={0.9}
-          />
-        </Suspense>
+        {shouldRenderWebGL && (
+          <Suspense fallback={<div className="absolute inset-0 bg-[#050505]" />}>
+            <Grainient
+              color1="#000000"
+              color2="#9752f8ff"
+              timeSpeed={0.25}
+              colorBalance={0}
+              warpStrength={1}
+              warpFrequency={5}
+              warpSpeed={2}
+              warpAmplitude={50}
+              blendAngle={0}
+              blendSoftness={0.05}
+              rotationAmount={500}
+              noiseScale={2}
+              grainAmount={0.1}
+              grainScale={2}
+              grainAnimated={false}
+              contrast={1.5}
+              gamma={1}
+              saturation={1}
+              centerX={0}
+              centerY={0}
+              zoom={0.9}
+            />
+          </Suspense>
+        )}
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
@@ -112,6 +121,7 @@ export default function HeroWithGridLines() {
               <img
                 src={macbook}
                 alt="Art Halimi Fullstack Developer Projects"
+                loading="lazy"
                 className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(151,82,248,0.3)]"
               />
 

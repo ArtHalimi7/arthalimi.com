@@ -96,25 +96,28 @@ export function Projects() {
   const yParallax = useTransform(scrollYProgress, [0, 0.2], [0, -40]);
 
   return (
-    <section id="projects" className="section-glow bg-black relative pt-32">
+    <section id="projects" className="section-glow bg-black relative pt-24 pb-12 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_30%_at_50%_0%,rgba(168,85,247,0.05),transparent)] pointer-events-none" />
       <div className="hidden md:block absolute top-[5%] right-[20%] w-[350px] h-[350px] bg-white/[0.012] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
-      <div className="h-[35vh] w-full flex flex-col justify-center items-center px-6 text-center overflow-hidden relative z-10">
-        <motion.div style={{ y: yParallax, willChange: "transform" }} className="flex flex-col items-center">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-10 h-[1px] bg-purple-500/50" />
-            <span className="text-purple-500/80 text-[10px] font-bold tracking-[0.6em] uppercase italic">{t('projects.section_tag')}</span>
-            <div className="w-10 h-[1px] bg-purple-500/50" />
-          </div>
 
-          <h2 className="text-4xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic leading-[0.85]">
-            {t('projects.section_title1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('projects.section_title2')}</span>
-          </h2>
+      <div className="relative max-w-7xl mx-auto px-6">
+        <div className="mb-20 flex flex-col items-center text-center lg:items-start lg:text-left">
+          <motion.div style={{ y: yParallax, willChange: "transform" }} className="flex flex-col items-center lg:items-start">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-10 h-[1px] bg-purple-500/50" />
+              <span className="text-purple-500/80 text-[10px] font-bold tracking-[0.6em] uppercase italic">{t('projects.section_tag')}</span>
+              {!window.innerWidth > 1024 && <div className="w-10 h-[1px] bg-purple-500/50 md:hidden" />}
+            </div>
 
-          <p className="mt-6 text-zinc-500 text-base md:text-lg font-light max-w-xl leading-relaxed italic">
-            {t('projects.section_lead')}
-          </p>
-        </motion.div>
+            <h2 className="text-4xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic leading-[0.85]">
+              {t('projects.section_title1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('projects.section_title2')}</span>
+            </h2>
+
+            <p className="mt-6 text-zinc-500 text-base md:text-lg font-light max-w-xl leading-relaxed italic">
+              {t('projects.section_lead')}
+            </p>
+          </motion.div>
+        </div>
       </div>
 
       <div className="relative">

@@ -15,7 +15,7 @@ export default function AboutMe() {
   ], [t]);
 
   return (
-    <section id="about" className="section-glow relative py-24 lg:py-56 bg-transparent text-white border-y border-white/[0.04]">
+    <section id="about" className="section-glow relative pt-8 pb-24 lg:pt-12 lg:pb-32 bg-transparent text-white border-y border-white/[0.04]">
       {/* Brighter ambient glow — purple + white */}
       <div className="hidden md:block absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(168,85,247,0.06),transparent)] pointer-events-none" />
       <div className="hidden md:block absolute top-[30%] right-[10%] w-[350px] h-[350px] bg-white/[0.02] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />

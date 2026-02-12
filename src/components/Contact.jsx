@@ -176,29 +176,23 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="section-glow relative py-32 bg-[#020202] text-zinc-100 overflow-hidden">
+    <section id="contact" className="section-glow relative pt-12 pb-24 md:pb-48 bg-[#020202] text-zinc-100 overflow-hidden">
       {/* Ambient background — hidden on mobile for performance (blur-[150px] is very expensive) */}
       <div className="hidden md:block absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/[0.06] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
       <div className="hidden md:block absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/[0.025] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
         {/* Header */}
-        <div className="mb-24">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex items-center gap-4 mb-6">
-            <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase">{t('contact.section_tag')}</span>
-            <div className="h-px w-24 bg-gradient-to-r from-purple-500/50 to-transparent" />
-          </motion.div>
+        <div className="mb-24 flex flex-col items-center text-center lg:items-start lg:text-left">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-7xl font-light tracking-tight text-white uppercase"
+            className="text-4xl md:text-8xl font-extralight tracking-tighter text-white uppercase italic"
           >
-            {t('contact.heading1')} <span className="text-zinc-600 font-extralight italic">&</span> <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600 font-normal">{t('contact.heading2')}</span>
+            {t('contact.heading1')} <span className="text-zinc-800 italic">&</span> <span className="text-purple-500/80">{t('contact.heading2')}</span>
           </motion.h2>
-          {/* White neon accent line */}
-          <div className="neon-line w-40 mt-6" />
         </div>
 
         {/* Content Grid */}

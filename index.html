@@ -60,78 +60,10 @@
       ]
     }
   </script>
-  <style>
-    #static-splash {
-      position: fixed;
-      inset: 0;
-      z-index: 999999;
-      background: #020202;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.8s ease-in-out;
-    }
-
-    .splash-logo {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      animation: logo-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    .splash-text {
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      font-size: 11px;
-      font-weight: 300;
-      text-transform: uppercase;
-      letter-spacing: 0.6em;
-      margin-top: 2rem;
-      opacity: 0;
-      animation: text-fade 1.4s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    @keyframes logo-fade {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes text-fade {
-      from {
-        opacity: 0;
-        letter-spacing: 1.2em;
-      }
-
-      to {
-        opacity: 1;
-        letter-spacing: 0.6em;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .splash-logo {
-        width: 96px;
-        height: 96px;
-      }
-    }
-  </style>
 </head>
 
 <body>
-  <div id="root">
-    <div id="static-splash">
-      <img src="/Alogo.png" alt="Portal Logo" class="splash-logo" fetchpriority="high" decoding="async">
-      <h2 class="splash-text">Art Halimi</h2>
-    </div>
-  </div>
+  <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
