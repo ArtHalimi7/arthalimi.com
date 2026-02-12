@@ -14,7 +14,7 @@ const App = () => {
   return (
     <main className='bg-architecture min-h-screen relative'>
 
-      <Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Navbar />
 
         <div className="relative z-10">

@@ -76,6 +76,7 @@ const ContactForm = ({ t, formData, handleInputChange, handleSubmit, status }) =
             <label className="text-xs font-mono uppercase tracking-widest text-zinc-500 group-focus-within:text-purple-400 transition-colors">{t('contact.label_identity')}</label>
             <input
               type="text"
+              name="name"
               required
               placeholder={t('contact.placeholder_name')}
               value={formData.name}
@@ -87,6 +88,7 @@ const ContactForm = ({ t, formData, handleInputChange, handleSubmit, status }) =
             <label className="text-xs font-mono uppercase tracking-widest text-zinc-500 group-focus-within:text-purple-400 transition-colors">{t('contact.emailLabel')}</label>
             <input
               type="email"
+              name="email"
               required
               placeholder={t('contact.placeholder_email')}
               value={formData.email}
@@ -100,6 +102,7 @@ const ContactForm = ({ t, formData, handleInputChange, handleSubmit, status }) =
           <label className="text-xs font-mono uppercase tracking-widest text-zinc-500 group-focus-within:text-purple-400 transition-colors">{t('contact.label_message')}</label>
           <textarea
             required
+            name="message"
             rows={4}
             placeholder={t('contact.placeholder_message')}
             value={formData.message}
@@ -158,11 +161,26 @@ export default function Contact() {
     // setShowModal({ open: true, type: 'info', title: t('contact.modal_sending_title'), message: t('contact.modal_sending_msg') });
 
     try {
-      await emailjs.sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICE,
-        import.meta.env.VITE_EMAILJS_TEMPLATE,
-        e.target,
-        import.meta.env.VITE_EMAILJS_PUBLIC
+      const serviceID = import.meta.env.VITE_EMAILJS_SERVICE;
+      const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC;
+
+      if (!serviceID || !templateID || !publicKey) {
+        throw new Error('EmailJS credentials are missing! Check your .env file.');
+      }
+
+      // Use send instead of sendForm for better reliability with React state
+      await emailjs.send(
+        serviceID,
+        templateID,
+        {
+          name: formData.name, // Matches {{name}} in template
+          to_name: "Art Halimi",
+          email: formData.email, // Matches {{email}} in template
+          message: formData.message, // Matches {{message}} in template
+          reply_to: formData.email,
+        },
+        publicKey
       );
       setStatus('success');
       setShowModal({ open: true, type: 'success', title: t('contact.modal_success_title'), message: t('contact.modal_success_msg') });
