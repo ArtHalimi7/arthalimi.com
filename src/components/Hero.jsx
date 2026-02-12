@@ -1,30 +1,50 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/prop-types */
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, lazy, Suspense } from "react";
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { ArrowRight, Terminal, Plus } from 'lucide-react';
+import { ArrowRight, Plus } from 'lucide-react';
+import macbook from '../assets/macbook.png';
+
+const Grainient = lazy(() => import('./Grainient'));
 
 export default function HeroWithGridLines() {
   const { t } = useTranslation();
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
-      {/* Background: Lightweight CSS gradient */}
-      <div aria-hidden className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/10" />
-        <div className="absolute top-1/4 left-1/3 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[80px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[200px] h-[200px] bg-white/5 rounded-full blur-[60px]" />
+      {/* Background: Grainient WebGL gradient (Lazy Loaded) */}
+      <div aria-hidden className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#050505]">
+        <Suspense fallback={<div className="absolute inset-0 bg-[#050505]" />}>
+          <Grainient
+            color1="#000000"
+            color2="#9752f8ff"
+            timeSpeed={0.25}
+            colorBalance={0}
+            warpStrength={1}
+            warpFrequency={5}
+            warpSpeed={2}
+            warpAmplitude={50}
+            blendAngle={0}
+            blendSoftness={0.05}
+            rotationAmount={500}
+            noiseScale={2}
+            grainAmount={0.1}
+            grainScale={2}
+            grainAnimated={false}
+            contrast={1.5}
+            gamma={1}
+            saturation={1}
+            centerX={0}
+            centerY={0}
+            zoom={0.9}
+          />
+        </Suspense>
       </div>
-
-      {/* White ambient glow for premium feel */}
-      <div className="hidden md:block absolute top-[10%] right-[15%] w-[400px] h-[400px] bg-white/[0.02] rounded-full pointer-events-none blur-[100px]" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center">
 
           {/* Left Column: Text Content */}
-          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left gap-8 md:gap-10 order-1 lg:order-1">
+          <div className="col-span-1 lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left gap-8 md:gap-10 order-1 lg:order-1">
             <header className="space-y-3">
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
@@ -35,11 +55,11 @@ export default function HeroWithGridLines() {
               </motion.p>
 
               <h1
-                className="font-extralight uppercase leading-[0.85] tracking-tighter text-[clamp(2.5rem,10vw,6.5rem)] text-white"
+                className="font-extralight uppercase leading-[0.85] tracking-tighter text-[clamp(4rem,16vw,6.5rem)] lg:text-[clamp(2.5rem,10vw,6.5rem)] text-white"
               >
                 <AnimatedStagger stagger={120} initialDelay={200}>
                   <span className="block">{t('title1')}</span>
-                  <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-300 to-purple-500 pb-2 pr-4">
+                  <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-300 to-purple-500 pb-2 pr-4 whitespace-nowrap">
                     {t('title2')}
                   </span>
                   <span className="block opacity-90">{t('title3')}</span>
@@ -51,59 +71,53 @@ export default function HeroWithGridLines() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-col sm:flex-row items-center gap-8 w-full sm:w-auto"
+              className="flex flex-col sm:flex-row items-center gap-8 w-full sm:w-auto mt-4 md:mt-0"
             >
               <a
                 href="#projects"
-                className="group relative flex items-center gap-6 px-12 py-6 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 text-center"
+                className="group relative flex items-center gap-6 px-14 py-7 md:px-12 md:py-6 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 text-center shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]"
               >
                 <div className="absolute inset-0 bg-purple-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                <span className="relative z-10 uppercase tracking-[0.3em] text-[10px] font-bold group-hover:text-white transition-colors">
+                <span className="relative z-10 uppercase tracking-[0.3em] text-[11px] md:text-[10px] font-bold group-hover:text-white transition-colors">
                   {t('cta_work')}
                 </span>
                 <div className="relative z-10 transition-transform group-hover:translate-x-1 group-hover:text-white">
-                  <ArrowRight size={16} />
+                  <ArrowRight size={18} />
                 </div>
               </a>
 
               <a
                 href="#contact"
-                className="group flex items-center gap-4 px-4 py-2 text-zinc-500 hover:text-white transition-all duration-300"
+                className="group flex items-center gap-6 px-6 py-3 text-white font-bold hover:text-purple-300 transition-all duration-300"
               >
-                <span className="uppercase tracking-[0.4em] text-[10px] font-bold font-mono">
+                <span className="uppercase tracking-[0.4em] text-[12px] md:text-[11px] font-bold font-mono">
                   {t('cta_contact')}
                 </span>
-                <div className="p-2 border border-white/5 rounded-full group-hover:border-purple-500/50 transition-colors">
-                  <Plus size={14} className="group-hover:rotate-90 transition-transform duration-500" />
+                <div className="p-3 md:p-2.5 border border-white/10 rounded-full group-hover:border-purple-500/50 transition-colors bg-white/5">
+                  <Plus size={18} className="group-hover:rotate-90 transition-transform duration-500" />
                 </div>
               </a>
             </motion.div>
           </div>
 
-          {/* Right Column: Terminal Window */}
-          <div className="lg:col-span-5 relative order-2 lg:order-2 flex justify-center lg:justify-end">
+          {/* Right Column: Terminal Window (hidden on mobile) */}
+          <div className="hidden lg:flex lg:col-span-5 relative order-2 lg:order-2 justify-center lg:justify-end">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.5, ease: "circOut" }}
-              className="relative w-full max-w-[480px] aspect-[4/3] group"
+              className="relative w-full max-w-[580px]"
             >
-              <div className="absolute -inset-[1px] rounded-[2rem] bg-purple-500/0 group-hover:bg-purple-500/20 transition-colors duration-500 blur-[2px]" />
+              {/* MacBook Image */}
+              <img
+                src={macbook}
+                alt="Art Halimi Fullstack Developer Projects"
+                className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(151,82,248,0.3)]"
+              />
 
-              <div className="relative h-full w-full rounded-[2rem] bg-black/40 backdrop-blur-2xl border border-white/10 overflow-hidden flex flex-col">
-                <div className="flex-none h-12 border-b border-white/5 flex items-center px-6 gap-3 bg-white/[0.02]">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-                  </div>
-                  <div className="flex-1 text-center">
-                    <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">halimi.sys</span>
-                  </div>
-                  <Terminal size={12} className="text-zinc-600" />
-                </div>
-
-                <div className="flex-1 p-6 md:p-10 flex items-start justify-start overflow-hidden">
+              {/* Code Screen Overlay */}
+              <div className="absolute top-[16%] left-[13.3%] w-[73.5%] h-[63%] z-10 overflow-hidden sm:rounded-sm">
+                <div className="w-full h-full p-2 sm:p-4 md:p-6 overflow-hidden">
                   <AnimatedCodeSnippet />
                 </div>
               </div>

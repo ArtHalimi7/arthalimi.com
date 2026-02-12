@@ -9,9 +9,18 @@ export default function SplashScreen({ onComplete }) {
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
+    // Hide the static splash screen from index.html
+    const staticSplash = document.getElementById('static-splash');
+    if (staticSplash) {
+      setTimeout(() => {
+        staticSplash.style.opacity = '0';
+        setTimeout(() => staticSplash.remove(), 800);
+      }, 100);
+    }
+
     const timer = setTimeout(() => {
       setIsExiting(true);
-      setTimeout(onComplete, 800); 
+      setTimeout(onComplete, 800);
     }, 2200);
 
     return () => clearTimeout(timer);
@@ -21,7 +30,7 @@ export default function SplashScreen({ onComplete }) {
     <AnimatePresence>
       {!isExiting && (
         <motion.div
-          exit={{ 
+          exit={{
             opacity: 0,
             scale: 1.05,
             filter: "blur(20px)",
@@ -30,7 +39,7 @@ export default function SplashScreen({ onComplete }) {
           className="fixed inset-0 z-[99999] bg-[#020202] flex items-center justify-center overflow-hidden"
         >
           {/* Deep Purple Radial Eclipse - Purely Ambient */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: [0, 1, 0.5], scale: [0.8, 1.1, 1] }}
             transition={{ duration: 2, ease: "easeOut" }}
@@ -38,7 +47,7 @@ export default function SplashScreen({ onComplete }) {
           />
 
           <div className="relative flex flex-col items-center">
-            
+
             {/* Logo: The Solitary Focus */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -47,13 +56,15 @@ export default function SplashScreen({ onComplete }) {
               className="relative mb-10"
             >
               <img
-                src={Alogo}
-                alt="Logo"
+                src="/Alogo.png"
+                alt="Art Halimi Creative Portfolio Logo"
+                fetchPriority="high"
+                decoding="async"
                 className="w-20 h-20 md:w-24 md:h-24 object-contain"
               />
-              
+
               {/* Ultra-thin Purple Accent Line - Passing through the void */}
-              <motion.div 
+              <motion.div
                 initial={{ width: 0, left: "50%" }}
                 animate={{ width: "140%", left: "-20%" }}
                 transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -73,7 +84,7 @@ export default function SplashScreen({ onComplete }) {
               </motion.h2>
 
               {/* Sub-status: Minimalist purple detail */}
-              <motion.span 
+              <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.4 }}
                 transition={{ delay: 1, duration: 1 }}
@@ -85,15 +96,15 @@ export default function SplashScreen({ onComplete }) {
           </div>
 
           {/* Minimal Corner Accents (Purple Tinge) */}
-          <motion.div 
-            initial={{ opacity: 0 }} 
+          <motion.div
+            initial={{ opacity: 0 }}
             animate={{ opacity: 0.2 }}
-            className="absolute top-12 left-12 w-4 h-4 border-l border-t border-purple-500/50" 
+            className="absolute top-12 left-12 w-4 h-4 border-l border-t border-purple-500/50"
           />
-          <motion.div 
-            initial={{ opacity: 0 }} 
+          <motion.div
+            initial={{ opacity: 0 }}
             animate={{ opacity: 0.2 }}
-            className="absolute bottom-12 right-12 w-4 h-4 border-r border-b border-purple-500/50" 
+            className="absolute bottom-12 right-12 w-4 h-4 border-r border-b border-purple-500/50"
           />
         </motion.div>
       )}

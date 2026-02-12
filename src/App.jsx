@@ -33,19 +33,15 @@ const App = () => {
 
         {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
 
-        {appReady && (
-          <>
-            <div className="opacity-0 animate-fade-in relative z-10">
-              <CustomScrollbar />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              <ScrollTop />
-            </div>
-            <CookiesModal animateIn={true} />
-          </>
-        )}
+        <div className={`relative z-10 transition-opacity duration-500 ${appReady ? 'opacity-100' : 'opacity-0'}`}>
+          <CustomScrollbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <ScrollTop />
+        </div>
+        <CookiesModal animateIn={appReady} />
       </Router>
     </main>
   );

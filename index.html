@@ -1,38 +1,138 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Halimi | Creative Full Stack Developer</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#7C3AED" />
-    <meta name="description" content="Portfolio of Art Halimi, a Creative Full Stack Developer focused on high-performance digital architecture." />
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://arthalimi.com/" />
-    <meta property="og:title" content="Art Halimi | Creative Full Stack Developer" />
-    <meta property="og:description" content="Portfolio of Art Halimi, a Creative Full Stack Developer focused on high-performance digital architecture." />
-    <meta property="og:image" content="/android-chrome-512x512.png" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://arthalimi.com/" />
-    <meta property="twitter:title" content="Art Halimi | Creative Full Stack Developer" />
-    <meta property="twitter:description" content="Portfolio of Art Halimi, a Creative Full Stack Developer focused on high-performance digital architecture." />
-    <meta property="twitter:image" content="/android-chrome-512x512.png" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art Halimi | Fullstack Developer | Frontend & Backend Specialist</title>
+  <meta name="description"
+    content="Art Halimi is a Creative Fullstack Developer specializing in high-performance Frontend and Backend architecture. View the portfolio of Art Halimi." />
+  <meta name="keywords"
+    content="Art Halimi, Fullstack Developer, Frontend Developer, Backend Developer, React Developer, Node.js Expert, Portfolio" />
+
+  <!-- Language Hint -->
+  <meta name="google" content="notranslate" />
+
+  <!-- Preload LCP -->
+  <link rel="preload" as="image" href="/Alogo.png" fetchpriority="high">
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arthalimi.com/" />
+  <meta property="og:title" content="Art Halimi | Fullstack Developer Portfolio" />
+  <meta property="og:description"
+    content="Explore the projects and expertise of Art Halimi, a Creative Fullstack Developer." />
+  <meta property="og:image" content="/android-chrome-512x512.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://arthalimi.com/" />
+  <meta property="twitter:title" content="Art Halimi | Fullstack Developer Portfolio" />
+  <meta property="twitter:description"
+    content="Explore the projects and expertise of Art Halimi, a Creative Fullstack Developer." />
+  <meta property="twitter:image" content="/android-chrome-512x512.png" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Art Halimi",
+      "url": "https://arthalimi.com/",
+      "jobTitle": "Fullstack Developer",
+      "knowsAbout": ["Frontend Development", "Backend Development", "React", "Node.js", "WebGL"],
+      "sameAs": [
+        "https://github.com/arthalimi",
+        "https://linkedin.com/in/arthalimi"
+      ]
+    }
+  </script>
+  <style>
+    #static-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: #020202;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .splash-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      animation: logo-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .splash-text {
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.6em;
+      margin-top: 2rem;
+      opacity: 0;
+      animation: text-fade 1.4s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes logo-fade {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes text-fade {
+      from {
+        opacity: 0;
+        letter-spacing: 1.2em;
+      }
+
+      to {
+        opacity: 1;
+        letter-spacing: 0.6em;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .splash-logo {
+        width: 96px;
+        height: 96px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+    <div id="static-splash">
+      <img src="/Alogo.png" alt="Portal Logo" class="splash-logo" fetchpriority="high" decoding="async">
+      <h2 class="splash-text">Art Halimi</h2>
+    </div>
+  </div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
