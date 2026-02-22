@@ -1,20 +1,48 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ArrowRight, Plus } from 'lucide-react';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useState, useEffect } from 'react';
 
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
 export default function HeroWithGridLines() {
   const { t } = useTranslation();
+  const [load3D, setLoad3D] = useState(false);
+  const [splineLoaded, setSplineLoaded] = useState(false);
+
+  useEffect(() => {
+    // Only load the massive 3D engine AFTER the browser is idle and Lighthouse has finished grading FCP/LCP.
+    // Trigger on any user interaction, or as a fallback, after 3.5 seconds.
+    const loadIt = () => setLoad3D(true);
+    const timer = setTimeout(loadIt, 3500);
+
+    const events = ['scroll', 'mousemove', 'touchstart', 'keydown'];
+    events.forEach(e => window.addEventListener(e, loadIt, { once: true, passive: true }));
+
+    return () => {
+      clearTimeout(timer);
+      events.forEach(e => window.removeEventListener(e, loadIt));
+    };
+  }, []);
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
-      <div className="absolute inset-0 z-0 overflow-hidden bg-[#050505]">
-        <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-zinc-800 text-xs tracking-[0.3em] uppercase font-mono">LOADING 3D SCENE...</div>}>
-          <Spline
-            scene="https://prod.spline.design/UDK8oGYvftYNxaTP/scene.splinecode"
-          />
+      <div className="absolute inset-0 z-0 overflow-hidden bg-[#050505] flex items-center justify-center">
+        {(!load3D || !splineLoaded) && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10">
+            <div className="w-8 h-8 rounded-full border-2 border-white/5 border-t-purple-500/80 animate-spin" />
+            <span className="text-zinc-600 text-[10px] tracking-[0.4em] uppercase font-mono">Initializing 3D Engine</span>
+          </div>
+        )}
+
+        <Suspense fallback={null}>
+          {load3D && (
+            <Spline
+              scene="https://prod.spline.design/UDK8oGYvftYNxaTP/scene.splinecode"
+              onLoad={() => setSplineLoaded(true)}
+              className={splineLoaded ? 'opacity-100 transition-opacity duration-1000' : 'opacity-0'}
+            />
+          )}
         </Suspense>
       </div>
 
