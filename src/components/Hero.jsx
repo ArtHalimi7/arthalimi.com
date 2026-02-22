@@ -1,7 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ArrowRight, Plus } from 'lucide-react';
-import Spline from '@splinetool/react-spline';
+import { Suspense, lazy } from 'react';
+
+const Spline = lazy(() => import('@splinetool/react-spline'));
 
 export default function HeroWithGridLines() {
   const { t } = useTranslation();
@@ -9,9 +11,11 @@ export default function HeroWithGridLines() {
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center pt-24 md:pt-32 pb-12 md:pb-20">
       <div className="absolute inset-0 z-0 overflow-hidden bg-[#050505]">
-        <Spline
-          scene="https://prod.spline.design/UDK8oGYvftYNxaTP/scene.splinecode"
-        />
+        <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-zinc-800 text-xs tracking-[0.3em] uppercase font-mono">LOADING 3D SCENE...</div>}>
+          <Spline
+            scene="https://prod.spline.design/UDK8oGYvftYNxaTP/scene.splinecode"
+          />
+        </Suspense>
       </div>
 
       {/* Global Overlay Container for Content */}
@@ -39,7 +43,7 @@ export default function HeroWithGridLines() {
           </header>
 
           <p className="mt-8 text-zinc-400 text-sm md:text-base max-w-md mx-auto leading-relaxed">
-            A passionate full-stack developer dedicated to building immersive, modern web experiences that seamlessly blend high-end design with robust engineering.
+            {t('description')}
           </p>
 
           <motion.div
@@ -131,7 +135,7 @@ export default function HeroWithGridLines() {
           >
             <div className="w-12 h-px bg-purple-500/50 ml-auto" />
             <p className="text-zinc-400 font-light leading-relaxed text-sm xl:text-base">
-              A passionate full-stack developer dedicated to building immersive, modern web experiences that seamlessly blend high-end design with robust engineering.
+              {t('description')}
             </p>
 
             <div className="pt-2 hidden sm:flex flex-wrap justify-end gap-3 pointer-events-auto">
