@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import FuzzyText from '../components/FuzzyText';
 
 export default function NotFound() {
   const [hoverIntensity] = useState(0.55);

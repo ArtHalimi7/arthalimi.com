@@ -18,10 +18,7 @@
   animation: cookies-in 0.4s cubic-bezier(.4, 0, .2, 1) forwards;
 }
 
-/* Smooth in-page anchor scrolling */
-html {
-  scroll-behavior: smooth;
-}
+/* Smooth in-page anchor scrolling is now handled by Lenis */
 
 ::selection {
   background: #a855f7;

@@ -54,7 +54,6 @@ export default function Navbar({ formatted }) {
     { id: 'about', label: t('nav_about') },
     { id: 'work', label: t('nav_work') },
     { id: 'projects', label: t('nav_projects') },
-    { id: 'services', label: t('nav_services') },
     { id: 'contact', label: t('nav_contact') },
   ];
 

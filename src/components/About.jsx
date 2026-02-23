@@ -15,7 +15,7 @@ export default function AboutMe() {
   ], [t]);
 
   return (
-    <section id="about" className="relative pt-8 pb-24 lg:pt-12 lg:pb-32 bg-transparent text-white border-y border-white/[0.04]">
+    <section id="about" className="relative pt-8 pb-24 lg:pt-12 lg:pb-32 bg-white text-black border-y border-black/[0.04]">
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
 
@@ -42,11 +42,11 @@ export default function AboutMe() {
               </h3>
 
               <div className="space-y-8 max-w-xl">
-                <p className="text-zinc-400 font-light leading-relaxed text-lg lg:text-2xl lg:leading-tight">
+                <p className="text-zinc-600 font-light leading-relaxed text-lg lg:text-2xl lg:leading-tight">
                   {t('about_storyP1')}
                 </p>
-                <div className="h-px w-full bg-white/10" />
-                <p className="text-zinc-500 font-light leading-relaxed text-base italic border-l-2 border-purple-500/20 pl-8">
+                <div className="h-px w-full bg-black/10" />
+                <p className="text-zinc-600 font-light leading-relaxed text-base italic border-l-2 border-purple-500/20 pl-8">
                   {t('about.specialization')}
                 </p>
               </div>
@@ -57,7 +57,7 @@ export default function AboutMe() {
               download="Art_Halimi_CV.pdf"
               className="inline-flex items-center gap-6 w-fit group hover:scale-105 hover:translate-x-2.5 transition-transform duration-300"
             >
-              <div className="flex items-center justify-center w-14 h-14 rounded-full border border-white/10 group-hover:bg-white group-hover:text-black transition-all duration-500">
+              <div className="flex items-center justify-center w-14 h-14 rounded-full border border-black/10 group-hover:bg-black group-hover:text-white transition-all duration-500">
                 <Download size={20} strokeWidth={1.5} />
               </div>
               <div className="flex flex-col">
@@ -76,16 +76,16 @@ export default function AboutMe() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="group relative p-8 rounded-xl border border-white/[0.08] bg-zinc-900/40 hover:bg-zinc-900/80 hover:border-purple-500/15 transition-all duration-500"
+                className="group relative p-8 rounded-xl border border-black/[0.08] bg-zinc-100 hover:bg-zinc-200 hover:border-purple-500/30 transition-all duration-500"
               >
                 <div className="flex items-start gap-8">
-                  <span className="text-[10px] font-mono text-zinc-800 mt-1">0{i + 1}</span>
+                  <span className="text-[10px] font-mono text-zinc-400 mt-1">0{i + 1}</span>
                   <div className="w-2 h-2 rounded-full bg-purple-500 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="flex-1">
-                    <h4 className="text-xl font-light mb-3 tracking-tight group-hover:text-purple-400 transition-colors">
+                    <h4 className="text-xl font-light mb-3 tracking-tight group-hover:text-purple-600 transition-colors">
                       {item.title}
                     </h4>
-                    <p className="text-sm text-zinc-500 leading-relaxed font-light">
+                    <p className="text-sm text-zinc-600 leading-relaxed font-light">
                       {item.desc}
                     </p>
                   </div>
@@ -96,22 +96,7 @@ export default function AboutMe() {
 
         </div>
 
-        {/* BOTTOM STATS BAR */}
-        <div className="mt-32 pt-16 border-t border-white/[0.06] grid grid-cols-2 md:grid-cols-4 gap-12">
-          {[
-            { label: t('about.deployment_index'), val: t('stats.projects_value_short') },
-            { label: t('about.structural_uptime'), val: t('about.stats.uptime_value') },
-            { label: t('about.active_experience'), val: t('about.stats.experience_value') },
-            { label: t('about.response_protocol'), val: t('about.stats.response_value') }
-          ].map((stat, i) => (
-            <div key={i} className="flex flex-col">
-              <span className="text-[8px] font-mono text-zinc-700 tracking-[0.4em] uppercase mb-3">{stat.label}</span>
-              <span className="text-4xl font-extralight text-zinc-200 tracking-tighter tabular-nums italic">
-                {stat.val}
-              </span>
-            </div>
-          ))}
-        </div>
+
       </div>
     </section>
   );

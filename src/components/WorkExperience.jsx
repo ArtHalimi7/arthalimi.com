@@ -9,37 +9,41 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
   const { t } = useTranslation();
 
   // Shared Content Component to avoid duplication
-  const DetailContent = useMemo(() => () => (
-    <div className="pt-4 md:pt-8 grid grid-cols-1 md:grid-cols-2 gap-8 bg-zinc-900/40 rounded-xl p-4 md:p-6 -mx-2">
-      <div className="space-y-4">
-        <p className={`text-zinc-400 font-light leading-relaxed text-base ${isEducation ? 'italic border-l border-purple-500/20 pl-6' : ''}`}>
-          {isEducation ? `"${details}"` : summary}
-        </p>
-        <div className="flex flex-wrap gap-2 pt-2">
-          {skills.map((skill, i) => (
-            <span key={i} className="text-[10px] font-mono text-purple-400/70 border border-purple-500/20 px-2 py-1 rounded-sm bg-purple-500/5">
-              {skill}
-            </span>
-          ))}
+  const DetailContent = useMemo(() => {
+    const Component = () => (
+      <div className="pt-4 md:pt-8 grid grid-cols-1 md:grid-cols-2 gap-8 bg-zinc-900/40 rounded-xl p-4 md:p-6 -mx-2">
+        <div className="space-y-4">
+          <p className={`text-zinc-400 font-light leading-relaxed text-base ${isEducation ? 'italic border-l border-purple-500/20 pl-6' : ''}`}>
+            {isEducation ? `"${details}"` : summary}
+          </p>
+          <div className="flex flex-wrap gap-2 pt-2">
+            {skills.map((skill, i) => (
+              <span key={i} className="text-[10px] font-mono text-purple-400/70 border border-purple-500/20 px-2 py-1 rounded-sm bg-purple-500/5">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-4 border-l border-white/5 pl-6">
+          {isEducation && (
+            <h4 className="text-[10px] font-mono text-purple-400 uppercase tracking-widest flex items-center gap-2 mb-2">
+              <Award size={12} /> {t('work.key_distinctions')}
+            </h4>
+          )}
+          <ul className="space-y-4">
+            {achievements.map((item, i) => (
+              <li key={i} className="text-xs text-zinc-400 font-light leading-snug group/item">
+                <span className="text-purple-500 mr-2">—</span> {item}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
-
-      <div className="space-y-4 border-l border-white/5 pl-6">
-        {isEducation && (
-          <h4 className="text-[10px] font-mono text-purple-400 uppercase tracking-widest flex items-center gap-2 mb-2">
-            <Award size={12} /> {t('work.key_distinctions')}
-          </h4>
-        )}
-        <ul className="space-y-4">
-          {achievements.map((item, i) => (
-            <li key={i} className="text-xs text-zinc-400 font-light leading-snug group/item">
-              <span className="text-purple-500 mr-2">—</span> {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  ), [summary, details, skills, achievements, isEducation, t]);
+    );
+    Component.displayName = 'DetailContent';
+    return Component;
+  }, [summary, details, skills, achievements, isEducation, t]);
 
   return (
     <motion.div

@@ -10,26 +10,30 @@ import ScrollTop from './components/ScrollTop';
 
 const CookiesModal = lazy(() => import('./components/CookiesModal'));
 
+import { ReactLenis } from 'lenis/react';
+
 const App = () => {
   return (
-    <main className='bg-architecture min-h-screen relative'>
+    <ReactLenis root>
+      <main className='bg-architecture min-h-screen relative'>
 
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <Navbar />
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <Navbar />
 
-        <div className="relative z-10">
-          <CustomScrollbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <ScrollTop />
-        </div>
-        <Suspense fallback={null}>
-          <CookiesModal animateIn={true} />
-        </Suspense>
-      </Router>
-    </main>
+          <div className="relative z-10">
+            <CustomScrollbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <ScrollTop />
+          </div>
+          <Suspense fallback={null}>
+            <CookiesModal animateIn={true} />
+          </Suspense>
+        </Router>
+      </main>
+    </ReactLenis>
   );
 }
 

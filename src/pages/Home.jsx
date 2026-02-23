@@ -4,7 +4,6 @@ import Hero from '../components/Hero'
 const About = React.lazy(() => import('../components/About'));
 const Projects = React.lazy(() => import('../components/Projects'));
 const WorkExperience = React.lazy(() => import('../components/WorkExperience'));
-const ServicesSection = React.lazy(() => import('../components/Services'));
 const Contact = React.lazy(() => import('../components/Contact'));
 const Footer = React.lazy(() => import('../components/Footer'));
 const TechStack = React.lazy(() => import('../components/TechStack'));
@@ -19,7 +18,6 @@ const Home = () => {
         <br />
         <TechStack />
         <br /><br /><br />
-        <ServicesSection />
         <Projects />
         <Contact />
         <Footer />
