@@ -35,11 +35,11 @@ export default function CookiesModal() {
         >
           <div className="mx-auto max-w-6xl w-full pointer-events-auto">
             {/* The Glass Container */}
-            <div className="relative overflow-hidden bg-[#080808]/90 backdrop-blur-2xl border border-white/10 rounded-3xl md:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-              
+            <div className="relative overflow-hidden bg-[#080808]/90 backdrop-blur-2xl border border-white/10 rounded-3xl md:rounded-[2rem]">
+
               {/* Responsive Grid System */}
               <div className="relative z-10 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
-                
+
                 {/* Content Side */}
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-8 text-center md:text-left">
                   {/* Icon - Hidden on very small screens to save space */}
@@ -54,13 +54,13 @@ export default function CookiesModal() {
                       </span>
                       <div className="hidden md:block h-px w-12 bg-white/10" />
                     </div>
-                    
+
                     <h3 className="text-white text-lg md:text-xl font-light tracking-tight">
                       We value your <span className="italic text-zinc-400">digital sovereignty</span>.
                     </h3>
-                    
+
                     <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed max-w-2xl">
-                      Our platform utilizes selective cookies to synchronize your experience. By proceeding, you acknowledge our specialized 
+                      Our platform utilizes selective cookies to synchronize your experience. By proceeding, you acknowledge our specialized
                       <span className="text-white/80"> data transmission frameworks</span>.
                     </p>
                   </div>
@@ -69,7 +69,7 @@ export default function CookiesModal() {
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
                   {/* Decline - Minimalist Ghost Style */}
-                  <button 
+                  <button
                     onClick={acceptCookies} // Usually maps to same action for simplicity, or link to settings
                     className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 hover:text-white transition-colors duration-300 py-2 px-4"
                   >
@@ -87,7 +87,7 @@ export default function CookiesModal() {
                       Acknowledge
                     </span>
                     <ArrowRight size={14} className="relative z-10 transition-transform group-hover:translate-x-1" />
-                    
+
                     {/* Purple Slide Transition */}
                     <div className="absolute inset-0 bg-purple-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                   </motion.button>
@@ -95,7 +95,7 @@ export default function CookiesModal() {
               </div>
 
               {/* Decorative Tech-Line (Bottom) */}
-              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
+              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-purple-500/40" />
             </div>
           </div>
         </motion.div>

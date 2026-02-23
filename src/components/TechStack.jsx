@@ -17,7 +17,7 @@ const TechCard = ({ tech, index }) => {
       transition={{ duration: 0.5, delay: index * 0.08 }}
       className="group relative h-40 will-change-transform"
     >
-      <div className="relative h-full p-5 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.04] to-white/[0.01] hover:border-purple-500/20 transition-all duration-500 overflow-hidden flex flex-col items-center text-center gap-4">
+      <div className="relative h-full p-5 rounded-2xl border border-white/[0.06] bg-zinc-900/40 hover:bg-zinc-900/80 hover:border-purple-500/20 transition-all duration-500 overflow-hidden flex flex-col items-center text-center gap-4">
         {/* Tech Icon — larger, centered */}
         <div className="relative w-14 h-14 flex items-center justify-center rounded-xl bg-purple-500/[0.06] border border-purple-500/15 group-hover:bg-white/[0.03] group-hover:border-white/[0.05] transition-all duration-500">
           <img
@@ -39,8 +39,6 @@ const TechCard = ({ tech, index }) => {
           {tech.years} yrs
         </span>
 
-        {/* Glow on hover — desktop only */}
-        <div className="hidden md:block absolute -bottom-8 -right-8 w-24 h-24 bg-purple-500/[0.06] blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
       </div>
     </motion.div>
   );
@@ -115,10 +113,8 @@ export function TechStack() {
   ], [t]);
 
   return (
-    <section id="tech-stack" className="section-glow relative pt-8 pb-8 bg-transparent overflow-hidden">
-      {/* White + purple ambient glow — desktop only for performance */}
-      <div className="hidden md:block absolute top-[10%] left-[20%] w-[400px] h-[400px] bg-white/[0.015] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
-      <div className="hidden md:block absolute bottom-[10%] right-[10%] w-[300px] h-[300px] bg-purple-500/[0.03] rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
+    <section id="tech-stack" className="relative pt-8 pb-8 bg-transparent overflow-hidden">
+      {/* Removed ambient glows for flattened design */}
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-24">
@@ -132,7 +128,7 @@ export function TechStack() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
           {techCategories.map((category, idx) => (
             <div key={category.id}>
-              {idx > 0 && <div className="neon-line w-full mb-12 lg:hidden" />}
+              {idx > 0 && <div className="w-full h-px bg-white/10 mb-12 lg:hidden" />}
               <CategorySection category={category} idx={idx} />
             </div>
           ))}

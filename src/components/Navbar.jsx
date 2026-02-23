@@ -76,7 +76,7 @@ export default function Navbar({ formatted }) {
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 35, stiffness: 300 }}
               // VISIBILITY: Pushed backdrop blur to max and increased background depth
-              className="fixed top-0 right-0 bottom-0 w-[85%] bg-[#050505] backdrop-blur-[120px] border-l border-white/10 p-10 flex flex-col justify-between shadow-[ -20px_0_50px_rgba(0,0,0,0.8)]"
+              className="fixed top-0 right-0 bottom-0 w-[85%] bg-[#050505] backdrop-blur-[120px] border-l border-white/10 p-10 flex flex-col justify-between"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex flex-col gap-16 pt-10">
@@ -101,7 +101,7 @@ export default function Navbar({ formatted }) {
                       {active === item.id && (
                         <motion.div
                           layoutId="sidebar-active"
-                          className="absolute -left-6 w-1 h-10 bg-purple-500 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.6)]"
+                          className="absolute -left-6 w-1 h-10 bg-purple-500 rounded-full"
                         />
                       )}
                     </button>
@@ -117,7 +117,7 @@ export default function Navbar({ formatted }) {
                       key={lng}
                       onClick={() => { i18n.changeLanguage(lng); setSidebarOpen(false); }}
                       className={`py-4 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 ${i18n.language === lng
-                        ? 'bg-purple-600 text-white shadow-lg'
+                        ? 'bg-purple-600 text-white'
                         : 'text-white/20 hover:text-white/40'
                         }`}
                     >
@@ -136,7 +136,7 @@ export default function Navbar({ formatted }) {
           className={`
             h-20 md:h-14 flex items-center justify-between w-full pointer-events-auto transition-all duration-1000
             ${isScrolled
-              ? 'bg-[#050505]/80 backdrop-blur-3xl border-b border-white/10 md:border md:rounded-full md:max-w-5xl shadow-2xl'
+              ? 'bg-[#050505]/80 backdrop-blur-3xl border-b border-white/10 md:border md:rounded-full md:max-w-5xl'
               : 'bg-transparent border-transparent md:bg-black/10 md:backdrop-blur-md md:border-white/5 md:rounded-full md:max-w-5xl'
             }
             px-6 md:px-8

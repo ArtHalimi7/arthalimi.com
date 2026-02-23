@@ -59,10 +59,10 @@ export default function HeroWithGridLines() {
             >
               {t('hi')} <span className="text-white">Art Halimi</span>
             </motion.p>
-            <h1 className="font-extralight uppercase leading-[0.85] tracking-tighter text-[clamp(4rem,16vw,6.5rem)] text-white drop-shadow-2xl">
+            <h1 className="font-extralight uppercase leading-[0.85] tracking-tighter text-[clamp(4rem,16vw,6.5rem)] text-white">
               <AnimatedStagger stagger={120} initialDelay={200}>
                 <span className="block">{t('title1')}</span>
-                <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-300 to-purple-500 pb-2 px-4 whitespace-nowrap">
+                <span className="block italic text-purple-400 pb-2 px-4 whitespace-nowrap">
                   {t('title2')}
                 </span>
                 <span className="block opacity-90">{t('title3')}</span>
@@ -80,7 +80,7 @@ export default function HeroWithGridLines() {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-10"
           >
-            <a href="#projects" className="group relative flex items-center gap-6 px-14 py-6 md:px-12 md:py-6 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 text-center shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]">
+            <a href="#projects" className="group relative flex items-center gap-6 px-14 py-6 md:px-12 md:py-6 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 text-center border border-white/10 hover:border-purple-500/50">
               <div className="absolute inset-0 bg-purple-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               <span className="relative z-10 uppercase tracking-[0.3em] text-[11px] md:text-[10px] font-bold group-hover:text-white transition-colors">{t('cta_work')}</span>
               <div className="relative z-10 transition-transform group-hover:translate-x-1 group-hover:text-white"><ArrowRight size={18} /></div>
@@ -106,10 +106,10 @@ export default function HeroWithGridLines() {
               {t('hi')} <span className="text-white">Art Halimi</span>
             </motion.p>
 
-            <h1 className="font-extralight uppercase leading-[0.85] tracking-tighter text-[min(5.5vw,7.5rem)] text-white drop-shadow-2xl">
+            <h1 className="font-extralight uppercase leading-[0.85] tracking-tighter text-[min(5.5vw,7.5rem)] text-white">
               <AnimatedStagger stagger={120} initialDelay={200}>
                 <span className="block">{t('title1')}</span>
-                <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-300 to-purple-500 pb-2 pr-4 whitespace-nowrap">
+                <span className="block italic text-purple-400 pb-2 pr-4 whitespace-nowrap">
                   {t('title2')}
                 </span>
                 <span className="block opacity-90">{t('title3')}</span>
@@ -128,7 +128,7 @@ export default function HeroWithGridLines() {
           >
             <a
               href="#projects"
-              className="group relative flex items-center gap-6 px-12 py-6 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 text-center shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]"
+              className="group relative flex items-center gap-6 px-12 py-6 bg-white text-black font-bold rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 text-center border border-white/10 hover:border-purple-500/50"
             >
               <div className="absolute inset-0 bg-purple-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               <span className="relative z-10 uppercase tracking-[0.3em] text-[10px] font-bold group-hover:text-white transition-colors">

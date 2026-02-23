@@ -32,7 +32,7 @@ function ProjectCard({ project, index }) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         style={{ backgroundColor: project.color }}
-        className="relative w-full max-w-7xl h-[80vh] rounded-[32px] border border-white/[0.07] flex flex-col md:flex-row items-center p-8 md:p-14 gap-8 md:gap-16 shadow-[0_40px_100px_rgba(0,0,0,0.7)] hover:shadow-[0_40px_100px_rgba(0,0,0,0.7),0_0_1px_rgba(255,255,255,0.15)] hover:border-white/[0.12] transition-all duration-700 overflow-hidden"
+        className="relative w-full max-w-7xl h-[80vh] rounded-[32px] border border-white/[0.07] flex flex-col md:flex-row items-center p-8 md:p-14 gap-8 md:gap-16 hover:border-white/[0.12] transition-all duration-700 overflow-hidden"
       >
         <div className="w-full md:w-[35%] flex flex-col justify-between h-full z-10">
           <div className="overflow-hidden">
@@ -66,8 +66,8 @@ function ProjectCard({ project, index }) {
             </div>
           </div>
 
-          <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-5 text-white w-fit pb-2 shrink-0">
-            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all duration-500">
+          <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-5 text-white w-fit pb-2 shrink-0 group/btn">
+            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:bg-white group-hover/btn:text-black transition-all duration-500">
               <ArrowUpRight size={22} />
             </div>
             <span className="text-[10px] font-bold tracking-[0.4em] uppercase">View Case</span>
@@ -83,7 +83,6 @@ function ProjectCard({ project, index }) {
             decoding="async"
             className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-1000"
           />
-          <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.2)] pointer-events-none" />
         </div>
       </motion.div>
     </div>
@@ -96,9 +95,8 @@ export function Projects() {
   const yParallax = useTransform(scrollYProgress, [0, 0.2], [0, -40]);
 
   return (
-    <section id="projects" className="section-glow bg-black relative pt-24 pb-12 overflow-clip">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_30%_at_50%_0%,rgba(168,85,247,0.05),transparent)] pointer-events-none" />
-      <div className="hidden md:block absolute top-[5%] right-[20%] w-[350px] h-[350px] bg-white/[0.012] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
+    <section id="projects" className="bg-black relative pt-24 pb-12 overflow-clip">
+      {/* Removed ambient glows for flattened design */}
 
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left">

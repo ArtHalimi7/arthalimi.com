@@ -69,7 +69,7 @@ const ContactInfo = ({ t }) => (
 
 const ContactForm = ({ t, formData, handleInputChange, handleSubmit, status }) => {
   return (
-    <div className="relative p-8 md:p-10 rounded-3xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-white/[0.005] shadow-[0_0_40px_rgba(168,85,247,0.03)] backdrop-blur-sm">
+    <div className="relative p-8 md:p-10 rounded-3xl border border-white/[0.06] bg-zinc-900/40">
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="group space-y-2">
@@ -194,10 +194,8 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="section-glow relative pt-12 pb-24 md:pb-48 bg-[#020202] text-zinc-100 overflow-hidden">
-      {/* Ambient background — hidden on mobile for performance (blur-[150px] is very expensive) */}
-      <div className="hidden md:block absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/[0.06] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
-      <div className="hidden md:block absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/[0.025] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
+    <section id="contact" className="relative pt-12 pb-24 md:pb-48 bg-[#020202] text-zinc-100 overflow-hidden">
+      {/* Removed ambient glows for flattened design */}
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
         {/* Header */}

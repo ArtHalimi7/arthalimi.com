@@ -34,28 +34,27 @@ export default function ScrollTop() {
           aria-label="Scroll to top"
         >
           {/* Glass Container */}
-          <div className="relative w-12 h-12 flex items-center justify-center bg-white/[0.03] backdrop-blur-2xl rounded-xl border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.3)] transition-all duration-500 group-hover:border-purple-500/40 group-hover:bg-purple-500/[0.05]">
-            
+          <div className="relative w-12 h-12 flex items-center justify-center bg-white/[0.03] backdrop-blur-2xl rounded-xl border border-white/10 transition-all duration-500 group-hover:border-purple-500/40 group-hover:bg-purple-500/[0.05]">
+
             {/* Corner Light Glint */}
             <div className="absolute top-0 left-0 w-2 h-2 border-l border-t border-white/20 rounded-tl-lg" />
-            
+
             {/* The Icon */}
             <motion.div
               animate={{ y: [0, -3, 0] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
             >
-              <ArrowUp 
-                className="w-5 h-5 text-white/60 group-hover:text-purple-400 transition-colors duration-300" 
-                strokeWidth={1.5} 
+              <ArrowUp
+                className="w-5 h-5 text-white/60 group-hover:text-purple-400 transition-colors duration-300"
+                strokeWidth={1.5}
               />
             </motion.div>
 
-            {/* Subtle Radiant Purple Glow on Hover */}
-            <div className="absolute inset-0 rounded-xl bg-purple-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {/* Subtle Radiant Purple Glow on Hover Removed */}
           </div>
-          
+
           {/* External Label (Optional/Minimal) */}
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, x: 10 }}
             whileHover={{ opacity: 1, x: 0 }}
             className="absolute right-14 top-1/2 -translate-y-1/2 text-[10px] font-mono text-purple-400 uppercase tracking-widest pointer-events-none"

@@ -43,7 +43,7 @@ const EducationRow = ({ title, subtitle, years, location, details, courses, achi
             </h3>
             <p className="text-xs font-medium text-zinc-500 mt-2 uppercase tracking-[0.2em] flex items-center gap-2">
               {subtitle}
-              {isActive && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-1 h-1 rounded-full bg-purple-500 shadow-[0_0_8px_#a855f7]" />}
+              {isActive && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-1 h-1 rounded-full bg-purple-500" />}
             </p>
           </div>
 
@@ -121,11 +121,9 @@ export function Education() {
 
   return (
     <section id="education" className="relative pt-12 pb-32 md:pb-48 bg-[#020202] overflow-hidden">
-      {/* Background Ambience */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-purple-500/20 to-transparent hidden lg:block" />
-      <div className="hidden md:block absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-900/5 rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
-      {/* White neon accent line */}
-      <div className="neon-line w-32 mx-auto mb-4" />
+      {/* Background Ambience Removed */}
+      {/* Flat accent line */}
+      <div className="w-32 mx-auto mb-4 h-px bg-white/10" />
 
       <div className="relative max-w-7xl mx-auto px-6">
         {/* Header - Matching Experience Styling */}

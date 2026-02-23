@@ -10,7 +10,7 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
 
   // Shared Content Component to avoid duplication
   const DetailContent = useMemo(() => () => (
-    <div className="pt-4 md:pt-8 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gradient-to-br from-white/[0.02] to-transparent rounded-xl p-4 md:p-6 -mx-2">
+    <div className="pt-4 md:pt-8 grid grid-cols-1 md:grid-cols-2 gap-8 bg-zinc-900/40 rounded-xl p-4 md:p-6 -mx-2">
       <div className="space-y-4">
         <p className={`text-zinc-400 font-light leading-relaxed text-base ${isEducation ? 'italic border-l border-purple-500/20 pl-6' : ''}`}>
           {isEducation ? `"${details}"` : summary}
@@ -52,7 +52,7 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
     >
       {/* Simplified Glow for Performance */}
       <div className={`absolute bottom-0 left-0 right-0 h-px transition-all duration-500 ${isActive
-        ? 'bg-purple-500/30'
+        ? 'bg-purple-500'
         : 'bg-white/[0.06]'
         }`} />
 
@@ -65,7 +65,7 @@ const ExperienceRow = ({ id, role, company, years, summary, skills, achievements
           <div
             className={`h-[1px] hidden md:block transition-all duration-500 ${isActive ? 'w-10 bg-purple-500' : 'w-0 bg-zinc-600'}`}
           />
-          {isActive && <div className="neon-dot hidden md:block" />}
+          {isActive && <div className="w-2 h-2 rounded-full bg-purple-500 hidden md:block" />}
           <span className={`text-[11px] font-mono tracking-[0.3em] uppercase transition-colors duration-500 ${isActive ? 'text-purple-400' : 'text-zinc-500'}`}>
             {years}
           </span>
@@ -165,10 +165,8 @@ export default function WorkExperiences() {
   ];
 
   return (
-    <section id="work" className="section-glow relative pt-24 pb-12 bg-[#020202] overflow-hidden">
-      {/* Ambient glow — purple + white, desktop only for heavy blurs */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_70%_20%,rgba(168,85,247,0.05),transparent)] pointer-events-none" />
-      <div className="hidden md:block absolute top-[20%] right-[5%] w-[300px] h-[300px] bg-white/[0.015] rounded-full pointer-events-none" style={{ filter: 'blur(80px)' }} />
+    <section id="work" className="relative pt-24 pb-12 bg-[#020202] overflow-hidden">
+      {/* Removed ambient glows for flattened design */}
 
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="mb-20 flex flex-col items-center text-center lg:items-start lg:text-left">

@@ -15,10 +15,7 @@ export default function AboutMe() {
   ], [t]);
 
   return (
-    <section id="about" className="section-glow relative pt-8 pb-24 lg:pt-12 lg:pb-32 bg-transparent text-white border-y border-white/[0.04]">
-      {/* Brighter ambient glow — purple + white */}
-      <div className="hidden md:block absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(168,85,247,0.06),transparent)] pointer-events-none" />
-      <div className="hidden md:block absolute top-[30%] right-[10%] w-[350px] h-[350px] bg-white/[0.02] rounded-full pointer-events-none" style={{ filter: 'blur(100px)' }} />
+    <section id="about" className="relative pt-8 pb-24 lg:pt-12 lg:pb-32 bg-transparent text-white border-y border-white/[0.04]">
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
 
@@ -35,7 +32,7 @@ export default function AboutMe() {
             <div>
               <div className="flex items-center gap-4 mb-10">
                 <span className="text-[10px] font-mono tracking-[0.5em] text-purple-500 uppercase">{t('about.system_overview')}</span>
-                <div className="h-[1px] w-16 bg-gradient-to-r from-purple-500/50 to-transparent" />
+                <div className="h-[1px] w-16 bg-purple-500/20" />
               </div>
 
               <h3 className="text-4xl md:text-8xl font-extralight tracking-tighter leading-[0.9] mb-10">
@@ -48,7 +45,7 @@ export default function AboutMe() {
                 <p className="text-zinc-400 font-light leading-relaxed text-lg lg:text-2xl lg:leading-tight">
                   {t('about_storyP1')}
                 </p>
-                <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
+                <div className="h-px w-full bg-white/10" />
                 <p className="text-zinc-500 font-light leading-relaxed text-base italic border-l-2 border-purple-500/20 pl-8">
                   {t('about.specialization')}
                 </p>
@@ -79,11 +76,11 @@ export default function AboutMe() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="group relative p-8 rounded-xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.015] hover:from-white/[0.06] hover:to-white/[0.03] hover:border-purple-500/15 transition-all duration-500"
+                className="group relative p-8 rounded-xl border border-white/[0.08] bg-zinc-900/40 hover:bg-zinc-900/80 hover:border-purple-500/15 transition-all duration-500"
               >
                 <div className="flex items-start gap-8">
                   <span className="text-[10px] font-mono text-zinc-800 mt-1">0{i + 1}</span>
-                  <div className="neon-dot mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="w-2 h-2 rounded-full bg-purple-500 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="flex-1">
                     <h4 className="text-xl font-light mb-3 tracking-tight group-hover:text-purple-400 transition-colors">
                       {item.title}
@@ -109,7 +106,7 @@ export default function AboutMe() {
           ].map((stat, i) => (
             <div key={i} className="flex flex-col">
               <span className="text-[8px] font-mono text-zinc-700 tracking-[0.4em] uppercase mb-3">{stat.label}</span>
-              <span className="text-4xl font-extralight text-zinc-200 tracking-tighter tabular-nums italic" style={{ textShadow: '0 0 25px rgba(168,85,247,0.15), 0 0 60px rgba(255,255,255,0.04)' }}>
+              <span className="text-4xl font-extralight text-zinc-200 tracking-tighter tabular-nums italic">
                 {stat.val}
               </span>
             </div>
