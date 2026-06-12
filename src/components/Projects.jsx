@@ -62,20 +62,20 @@ export function Projects() {
         </div>
 
         {/* MOBILE LAYOUT TABS SELECTOR */}
-        <div className="flex lg:hidden overflow-x-auto no-scrollbar gap-3 pb-6 border-b border-white/[0.06] mb-8">
+        <div className="grid grid-cols-2 lg:hidden gap-3 pb-6 border-b border-white/[0.06] mb-8">
           {projectsData.map((project, index) => {
             const isActive = activeId === project.id;
             return (
               <button
                 key={project.id}
                 onClick={() => setActiveId(project.id)}
-                className={`whitespace-nowrap px-5 py-2.5 rounded-full text-[10px] font-mono uppercase tracking-widest border transition-all duration-300 flex items-center gap-2 ${
+                className={`px-4 py-2.5 min-h-[48px] rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider border transition-all duration-300 flex items-center justify-center text-center gap-2 ${
                   isActive 
                     ? "bg-purple-500 text-white border-purple-500/50 shadow-lg" 
                     : "bg-white/[0.02] text-zinc-400 border-white/10 hover:text-white"
                 }`}
               >
-                <span>0{index + 1}</span>
+                <span className="font-bold opacity-60">0{index + 1}</span>
                 <span className="font-light">{t(project.titleKey)}</span>
               </button>
             );
@@ -194,12 +194,12 @@ export function Projects() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="relative w-full aspect-[3944/2564] max-w-[680px] select-none pointer-events-none drop-shadow-[0_20px_50px_rgba(124,58,237,0.08)]"
+              className="relative w-full max-w-[680px] select-none pointer-events-none drop-shadow-[0_20px_50px_rgba(124,58,237,0.08)]"
             >
               {/* Laptop Shell (Front view) */}
               <img 
                 src={macbookImg} 
-                className="w-full h-full object-contain pointer-events-none z-10 relative" 
+                className="w-full h-auto block relative z-10" 
                 alt="MacBook mockup" 
               />
               
