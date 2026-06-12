@@ -70,7 +70,7 @@ export default function Footer() {
               <SocialIcon href="https://arthalimi.com" icon={Globe} label="Live" />
             </div>
             <p className="text-[10px] text-zinc-600 font-mono tracking-tighter uppercase italic">
-              Prishtina, Kosovo // 2026
+              Gelsenkirchen, Germany // 2026
             </p>
           </div>
         </div>

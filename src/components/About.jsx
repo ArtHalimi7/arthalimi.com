@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Zap, ShieldCheck, Globe } from 'lucide-react';
-import cvPdf from '../assets/Art_Halimi_CV.pdf';
+import cvPdf from '../assets/Art-Halimi-CV.pdf';
 
 export default function AboutMe() {
   const { t } = useTranslation();
@@ -54,7 +54,7 @@ export default function AboutMe() {
 
             <a
               href={cvPdf}
-              download="Art_Halimi_CV.pdf"
+              download="Art-Halimi-CV.pdf"
               className="inline-flex items-center gap-6 w-fit group hover:scale-105 hover:translate-x-2.5 transition-transform duration-300"
             >
               <div className="flex items-center justify-center w-14 h-14 rounded-full border border-black/10 group-hover:bg-black group-hover:text-white transition-all duration-500">

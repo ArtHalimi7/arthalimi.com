@@ -39,7 +39,7 @@ const ContactInfo = ({ t }) => (
         </div>
         <div>
           <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">{t('about_contact_location')}</span>
-          <span className="text-lg text-white font-light">Prishtina, Kosovo</span>
+          <span className="text-lg text-white font-light">Gelsenkirchen, Germany</span>
         </div>
       </div>
     </div>
