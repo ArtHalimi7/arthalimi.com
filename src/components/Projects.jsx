@@ -33,10 +33,10 @@ export function Projects() {
       <div className="absolute inset-y-0 right-12 md:right-24 lg:right-32 w-px bg-white/[0.02] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12 z-10">
-        
+
         {/* Header (KEEPING AS IT IS) */}
         <div className="mb-16 md:mb-24 flex flex-col items-center text-center lg:items-start lg:text-left">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -69,11 +69,10 @@ export function Projects() {
               <button
                 key={project.id}
                 onClick={() => setActiveId(project.id)}
-                className={`px-4 py-2.5 min-h-[48px] rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider border transition-all duration-300 flex items-center justify-center text-center gap-2 ${
-                  isActive 
-                    ? "bg-purple-500 text-white border-purple-500/50 shadow-lg" 
-                    : "bg-white/[0.02] text-zinc-400 border-white/10 hover:text-white"
-                }`}
+                className={`px-4 py-2.5 min-h-[48px] rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider border transition-all duration-300 flex items-center justify-center text-center gap-2 ${isActive
+                  ? "bg-purple-500 text-white border-purple-500/50 shadow-lg"
+                  : "bg-white/[0.02] text-zinc-400 border-white/10 hover:text-white"
+                  }`}
               >
                 <span className="font-bold opacity-60">0{index + 1}</span>
                 <span className="font-light">{t(project.titleKey)}</span>
@@ -84,10 +83,10 @@ export function Projects() {
 
         {/* MAIN SHOWROOM SPLIT GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
+
           {/* LEFT PANEL: Nav Selector + Active Details (5 Columns) */}
           <div className="lg:col-span-5 flex flex-col space-y-10">
-            
+
             {/* Desktop Navigation Tabs (Hidden on mobile) */}
             <div className="hidden lg:flex flex-col border-b border-white/[0.06]">
               {projectsData.map((project, index) => {
@@ -96,14 +95,12 @@ export function Projects() {
                   <button
                     key={project.id}
                     onClick={() => setActiveId(project.id)}
-                    className={`flex items-center justify-between py-6 border-t border-white/[0.06] text-left transition-all duration-300 group ${
-                      isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-                    }`}
+                    className={`flex items-center justify-between py-6 border-t border-white/[0.06] text-left transition-all duration-300 group ${isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+                      }`}
                   >
                     <div className="flex items-center gap-5">
-                      <span className={`text-[10px] font-mono tracking-widest transition-colors ${
-                        isActive ? 'text-purple-400' : 'text-zinc-600'
-                      }`}>
+                      <span className={`text-[10px] font-mono tracking-widest transition-colors ${isActive ? 'text-purple-400' : 'text-zinc-600'
+                        }`}>
                         0{index + 1}
                       </span>
                       {/* Project Title (KEEPING AS IT IS) */}
@@ -115,10 +112,10 @@ export function Projects() {
                     <div className="flex items-center gap-3">
                       <span className="text-[10px] font-mono opacity-50">{project.year}</span>
                       {project.flag && (
-                        <img 
-                          src={project.flag} 
-                          alt="Switzerland" 
-                          className="w-3.5 h-3.5 object-contain opacity-55 border border-white/10 rounded-sm" 
+                        <img
+                          src={project.flag}
+                          alt="Switzerland"
+                          className="w-3.5 h-3.5 object-contain opacity-55 border border-white/10 rounded-sm"
                         />
                       )}
                     </div>
@@ -154,8 +151,8 @@ export function Projects() {
                 {/* Tech stack badges */}
                 <div className="flex flex-wrap gap-1.5">
                   {t(activeProject.tech).split(',').map((techName, idx) => (
-                    <span 
-                      key={idx} 
+                    <span
+                      key={idx}
                       className="text-[9px] font-mono text-purple-300 bg-purple-500/[0.04] border border-purple-500/10 px-2.5 py-1 rounded-full uppercase tracking-wider"
                     >
                       {techName.trim()}
@@ -170,11 +167,11 @@ export function Projects() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-4 w-fit group/btn cursor-pointer pt-2"
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 group-hover/btn:bg-white group-hover/btn:text-black group-hover/btn:scale-110 transition-all duration-500">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white text-black group-hover/btn:scale-110 transition-all duration-500">
                     <ArrowUpRight size={16} strokeWidth={1.5} className="group-hover/btn:rotate-45 transition-transform duration-500" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-bold tracking-[0.3em] uppercase text-zinc-400 group-hover/btn:text-white transition-colors">
+                    <span className="text-[9px] font-bold tracking-[0.3em] uppercase text-white transition-colors">
                       {t('projects_viewProject')}
                     </span>
                     <span className="text-[8px] font-mono text-zinc-600 uppercase tracking-widest">
@@ -197,12 +194,12 @@ export function Projects() {
               className="relative w-full max-w-[680px] select-none pointer-events-none drop-shadow-[0_20px_50px_rgba(124,58,237,0.08)]"
             >
               {/* Laptop Shell (Front view) */}
-              <img 
-                src={macbookImg} 
-                className="w-full h-auto block relative z-10" 
-                alt="MacBook mockup" 
+              <img
+                src={macbookImg}
+                className="w-full h-auto block relative z-10"
+                alt="MacBook mockup"
               />
-              
+
               {/* Dynamic Overlay Screen Area */}
               <div className="absolute top-[12.1%] left-[11.2%] w-[77.6%] h-[76.2%] overflow-hidden rounded-[1%]/[1.5%] bg-black z-0">
                 <AnimatePresence mode="wait">

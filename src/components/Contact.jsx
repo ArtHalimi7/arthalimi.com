@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
-import emailjs from '@emailjs/browser';
 import { Mail, MapPin, User, ArrowRight, Loader2, CheckCircle, XCircle, Github, Linkedin, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import EmailModal from './EmailModal';
@@ -158,30 +157,30 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
-    // setShowModal({ open: true, type: 'info', title: t('contact.modal_sending_title'), message: t('contact.modal_sending_msg') });
 
     try {
-      const serviceID = import.meta.env.VITE_EMAILJS_SERVICE;
-      const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC;
+      const response = await fetch("https://formsubmit.co/ajax/arthalimi989@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message
+        })
+      });
 
-      if (!serviceID || !templateID || !publicKey) {
-        throw new Error('EmailJS credentials are missing! Check your .env file.');
+      if (!response.ok) {
+        throw new Error("Form submission failed");
       }
 
-      // Use send instead of sendForm for better reliability with React state
-      await emailjs.send(
-        serviceID,
-        templateID,
-        {
-          name: formData.name, // Matches {{name}} in template
-          to_name: "Art Halimi",
-          email: formData.email, // Matches {{email}} in template
-          message: formData.message, // Matches {{message}} in template
-          reply_to: formData.email,
-        },
-        publicKey
-      );
+      const data = await response.json();
+      if (data.success === "false") {
+        throw new Error(data.message || "Form submission failed");
+      }
+
       setStatus('success');
       setShowModal({ open: true, type: 'success', title: t('contact.modal_success_title'), message: t('contact.modal_success_msg') });
       setFormData({ name: '', email: '', message: '' });
