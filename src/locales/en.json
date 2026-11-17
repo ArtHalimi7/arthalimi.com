@@ -1,0 +1,405 @@
+{
+  "nav": {
+    "work": "Work",
+    "services": "Services",
+    "process": "Process",
+    "studio": "Studio",
+    "contact": "Contact",
+    "cta": "Start a project",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "hero": {
+    "eyebrow": "Independent software studio · Germany",
+    "h1a": "We build the systems",
+    "h1b": "your team runs on.",
+    "sub": "Internal tools, dashboards and automation, designed around how your people actually work and kept running long after launch.",
+    "cta1": "Start a project",
+    "cta2": "See our work",
+    "scroll": "Scroll",
+    "cue": "Scroll to sort it out",
+    "messTag": "Right now",
+    "messLines": [
+      "Your business",
+      "runs on this."
+    ],
+    "messBody": "Spreadsheets, chat threads and one person's memory. Work slips between people, numbers don't match, and nobody can see what's stuck.",
+    "scan": "Mapping how work really flows",
+    "sources": "sources",
+    "sysTag": "What we build",
+    "sysLines": [
+      "One system,"
+    ],
+    "sysAccent": "built around how your team really works.",
+    "sign": "Art Halimi, founder",
+    "frag": {
+      "sheet": {
+        "file": "orders_2025_FINAL_v7.xlsx",
+        "rows": [
+          [
+            "Keller",
+            "12",
+            "4,200",
+            "?"
+          ],
+          [
+            "Nordlicht",
+            "8",
+            "#REF!",
+            "ok"
+          ],
+          [
+            "Brandt",
+            "—",
+            "1,950",
+            "call!"
+          ],
+          [
+            "Vogel",
+            "15",
+            "6,100",
+            ""
+          ],
+          [
+            "Studio Mira",
+            "3",
+            "=SUM(",
+            "??"
+          ]
+        ]
+      },
+      "chat": {
+        "channel": "ops",
+        "badge": "3",
+        "msgs": [
+          [
+            "Lena",
+            "who has the latest numbers?"
+          ],
+          [
+            "Tom",
+            "check the other sheet"
+          ],
+          [
+            "Lena",
+            "which one??"
+          ]
+        ]
+      },
+      "email": {
+        "from": "accounting@",
+        "subject": "Re: Re: Fwd: Invoice 2291",
+        "body": "Sorry, attaching it again, the last one was the old version…",
+        "attach": "3 attachments"
+      },
+      "numbers": {
+        "label": "Revenue · March",
+        "v1": "€48,120",
+        "v2": "€51,940",
+        "q": "Which one is right?"
+      },
+      "sticky": {
+        "text": "call supplier before 3!! ask Maria"
+      },
+      "calendar": {
+        "day": "Tue 14",
+        "conflict": "Conflict",
+        "e1": "Weekly sync · 10:00",
+        "e2": "Client call · 10:30"
+      },
+      "pdf": {
+        "file": "delivery_note_scan(2).pdf",
+        "meta": "Scanned · 2 pages"
+      },
+      "toast": {
+        "text": "17 unread in #orders"
+      },
+      "folder": {
+        "path": [
+          "Shared",
+          "old",
+          "do-not-use",
+          "final"
+        ]
+      },
+      "voice": {
+        "len": "0:47"
+      }
+    },
+    "ui": {
+      "app": "Operations",
+      "crumb": "Orders",
+      "ws": "Your team",
+      "syncing": "Syncing…",
+      "synced": "Synced",
+      "nav": [
+        "Overview",
+        "Orders",
+        "Clients",
+        "Invoices",
+        "Schedule",
+        "Reports"
+      ],
+      "revenue": "Revenue · March",
+      "open": "Open orders",
+      "overdue": "Overdue invoices",
+      "orders": "Orders",
+      "ordersMeta": "One source of truth",
+      "rows": [
+        [
+          "Keller GmbH",
+          "#2291",
+          "approved"
+        ],
+        [
+          "Nordlicht AG",
+          "#2290",
+          "inProd"
+        ],
+        [
+          "Brandt & Söhne",
+          "#2288",
+          "shipped"
+        ],
+        [
+          "Vogel Logistik",
+          "#2287",
+          "waiting"
+        ],
+        [
+          "Studio Mira",
+          "#2285",
+          "shipped"
+        ]
+      ],
+      "status": {
+        "inProd": "In production",
+        "approved": "Approved",
+        "shipped": "Shipped",
+        "waiting": "Waiting"
+      },
+      "activity": "Activity",
+      "feed": [
+        "Invoice #2291 sent automatically",
+        "Lena approved order #2290",
+        "Stock synced from the warehouse",
+        "Weekly report is ready"
+      ],
+      "week": "This week",
+      "days": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri"
+      ]
+    }
+  },
+  "manifesto": {
+    "tag": "Why we exist",
+    "text": "Most growing teams run on spreadsheets, chat threads and one person's memory. Work slips between people, numbers don't match, and nobody can see what's stuck. We replace all of that with one system,",
+    "accent": "built around how your team really works."
+  },
+  "services": {
+    "tag": "What we build",
+    "title": "Four kinds of systems.",
+    "eg": "For example",
+    "items": [
+      {
+        "title": "Workflow systems",
+        "desc": "Your process as software: steps, roles, handoffs, approvals and notifications.",
+        "eg": "Production pipelines, approval flows, operations boards."
+      },
+      {
+        "title": "Dashboards & reporting",
+        "desc": "Numbers your team can trust, reconciled with the source and refreshed automatically.",
+        "eg": "Revenue reporting, client reports, payroll from real work data."
+      },
+      {
+        "title": "Integrations",
+        "desc": "The tools you already use, connected so data moves without copy-paste.",
+        "eg": "Meta, YouTube, Google Sheets and Drive, Slack, booking and payment systems."
+      },
+      {
+        "title": "AI automation",
+        "desc": "Language models put to work on scoring, drafting, triage and planning, with a person checking what matters.",
+        "eg": "Lead scoring, content planning, document triage."
+      }
+    ],
+    "also": "Also: performance audits for slow or expensive apps, and websites for businesses that want to look the part."
+  },
+  "shift": {
+    "tag": "The shift",
+    "lines": [
+      "Stop running",
+      "your business",
+      "on spreadsheets."
+    ],
+    "body": "We map how your team really works, then build one system for it: every step, every handoff and every number in one place. Then we stay on to keep it running.",
+    "cta": "Start a project"
+  },
+  "work": {
+    "tag": "Selected work",
+    "title": "Built, shipped and in daily use.",
+    "visit": "Visit site",
+    "items": {
+      "lb": {
+        "title": "LB Hairdesign",
+        "kind": "Booking & client management",
+        "place": "Switzerland",
+        "desc": "A booking, finance and client-account platform for a premium salon. It replaced manual scheduling and cut the time spent on bookings by 70%.",
+        "tag": "Luxury, booked in seconds.",
+        "facts": [
+          "Online booking",
+          "Client accounts",
+          "Finances in one place"
+        ],
+        "metric": [
+          "Time on bookings",
+          "−70%"
+        ]
+      },
+      "tafa": {
+        "title": "Auto Tafa",
+        "kind": "Vehicle inventory & leads",
+        "place": "Kosovo",
+        "desc": "A dealership platform that turned static listings into a searchable inventory, with advanced filters, live stock and lead capture.",
+        "tag": "A showroom that never closes.",
+        "facts": [
+          "Searchable inventory",
+          "Advanced filters",
+          "Live stock",
+          "Lead capture"
+        ]
+      },
+      "arsa": {
+        "title": "Arsa Gipser",
+        "kind": "Company website",
+        "place": "Switzerland",
+        "desc": "Projects, services and references for a Swiss plastering company, localized for its market.",
+        "tag": "Craft, shown properly.",
+        "facts": [
+          "Services",
+          "Project gallery",
+          "Localized for Switzerland"
+        ]
+      },
+      "andi": {
+        "title": "Andi Shkodra",
+        "kind": "Campaign website",
+        "place": "Kosovo",
+        "desc": "A clear, fast campaign site for a municipal assembly candidate in Gjilan.",
+        "tag": "A campaign, made clear.",
+        "facts": [
+          "Campaign programme",
+          "Voter registration guide",
+          "About & contact"
+        ]
+      }
+    },
+    "big": "Work",
+    "cursor": "View project",
+    "next": [
+      "The next one",
+      "could be yours."
+    ],
+    "drag": "Scroll",
+    "factsLabel": "What it does",
+    "live": "Live"
+  },
+  "process": {
+    "tag": "How we work",
+    "title": "Four steps. No surprises.",
+    "steps": [
+      {
+        "title": "Map",
+        "desc": "We sit with the people doing the work and map the real process. You get a written scope and a fixed plan."
+      },
+      {
+        "title": "Build",
+        "desc": "Weekly releases you can click on, not status reports. Your feedback goes straight into the next version."
+      },
+      {
+        "title": "Launch",
+        "desc": "The new system runs alongside the old way until your team trusts it. Then the spreadsheets get switched off."
+      },
+      {
+        "title": "Run",
+        "desc": "Monitoring, fixes and improvements after launch. We stay on, so the system keeps up with the business."
+      }
+    ]
+  },
+  "studio": {
+    "tag": "The studio",
+    "title": "Small enough to care. Engineered to last.",
+    "p1": "Art Halimi Studio is an independent software studio in Gelsenkirchen, Germany, working with teams in Germany, Switzerland and beyond that have outgrown spreadsheets and off-the-shelf tools.",
+    "principles": [
+      {
+        "title": "You talk to the people building it.",
+        "desc": "No account managers in between. The engineer on your project is in your calls."
+      },
+      {
+        "title": "We measure before we change anything.",
+        "desc": "Decisions come from logs, timings and real usage, not guesses."
+      },
+      {
+        "title": "We stay after launch.",
+        "desc": "Software that runs a business needs looking after. That's part of the job."
+      }
+    ],
+    "founder": "Founded by Art Halimi, full-stack engineer.",
+    "languages": "Projects run in English or Albanian.",
+    "linkedin": "LinkedIn"
+  },
+  "contact": {
+    "tag": "Contact",
+    "big1": "Let's build",
+    "big2": "what's missing.",
+    "lead": "Tell us what your team still does by hand. We reply within one working day with how we'd approach it.",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company (optional)",
+    "need": "What do you need?",
+    "needs": [
+      "Workflow system",
+      "Dashboard",
+      "Integration",
+      "AI automation",
+      "Website",
+      "Not sure yet"
+    ],
+    "message": "What does your team do by hand today?",
+    "send": "Send",
+    "sending": "Sending…",
+    "sent": "Thank you. We'll get back to you within one working day.",
+    "error": "That didn't go through. Please email us directly.",
+    "direct": "Or email us"
+  },
+  "footer": {
+    "line": "Software for growing teams.",
+    "imprint": "Imprint",
+    "privacy": "Privacy",
+    "rights": "All rights reserved.",
+    "top": "Back to top",
+    "h1": "Software that",
+    "h2": "runs itself.",
+    "pages": "Pages",
+    "elsewhere": "Elsewhere",
+    "where": "Gelsenkirchen, Germany",
+    "stack": [
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Node.js",
+      "PostgreSQL",
+      "Workflow automation",
+      "API integration",
+      "LLM integration",
+      "Dashboards"
+    ]
+  },
+  "notfound": {
+    "title": "This page doesn't exist.",
+    "back": "Back home"
+  }
+}

@@ -1,0 +1,405 @@
+{
+  "nav": {
+    "work": "Projekte",
+    "services": "Leistungen",
+    "process": "Ablauf",
+    "studio": "Studio",
+    "contact": "Kontakt",
+    "cta": "Projekt starten",
+    "menu": "Menü",
+    "close": "Schließen"
+  },
+  "hero": {
+    "eyebrow": "Unabhängiges Software-Studio · Deutschland",
+    "h1a": "Wir bauen die Systeme,",
+    "h1b": "mit denen Ihr Team arbeitet.",
+    "sub": "Interne Tools, Dashboards und Automatisierung, gebaut für die Art, wie Ihre Mitarbeitenden wirklich arbeiten, und lange nach dem Start zuverlässig betreut.",
+    "cta1": "Projekt starten",
+    "cta2": "Projekte ansehen",
+    "scroll": "Scrollen",
+    "cue": "Scrollen, wir räumen auf",
+    "messTag": "Im Moment",
+    "messLines": [
+      "Ihr Unternehmen",
+      "läuft hierüber."
+    ],
+    "messBody": "Tabellen, Chatverläufe und das Gedächtnis einer einzelnen Person. Arbeit geht zwischen Menschen verloren, Zahlen stimmen nicht überein, und niemand sieht, was feststeckt.",
+    "scan": "Wir erfassen, wie Arbeit wirklich läuft",
+    "sources": "Quellen",
+    "sysTag": "Was wir bauen",
+    "sysLines": [
+      "Ein System,"
+    ],
+    "sysAccent": "gebaut für die Art, wie Ihr Team wirklich arbeitet.",
+    "sign": "Art Halimi, Gründer",
+    "frag": {
+      "sheet": {
+        "file": "Auftraege_2025_FINAL_v7.xlsx",
+        "rows": [
+          [
+            "Keller",
+            "12",
+            "4.200",
+            "?"
+          ],
+          [
+            "Nordlicht",
+            "8",
+            "#REF!",
+            "ok"
+          ],
+          [
+            "Brandt",
+            "—",
+            "1.950",
+            "anrufen!"
+          ],
+          [
+            "Vogel",
+            "15",
+            "6.100",
+            ""
+          ],
+          [
+            "Studio Mira",
+            "3",
+            "=SUMME(",
+            "??"
+          ]
+        ]
+      },
+      "chat": {
+        "channel": "betrieb",
+        "badge": "3",
+        "msgs": [
+          [
+            "Lena",
+            "wer hat die aktuellen Zahlen?"
+          ],
+          [
+            "Tom",
+            "schau in die andere Tabelle"
+          ],
+          [
+            "Lena",
+            "welche denn??"
+          ]
+        ]
+      },
+      "email": {
+        "from": "buchhaltung@",
+        "subject": "AW: AW: WG: Rechnung 2291",
+        "body": "Sorry, hier nochmal, die letzte war die alte Version…",
+        "attach": "3 Anhänge"
+      },
+      "numbers": {
+        "label": "Umsatz · März",
+        "v1": "48.120 €",
+        "v2": "51.940 €",
+        "q": "Welche Zahl stimmt?"
+      },
+      "sticky": {
+        "text": "Lieferant vor 15 Uhr anrufen!! Maria fragen"
+      },
+      "calendar": {
+        "day": "Di 14.",
+        "conflict": "Konflikt",
+        "e1": "Wochen-Sync · 10:00",
+        "e2": "Kundentermin · 10:30"
+      },
+      "pdf": {
+        "file": "Lieferschein_scan(2).pdf",
+        "meta": "Gescannt · 2 Seiten"
+      },
+      "toast": {
+        "text": "17 ungelesen in #auftraege"
+      },
+      "folder": {
+        "path": [
+          "Freigabe",
+          "alt",
+          "nicht-benutzen",
+          "final"
+        ]
+      },
+      "voice": {
+        "len": "0:47"
+      }
+    },
+    "ui": {
+      "app": "Betrieb",
+      "crumb": "Aufträge",
+      "ws": "Ihr Team",
+      "syncing": "Synchronisiert…",
+      "synced": "Synchron",
+      "nav": [
+        "Übersicht",
+        "Aufträge",
+        "Kunden",
+        "Rechnungen",
+        "Planung",
+        "Berichte"
+      ],
+      "revenue": "Umsatz · März",
+      "open": "Offene Aufträge",
+      "overdue": "Überfällige Rechnungen",
+      "orders": "Aufträge",
+      "ordersMeta": "Eine Datenquelle",
+      "rows": [
+        [
+          "Keller GmbH",
+          "#2291",
+          "approved"
+        ],
+        [
+          "Nordlicht AG",
+          "#2290",
+          "inProd"
+        ],
+        [
+          "Brandt & Söhne",
+          "#2288",
+          "shipped"
+        ],
+        [
+          "Vogel Logistik",
+          "#2287",
+          "waiting"
+        ],
+        [
+          "Studio Mira",
+          "#2285",
+          "shipped"
+        ]
+      ],
+      "status": {
+        "inProd": "In Produktion",
+        "approved": "Freigegeben",
+        "shipped": "Versendet",
+        "waiting": "Wartet"
+      },
+      "activity": "Aktivität",
+      "feed": [
+        "Rechnung #2291 automatisch versendet",
+        "Lena hat Auftrag #2290 freigegeben",
+        "Bestand aus dem Lager synchronisiert",
+        "Wochenbericht ist fertig"
+      ],
+      "week": "Diese Woche",
+      "days": [
+        "Mo",
+        "Di",
+        "Mi",
+        "Do",
+        "Fr"
+      ]
+    }
+  },
+  "manifesto": {
+    "tag": "Warum es uns gibt",
+    "text": "Die meisten wachsenden Teams arbeiten mit Tabellen, Chatverläufen und dem Gedächtnis einer einzelnen Person. Arbeit geht zwischen Menschen verloren, Zahlen stimmen nicht überein, und niemand sieht, was feststeckt. Wir ersetzen all das durch ein System,",
+    "accent": "gebaut für die Art, wie Ihr Team wirklich arbeitet."
+  },
+  "services": {
+    "tag": "Was wir bauen",
+    "title": "Vier Arten von Systemen.",
+    "eg": "Zum Beispiel",
+    "items": [
+      {
+        "title": "Workflow-Systeme",
+        "desc": "Ihr Prozess als Software: Schritte, Rollen, Übergaben, Freigaben und Benachrichtigungen.",
+        "eg": "Produktionspipelines, Freigabeprozesse, Operations-Boards."
+      },
+      {
+        "title": "Dashboards & Reporting",
+        "desc": "Zahlen, denen Ihr Team vertraut, mit der Quelle abgeglichen und automatisch aktualisiert.",
+        "eg": "Umsatz-Reporting, Kundenberichte, Abrechnung aus echten Arbeitsdaten."
+      },
+      {
+        "title": "Integrationen",
+        "desc": "Die Tools, die Sie schon nutzen, verbunden, damit Daten ohne Copy-Paste fließen.",
+        "eg": "Meta, YouTube, Google Sheets und Drive, Slack, Buchungs- und Zahlungssysteme."
+      },
+      {
+        "title": "KI-Automatisierung",
+        "desc": "Sprachmodelle, die bewerten, entwerfen, sortieren und planen, mit einem Menschen, der prüft, was zählt.",
+        "eg": "Lead-Bewertung, Content-Planung, Dokumentensortierung."
+      }
+    ],
+    "also": "Außerdem: Performance-Audits für langsame oder teure Apps und Websites für Unternehmen, die auch online überzeugen wollen."
+  },
+  "shift": {
+    "tag": "Der Wechsel",
+    "lines": [
+      "Schluss damit,",
+      "Ihr Unternehmen",
+      "mit Tabellen zu führen."
+    ],
+    "body": "Wir erfassen, wie Ihr Team wirklich arbeitet, und bauen ein System dafür: jeder Schritt, jede Übergabe und jede Zahl an einem Ort. Danach bleiben wir dabei und halten es am Laufen.",
+    "cta": "Projekt starten"
+  },
+  "work": {
+    "tag": "Ausgewählte Projekte",
+    "title": "Gebaut, geliefert und täglich im Einsatz.",
+    "visit": "Website ansehen",
+    "items": {
+      "lb": {
+        "title": "LB Hairdesign",
+        "kind": "Buchung & Kundenverwaltung",
+        "place": "Schweiz",
+        "desc": "Eine Plattform für Buchungen, Finanzen und Kundenkonten eines Premium-Salons. Sie ersetzte die manuelle Terminplanung und senkte den Zeitaufwand für Buchungen um 70 %.",
+        "tag": "Luxus, in Sekunden gebucht.",
+        "facts": [
+          "Online-Buchung",
+          "Kundenkonten",
+          "Finanzen an einem Ort"
+        ],
+        "metric": [
+          "Zeit für Buchungen",
+          "−70 %"
+        ]
+      },
+      "tafa": {
+        "title": "Auto Tafa",
+        "kind": "Fahrzeugbestand & Leads",
+        "place": "Kosovo",
+        "desc": "Eine Autohaus-Plattform, die statische Inserate in einen durchsuchbaren Bestand verwandelt, mit erweiterten Filtern, Live-Bestand und Lead-Erfassung.",
+        "tag": "Ein Showroom, der nie schließt.",
+        "facts": [
+          "Durchsuchbarer Bestand",
+          "Erweiterte Filter",
+          "Live-Bestand",
+          "Anfragen erfassen"
+        ]
+      },
+      "arsa": {
+        "title": "Arsa Gipser",
+        "kind": "Unternehmenswebsite",
+        "place": "Schweiz",
+        "desc": "Projekte, Leistungen und Referenzen für einen Schweizer Gipserbetrieb, lokalisiert für den Markt.",
+        "tag": "Handwerk, richtig gezeigt.",
+        "facts": [
+          "Leistungen",
+          "Projektgalerie",
+          "Für die Schweiz lokalisiert"
+        ]
+      },
+      "andi": {
+        "title": "Andi Shkodra",
+        "kind": "Kampagnen-Website",
+        "place": "Kosovo",
+        "desc": "Eine klare, schnelle Kampagnenseite für einen Kandidaten der Gemeindeversammlung in Gjilan.",
+        "tag": "Eine Kampagne, klar erzählt.",
+        "facts": [
+          "Wahlprogramm",
+          "Anleitung zur Wählerregistrierung",
+          "Über mich & Kontakt"
+        ]
+      }
+    },
+    "big": "Work",
+    "cursor": "Projekt ansehen",
+    "next": [
+      "Das nächste",
+      "könnte Ihres sein."
+    ],
+    "drag": "Scrollen",
+    "factsLabel": "Was es kann",
+    "live": "Live"
+  },
+  "process": {
+    "tag": "So arbeiten wir",
+    "title": "Vier Schritte. Keine Überraschungen.",
+    "steps": [
+      {
+        "title": "Verstehen",
+        "desc": "Wir setzen uns mit den Menschen zusammen, die die Arbeit machen, und erfassen den echten Prozess. Sie erhalten einen schriftlichen Umfang und einen festen Plan."
+      },
+      {
+        "title": "Bauen",
+        "desc": "Wöchentliche Versionen zum Anklicken statt Statusberichte. Ihr Feedback fließt direkt in die nächste Version."
+      },
+      {
+        "title": "Starten",
+        "desc": "Das neue System läuft parallel zum alten Weg, bis Ihr Team ihm vertraut. Dann werden die Tabellen abgeschaltet."
+      },
+      {
+        "title": "Betreuen",
+        "desc": "Monitoring, Fehlerbehebung und Verbesserungen nach dem Start. Wir bleiben dabei, damit das System mit dem Unternehmen wächst."
+      }
+    ]
+  },
+  "studio": {
+    "tag": "Das Studio",
+    "title": "Nah genug, um sich zu kümmern. Gebaut, um zu halten.",
+    "p1": "Art Halimi Studio ist ein unabhängiges Software-Studio aus Gelsenkirchen. Wir arbeiten mit Teams in Deutschland, der Schweiz und darüber hinaus, denen Tabellen und Standard-Tools zu klein geworden sind.",
+    "principles": [
+      {
+        "title": "Sie sprechen mit denen, die es bauen.",
+        "desc": "Keine Account Manager dazwischen. Der Entwickler Ihres Projekts sitzt in Ihren Calls."
+      },
+      {
+        "title": "Wir messen, bevor wir etwas ändern.",
+        "desc": "Entscheidungen kommen aus Logs, Messwerten und echter Nutzung, nicht aus Vermutungen."
+      },
+      {
+        "title": "Wir bleiben nach dem Start.",
+        "desc": "Software, die ein Unternehmen trägt, braucht Pflege. Das gehört zum Job."
+      }
+    ],
+    "founder": "Gegründet von Art Halimi, Full-Stack-Entwickler.",
+    "languages": "Projekte laufen auf Englisch oder Albanisch.",
+    "linkedin": "LinkedIn"
+  },
+  "contact": {
+    "tag": "Kontakt",
+    "big1": "Bauen wir,",
+    "big2": "was Ihnen fehlt.",
+    "lead": "Erzählen Sie uns, was Ihr Team noch von Hand erledigt. Wir antworten innerhalb eines Werktags mit einem Vorschlag.",
+    "name": "Name",
+    "email": "E-Mail",
+    "company": "Unternehmen (optional)",
+    "need": "Was brauchen Sie?",
+    "needs": [
+      "Workflow-System",
+      "Dashboard",
+      "Integration",
+      "KI-Automatisierung",
+      "Website",
+      "Noch unklar"
+    ],
+    "message": "Was erledigt Ihr Team heute von Hand?",
+    "send": "Senden",
+    "sending": "Wird gesendet…",
+    "sent": "Danke. Wir melden uns innerhalb eines Werktags.",
+    "error": "Das hat nicht geklappt. Bitte schreiben Sie uns direkt.",
+    "direct": "Oder per E-Mail"
+  },
+  "footer": {
+    "line": "Software für wachsende Teams.",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "rights": "Alle Rechte vorbehalten.",
+    "top": "Nach oben",
+    "h1": "Software, die",
+    "h2": "von selbst läuft.",
+    "pages": "Seiten",
+    "elsewhere": "Anderswo",
+    "where": "Gelsenkirchen, Deutschland",
+    "stack": [
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Node.js",
+      "PostgreSQL",
+      "Workflow-Automatisierung",
+      "API-Integration",
+      "LLM-Integration",
+      "Dashboards"
+    ]
+  },
+  "notfound": {
+    "title": "Diese Seite gibt es nicht.",
+    "back": "Zur Startseite"
+  }
+}
