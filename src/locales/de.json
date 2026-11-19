@@ -145,46 +145,57 @@
       "overdue": "Überfällige Rechnungen",
       "orders": "Aufträge",
       "ordersMeta": "Eine Datenquelle",
+      "search": "Aufträge, Kunden suchen…",
+      "client": "Kunde",
+      "order": "Auftrag",
+      "amount": "Betrag",
+      "statusCol": "Status",
+      "delta": "+7,9 %",
+      "paid": "Alles bezahlt",
+      "auto": "Automationen",
+      "autoMeta": "12 aktiv",
       "rows": [
-        [
-          "Keller GmbH",
-          "#2291",
-          "approved"
-        ],
-        [
-          "Nordlicht AG",
-          "#2290",
-          "inProd"
-        ],
-        [
-          "Brandt & Söhne",
-          "#2288",
-          "shipped"
-        ],
-        [
-          "Vogel Logistik",
-          "#2287",
-          "waiting"
-        ],
-        [
-          "Studio Mira",
-          "#2285",
-          "shipped"
-        ]
+        ["Keller GmbH", "#2291", "approved", 4200],
+        ["Nordlicht AG", "#2290", "inProd", 2860],
+        ["Brandt & Söhne", "#2288", "shipped", 1950],
+        ["Vogel Logistik", "#2287", "waiting", 6100],
+        ["Studio Mira", "#2285", "shipped", 3400],
+        ["Hartmann KG", "#2284", "inProd", 2280],
+        ["Lindner Bau", "#2283", "shipped", 7450],
+        ["Atelier Nord", "#2281", "shipped", 1320],
+        ["Seidel Optik", "#2280", "shipped", 940]
       ],
       "status": {
+        "new": "Neu",
         "inProd": "In Produktion",
         "approved": "Freigegeben",
         "shipped": "Versendet",
         "waiting": "Wartet"
+      },
+      "live": {
+        "who": "Lena",
+        "now": "jetzt",
+        "ago": "{n} Min.",
+        "approved": "{who} hat Auftrag {no} freigegeben",
+        "production": "Auftrag {no} ist in Produktion",
+        "shipped": "Auftrag {no} versendet, Tracking verschickt",
+        "new": "Neuer Auftrag {no} von {client}",
+        "invoice": "Rechnung {no} automatisch versendet",
+        "stock": "Bestand aus dem Lager synchronisiert",
+        "report": "Wochenbericht ist fertig",
+        "clients": ["Becker & Co", "Weiss Medien", "Fuchs Logistik", "Kaiser Druck", "Roth Studio", "Winter Holz"]
       },
       "activity": "Aktivität",
       "feed": [
         "Rechnung #2291 automatisch versendet",
         "Lena hat Auftrag #2290 freigegeben",
         "Bestand aus dem Lager synchronisiert",
-        "Wochenbericht ist fertig"
+        "Wochenbericht ist fertig",
+        "Lieferschein Auftrag #2284 zugeordnet",
+        "Tom hat die Abholung am Do auf 10:00 gelegt"
       ],
+      "team": "Team",
+      "online": "online",
       "week": "Diese Woche",
       "days": [
         "Mo",
@@ -242,7 +253,41 @@
     "tag": "Ausgewählte Projekte",
     "title": "Gebaut, geliefert und täglich im Einsatz.",
     "visit": "Website ansehen",
+    "private": "Intern",
+    "ask": "Mehr zu diesem Projekt",
     "items": {
+      "ops": {
+        "title": "Produktionssystem",
+        "tag": "Vom Briefing bis online, ein Klick pro Schritt.",
+        "desc": "Für ein Creator-Medienunternehmen: Jeder Post geht vom Briefing über Schnitt, QA und Freigabe weiter, ein Klick pro Person, und erscheint pünktlich. Abrechnung und Umsatzberichte entstehen direkt aus der Arbeit.",
+        "kind": "Workflow, Abrechnung & Reporting",
+        "place": "Täglich im Einsatz",
+        "host": "intern · Produktion",
+        "ui": {
+          "ws": "Produktion",
+          "nav": ["Board", "Kalender", "Abrechnung", "Umsätze", "Team"],
+          "board": "Board",
+          "week": "KW 47",
+          "filters": ["Alle Creator", "Meine Schritte"],
+          "cols": [
+            { "name": "Briefing", "n": "6", "cards": [["Kitchen Lab", "5-Minuten-Pasta, dreimal anders", "Maria", "Do 09:00"], ["Tiny Science", "Warum Eis schwimmt", "Maria", "Do 15:00"], ["Northside Eats", "Fünf Saucen, ein Burger", "Maria", "Fr 12:00"]] },
+            { "name": "Schnitt", "n": "9", "cards": [["Trail Notes", "Die beste Nachtwanderung des Jahres", "Tom", "Do 12:00"], ["Northside Eats", "Street Tacos im Ranking", "Lena", "Fr 10:00"], ["Tiny Science", "Kann man Farben hören?", "Tom", "Fr 15:00"]] },
+            { "name": "QA", "n": "4", "cards": [["Fix It Garage", "Bremsbeläge in 60 Sekunden", "Jonas", "Do 18:00"], ["Kitchen Lab", "Frühstück aus einer Pfanne", "Jonas", "Fr 09:00"]] },
+            { "name": "Freigabe", "n": "3", "cards": [["Tiny Science", "Das lauteste Tier der Welt", "Sara", "Do 20:00"], ["Kitchen Lab", "Messertechnik in 30 Sekunden", "Sara", "Fr 18:00"]] },
+            { "name": "Geplant", "n": "12", "cards": [["Trail Notes", "Packen für drei Tage", "Sara", "Heute 19:00"], ["Northside Eats", "Ramen um Mitternacht", "Sara", "Heute 21:30"], ["Fix It Garage", "Reifen prüfen in 20 Sekunden", "Sara", "Morgen 09:00"]] }
+          ],
+          "toast": "Lena hat „Bremsbeläge in 60 Sekunden“ an QA übergeben · gerade eben",
+          "payroll": "Abrechnung · November",
+          "payrollValue": "Fertig",
+          "earnings": "Umsätze · diese Woche",
+          "phone": {
+            "when": "Heute · Lena",
+            "title": "Nächste Schritte",
+            "cards": [["Fix It Garage", "Bremsbeläge in 60 Sekunden", "Schnitt"], ["Northside Eats", "Street Tacos im Ranking", "Schnitt"], ["Kitchen Lab", "Frühstück aus einer Pfanne", "Korrekturen"]],
+            "cta": "An QA übergeben"
+          }
+        }
+      },
       "lb": {
         "title": "LB Hairdesign",
         "kind": "Buchung & Kundenverwaltung",
@@ -305,7 +350,23 @@
     ],
     "drag": "Scrollen",
     "factsLabel": "Was es kann",
-    "live": "Live"
+    "live": "Live",
+    "slotTag": "Ihr Projekt",
+    "slotBody": "Wählen Sie, was Ihr Team noch von Hand erledigt. Wir machen daraus ein System, etwa so.",
+    "slotUrl": "ihre-firma.de",
+    "slotOpen": "Frei",
+    "slotLabel": "Ihr System hier",
+    "slotPick": "Noch von Hand",
+    "slotCta": "Mit {n} Modulen starten",
+    "slotCta1": "Mit 1 Modul starten",
+    "slotCta0": "Projekt starten",
+    "slotModules": "{n} Module",
+    "slotModules1": "1 Modul",
+    "slotEmpty": "Wählen Sie, was entstehen soll",
+    "slotBrief": "Heute noch von Hand: {list}.",
+    "slotPhone": "Heute",
+    "slotWs": "Ihre Firma",
+    "build": { "orders": "Aufträge", "schedule": "Planung", "invoices": "Rechnungen", "reports": "Berichte", "inventory": "Lager", "approvals": "Freigaben", "portal": "Kundenportal", "payroll": "Lohnabrechnung" }
   },
   "process": {
     "tag": "So arbeiten wir",

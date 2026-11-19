@@ -61,9 +61,14 @@ function Lang() {
 
 function NavLink({ label, href, onClick }) {
   const [hit, setHit] = useState(0);
+  // The scramble's random glyphs have other widths than the label. The real label (invisible) holds the width and the
+  // scramble is laid over it, so the pill, which is only as wide as its contents, never resizes and shakes.
   return (
-    <a href={href} onClick={(e) => { e.preventDefault(); onClick(); }} onMouseEnter={() => setHit((h) => h + 1)} className="rounded-full px-3.5 py-2 text-[13.5px] text-ink-200 transition-colors hover:bg-paper/[0.06] hover:text-paper">
-      <Scramble text={label} trigger={hit} />
+    <a href={href} onClick={(e) => { e.preventDefault(); onClick(); }} onMouseEnter={() => setHit((h) => h + 1)} className="relative rounded-full px-4 py-2 text-[13.5px] text-ink-200 transition-colors hover:bg-paper/[0.06] hover:text-paper">
+      <span className="opacity-0">{label}</span>
+      <span aria-hidden="true" className="absolute inset-0 flex items-center justify-center whitespace-nowrap">
+        <Scramble text={label} trigger={hit} />
+      </span>
     </a>
   );
 }
@@ -96,21 +101,21 @@ export default function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className={`mx-auto w-full max-w-[clamp(1180px,calc(80vw-180px),1700px)] px-4 transition-[padding] duration-500 sm:px-6 ${scrolled ? 'pt-3' : 'pt-5'}`}>
-        <div className={`flex h-[52px] items-center justify-between rounded-full border pl-4 pr-1.5 transition-all duration-500 ${scrolled || open ? 'border-paper/10 bg-ink/70 backdrop-blur-xl' : 'border-transparent'}`}>
-          <a href={homePath(i18n.language)} onClick={home} className="flex items-center gap-2" aria-label="Art Halimi Studio, home">
+      {/* a compact pill, centred: as wide as its contents on desktop, capped on smaller screens */}
+      <div className={`flex justify-center px-4 transition-[padding] duration-500 sm:px-6 ${scrolled ? 'pt-3' : 'pt-5'}`}>
+        <div className={`flex h-[58px] w-full max-w-[640px] items-center justify-between gap-4 rounded-full border pl-5 pr-2 transition-colors duration-500 lg:w-auto lg:max-w-none lg:gap-9 ${scrolled || open ? 'border-paper/10 bg-ink/75 backdrop-blur-xl' : 'border-paper/[0.06] bg-ink/40 backdrop-blur-md'}`}>
+          <a href={homePath(i18n.language)} onClick={home} className="flex shrink-0 items-center gap-2.5" aria-label="Art Halimi Studio, home">
             <LogoMark className="h-7 w-7" />
             <span className="text-[14.5px] font-semibold tracking-[-0.02em]">Art Halimi</span>
-            <span className="hidden text-[14.5px] tracking-[-0.02em] text-ink-300 sm:inline">Studio</span>
           </a>
 
-          <nav className="hidden items-center lg:flex" aria-label="Main">
+          <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
             {LINKS.map((id) => <NavLink key={id} label={t(`nav.${id}`)} href={href(id)} onClick={() => nav(id)} />)}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <div className="hidden sm:block"><Lang /></div>
-            <button type="button" onClick={() => nav('contact')} className="roll-host hidden items-center gap-1.5 rounded-full bg-lime px-4 py-2.5 text-[13.5px] font-medium text-ink transition-colors hover:bg-paper sm:inline-flex">
+            <button type="button" onClick={() => nav('contact')} className="roll-host hidden items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-[13.5px] font-medium text-ink transition-colors hover:bg-paper sm:inline-flex">
               <Roll>{t('nav.cta')}</Roll> <ArrowUpRight className="h-3.5 w-3.5" />
             </button>
             <button type="button" onClick={() => setOpen((v) => !v)} className="h-10 rounded-full border border-paper/15 px-4 text-[13px] lg:hidden" aria-expanded={open}>

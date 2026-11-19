@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Camera, Geometry, Program, Mesh, Transform } from 'ogl';
-import { introA, introB, introFill, introMix, introOn, introScale, introX, introY, limeAmt, textReady } from '../lib/store';
+import { introA, introAlpha, introB, introFill, introMix, introOn, introScale, limeAmt, textReady } from '../lib/store';
 
 /*
  * One fixed point cloud behind the whole page. Five shapes share the same points:
@@ -217,15 +217,20 @@ const SHAPE_SPAN = 2.6; // on-screen diameter of the sphere at scale 1, in world
  * On wide screens a section can hold a [data-scene-slot] element: the shape is then centred on that box and sized to
  * fill it, so it follows the layout instead of fixed world offsets (which drift toward the centre on wide screens).
  * The slot's position is taken relative to its section, so the shape stays put while the section scrolls.
+ *
+ * Everything here is measured once (and again when the page's size changes), in page coordinates. Each frame then
+ * only subtracts the scroll position: reading layout every frame, after the sections have written their styles,
+ * forced a full layout per frame and made scrolling stutter.
  */
-function readAnchors(wide, view) {
+function measureAnchors(wide, view) {
   const V = window.innerHeight;
   const cw = document.documentElement.clientWidth;
+  const sy = window.scrollY;
   return [...document.querySelectorAll('[data-shape]')].map((el) => {
     const r = el.getBoundingClientRect();
     const d = el.dataset;
     const a = {
-      center: r.top + Math.min(r.height, V * 1.2) / 2,
+      mid: r.top + sy + Math.min(r.height, V * 1.2) / 2, // its centre, in page coordinates
       shape: Number(d.shape),
       x: Number(wide ? d.x ?? 0 : d.mx ?? 0),
       y: Number(wide ? d.y ?? 0 : d.my ?? 0),
@@ -242,7 +247,7 @@ function readAnchors(wide, view) {
       a.scale = (Math.min(s.width, s.height) * uy) / SHAPE_SPAN;
     }
     return a;
-  }).sort((a, b) => a.center - b.center);
+  }).sort((a, b) => a.mid - b.mid);
 }
 
 export default function Scene() {
@@ -297,6 +302,8 @@ export default function Scene() {
 
     let wide = true;
     const view = { w: 1, h: 1 };
+    let anchors = [];
+    const remeasure = () => { anchors = measureAnchors(wide, view); };
     const resize = () => {
       const w = window.innerWidth; const h = window.innerHeight;
       wide = w >= 1024;
@@ -307,9 +314,14 @@ export default function Scene() {
       uniforms.uDist.value = dist;
       view.h = 2 * dist * Math.tan((FOV * Math.PI) / 360);
       view.w = view.h * (w / h);
+      remeasure();
     };
     resize();
     window.addEventListener('resize', resize);
+    // sections change height after they measure themselves (the Work run, fonts loading): measure again then
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(remeasure) : null;
+    ro?.observe(document.body);
+    const late = setTimeout(remeasure, 1500);
 
     const target = { x: 0, y: 0 };
     const mouse = { x: 0, y: 0 };
@@ -320,10 +332,12 @@ export default function Scene() {
     window.addEventListener('pointermove', onMove, { passive: true });
 
     // eased values so jumps (anchor links, fast scrolls) still glide
-    const cur = { x: 0, y: 0, scale: 1, alpha: 1, ink: 0 };
+    const cur = { x: 0, y: 0, scale: 1, alpha: 0, ink: 0 };
     let raf = 0;
     let last = performance.now();
     let time = 0;
+    let wasIntro = false;
+    let blank = false; // the canvas has been cleared and nothing needs drawing
     const frame = (now) => {
       raf = requestAnimationFrame(frame);
       if (document.hidden) { last = now; return; }
@@ -331,17 +345,17 @@ export default function Scene() {
       last = now;
       if (!reduced) time += dt;
 
-      const anchors = readAnchors(wide, view);
-      const mid = window.innerHeight / 2;
+      // the middle of the screen, in page coordinates
+      const mid = window.scrollY + window.innerHeight / 2;
       let A = anchors[0]; let B = anchors[0]; let f = 0;
       if (anchors.length) {
-        if (mid <= anchors[0].center) { A = B = anchors[0]; }
-        else if (mid >= anchors[anchors.length - 1].center) { A = B = anchors[anchors.length - 1]; }
+        if (mid <= anchors[0].mid) { A = B = anchors[0]; }
+        else if (mid >= anchors[anchors.length - 1].mid) { A = B = anchors[anchors.length - 1]; }
         else {
           for (let i = 0; i < anchors.length - 1; i++) {
-            if (mid >= anchors[i].center && mid <= anchors[i + 1].center) {
+            if (mid >= anchors[i].mid && mid <= anchors[i + 1].mid) {
               A = anchors[i]; B = anchors[i + 1];
-              f = smooth(((mid - A.center) / (B.center - A.center) - 0.18) / 0.64);
+              f = smooth(((mid - A.mid) / (B.mid - A.mid) - 0.18) / 0.64);
               break;
             }
           }
@@ -349,17 +363,20 @@ export default function Scene() {
       }
       const k = reduced ? 1 : 1 - Math.pow(0.0025, dt);
       if (introOn.get() > 0.5) {
-        // loader: small, centred, cycling through the shapes the loader picks
+        // loader: centred, cycling through the shapes the loader picks
+        wasIntro = true;
         uniforms.uA.value = introA.get();
         uniforms.uB.value = introB.get();
         uniforms.uMix.value = introMix.get();
         const kf = reduced ? 1 : 1 - Math.pow(0.00005, dt);
-        cur.x += (introX.get() - cur.x) * kf;
-        cur.y += (introY.get() - cur.y) * kf;
+        cur.x += (0 - cur.x) * kf;
+        cur.y += (0 - cur.y) * kf;
         cur.scale += (introScale.get() - cur.scale) * kf;
-        cur.alpha += (1 - cur.alpha) * kf;
+        cur.alpha += (introAlpha.get() - cur.alpha) * kf;
         uniforms.uFill.value = introFill.get();
       } else if (A) {
+        // the loader has faded out by now: start from its opacity so the page's shape doesn't flash in on the hand-over
+        if (wasIntro) { wasIntro = false; cur.alpha = introAlpha.get(); }
         uniforms.uA.value = A.shape;
         uniforms.uB.value = B.shape;
         uniforms.uMix.value = A.shape === B.shape ? 0 : f;
@@ -380,6 +397,10 @@ export default function Scene() {
       uniforms.uScale.value = cur.scale;
       uniforms.uAlpha.value = cur.alpha;
       uniforms.uInk.value = cur.ink;
+      // while the cloud is invisible (the hero, the Work run) draw one empty frame, then leave the GPU alone
+      const hidden = introOn.get() <= 0.5 && cur.alpha < 0.002;
+      if (hidden && blank) return;
+      blank = hidden;
       renderer.render({ scene, camera });
     };
     raf = requestAnimationFrame(frame);
@@ -387,6 +408,8 @@ export default function Scene() {
 
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(late);
+      ro?.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('pointermove', onMove);
       gl.getExtension('WEBGL_lose_context')?.loseContext();

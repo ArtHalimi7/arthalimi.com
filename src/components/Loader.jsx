@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { m } from 'framer-motion';
 import { useLenis } from 'lenis/react';
-import { introA, introB, introFill, introMix, introOn, introScale, introX, introY, textReady } from '../lib/store';
+import { introA, introAlpha, introB, introFill, introMix, introOn, introScale, textReady } from '../lib/store';
 import { EASE } from './ui/primitives';
 
 /*
  * The loader is the particle cloud itself:
  *   scattered points → they assemble into the wordmark "ART HALIMI" → the wordmark fills with lime from left to right
- *   as the counter runs to 100 → the letters melt into the sphere, which lands exactly where the hero needs it.
- * Shapes (see Scene.jsx): 0 sphere, 1 clusters, 5 wordmark.
+ *   as the counter runs to 100 → the letters scatter into dust and fade out, leaving the hero clean.
+ * Shapes (see Scene.jsx): 1 clusters, 5 wordmark.
  */
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const ramp = (t, a, b) => clamp01((t - a) / (b - a));
@@ -28,8 +28,7 @@ export default function Loader({ onDone }) {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const wide = window.innerWidth >= 1024;
-    const hero = wide ? { x: 1.45, y: 0, scale: 1 } : { x: 0, y: 1.55, scale: 0.8 };
+    const base = window.innerWidth >= 1024 ? 1 : 0.46;
     window.scrollTo(0, 0);
     document.documentElement.style.overflow = 'hidden';
 
@@ -39,15 +38,14 @@ export default function Loader({ onDone }) {
       lenisRef.current?.start();
     };
     if (reduced || seenIntro()) {
-      introA.set(0); introB.set(0); introMix.set(0); introFill.set(0);
-      introX.set(hero.x); introY.set(hero.y); introScale.set(hero.scale);
+      introA.set(1); introB.set(1); introMix.set(0); introFill.set(0); introAlpha.set(0);
       finish(); onDone?.(); setPhase('gone');
       return undefined;
     }
 
     introOn.set(1);
-    introA.set(1); introB.set(1); introMix.set(0); introFill.set(0);
-    introX.set(0); introY.set(0); introScale.set(wide ? 1 : 0.46);
+    introA.set(1); introB.set(1); introMix.set(0); introFill.set(0); introAlpha.set(1);
+    introScale.set(base);
 
     let raf = 0;
     let start = 0;
@@ -66,11 +64,11 @@ export default function Loader({ onDone }) {
         introA.set(1); introB.set(5);
         introMix.set(inOut(ramp(t, ...T.assemble)));
       } else {
-        introA.set(5); introB.set(0);
+        // the letters drift apart into dust while it fades out
+        introA.set(5); introB.set(1);
         introMix.set(melt);
-        introX.set(hero.x * melt);
-        introY.set(hero.y * melt);
-        introScale.set((wide ? 1 : 0.46) + (hero.scale - (wide ? 1 : 0.46)) * melt);
+        introScale.set(base * (1 + melt * 0.35));
+        introAlpha.set(1 - ramp(melt, 0.15, 1));
       }
       const fill = inOut(ramp(t, ...T.fill));
       introFill.set(fill);
@@ -82,8 +80,7 @@ export default function Loader({ onDone }) {
         try { sessionStorage.setItem(SEEN, '1'); } catch { /* ignore */ }
       }
       if (t >= T.end) {
-        introA.set(0); introB.set(0); introMix.set(0);
-        introX.set(hero.x); introY.set(hero.y); introScale.set(hero.scale);
+        introA.set(1); introB.set(1); introMix.set(0); introAlpha.set(0);
         finish();
         setPhase('gone');
         return;

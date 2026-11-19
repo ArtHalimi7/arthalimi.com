@@ -1,11 +1,15 @@
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { m, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useLenis } from 'lenis/react';
 import { EASE, LogoMark, Roll, Signature } from './ui/primitives';
 import { useScrollTo, useSectionHref } from './Nav';
+import { isHomePath } from '../lib/seo';
+
+// On the home page the footer's lime fade starts this far up, behind the contact section, so it runs unbroken to the end.
+const LEAD = '70vh';
 
 const PAGES = ['work', 'services', 'process', 'studio', 'contact'];
 const ELSEWHERE = [
@@ -52,6 +56,7 @@ export default function Footer() {
   const lenis = useLenis();
   const go = useScrollTo();
   const href = useSectionHref();
+  const home = isHomePath(useLocation().pathname);
   const ref = useRef(null);
   const seen = useInView(ref, { once: true, margin: '0px 0px -20% 0px' });
   const top = () => (lenis ? lenis.scrollTo(0, { duration: 1.8 }) : window.scrollTo({ top: 0, behavior: 'smooth' }));
@@ -60,8 +65,12 @@ export default function Footer() {
   const big = 'text-[clamp(1.35rem,2.3vw,2.5rem)] font-semibold uppercase leading-[1.06] tracking-[-0.035em] transition-colors duration-300 hover:text-lime';
 
   return (
-    <footer className="relative z-10 mt-10 rounded-t-[36px] bg-lime px-2.5 pb-14 pt-16 text-ink sm:rounded-t-[48px] sm:px-4 sm:pt-20 lg:pb-16">
-      <div ref={ref} className="relative mx-auto max-w-[1880px]">
+    // On the home page the footer reaches up behind the contact section (z-[5]: under its content, over the particle
+    // canvas) and its fade starts there, transparent, so contact → footer is one unbroken gradient.
+    <footer style={home ? { marginTop: `-${LEAD}` } : undefined} className={`footer-fade relative z-[5] px-2.5 pb-14 pt-16 text-ink sm:px-4 sm:pt-20 lg:pb-16 ${home ? '' : 'mt-10'}`}>
+      {home && <div aria-hidden="true" style={{ height: LEAD }} />}
+      {/* data-shape: on the home page the particle cloud (Scene.jsx) fades out as the footer comes in */}
+      <div ref={ref} data-shape="0" data-scale="1.25" data-mscale="0.9" data-alpha="0" className="relative mx-auto max-w-[1880px]">
         {/* the tab on top of the panel */}
         <div aria-hidden="true" className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-[calc(100%-1px)]">
           <div className="relative flex h-11 w-[min(300px,64vw)] items-center justify-center gap-2 rounded-t-[22px] bg-ink text-paper sm:h-12">

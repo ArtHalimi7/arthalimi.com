@@ -1,126 +1,142 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
-import { ArrowUpRight, Check, Lock } from 'lucide-react';
+import { ArrowUpRight, Lock } from 'lucide-react';
 import { Roll, Tag } from './ui/primitives';
+import { useScrollTo } from './Nav';
 import { limeAmt } from '../lib/store';
 import lbDesk from '../assets/work/lb-desktop.webp';
 import lbPhone from '../assets/work/lb-mobile.webp';
 import tafaDesk from '../assets/work/tafa-desktop.webp';
 import tafaPhone from '../assets/work/tafa-mobile.webp';
-import arsaDesk from '../assets/work/arsa-desktop.webp';
-import arsaPhone from '../assets/work/arsa-mobile.webp';
-import andiDesk from '../assets/work/andi-desktop.webp';
-import andiPhone from '../assets/work/andi-mobile.webp';
+import { OpsBoard, OpsPhone } from './work/OpsMock';
+import Slot from './work/Slot';
 
+/*
+ * `ops` is a private system: no link, no screenshots. Its window and phone are drawn (OpsMock) with made-up data,
+ * and its button asks about the project instead of visiting it.
+ * The Arsa Gipser and Andi Shkodra sites were taken out on 18 Nov 2026 (brochure sites, off the internal-tools
+ * pitch); their captures and texts are still in assets/work and the locales.
+ */
 const ITEMS = [
+  { key: 'ops', year: '2026' },
   { key: 'lb', desk: lbDesk, phone: lbPhone, url: 'https://lbhairdesign.ch', year: '2025' },
   { key: 'tafa', desk: tafaDesk, phone: tafaPhone, url: 'https://tafaleka.com', year: '2026' },
-  { key: 'arsa', desk: arsaDesk, phone: arsaPhone, url: 'https://arsagipser.ch', year: '2025' },
-  { key: 'andi', desk: andiDesk, phone: andiPhone, url: 'https://andishkodra.com', year: '2025' },
 ];
 const SPEED = 1.8; // px of sideways travel per px scrolled
+const HOLD = 0.6; // screens of scrolling the last slot stays put for, so there's time to use it
 const host = (u) => u.replace(/^https?:\/\//, '');
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-const PAPER = [242, 242, 238];
-const INK = [10, 10, 10];
-const mix = (a, b, t) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',')})`;
-const mono = 'font-mono text-[10px] uppercase tracking-[0.08em] text-ink-400';
+const pad = (v) => String(v).padStart(2, '0');
 
 /*
  * Work, sideways, built from the hero's kit. The section pins and scrolling moves a row to the left:
- * an intro ("WORK"), one slide per project, and a closing panel.
+ * an intro ("WORK"), one slide per project, and an open slot for the next one.
  * Each slide is the "after" picture of the hero for a real client: the live site in a system window (hover scrolls
- * through it), its phone version, and a glass card of what it does. As a slide reaches the centre its pieces
- * straighten and lock in with the hero's lime flash, and a lime scan line passes over the window.
- * Over the last stretch lime light floods in from the right, so the page runs straight into the lime section.
+ * through it) and its phone version. As a slide reaches the centre the phone straightens and locks in with the
+ * hero's lime flash.
+ * Behind it all, lime rises from the bottom of the screen with a soft edge: its level is the share of the run
+ * scrolled (half way through, the lower half of the screen is lime), so the page reaches the lime section already
+ * lime. The layer only moves (a transform), and each piece of text turns ink as a whole once the lime reaches it.
+ * Because the lime rises while the row moves sideways, text never sweeps back and forth across the edge.
  */
+const FADE = 0.35; // the soft edge, as a share of the screen height (matches .wk-rise in index.css)
+
+/** The text next to a slide. Each [data-flip] piece turns ink on its own once the rising lime reaches it. */
+function Story({ it, i, n }) {
+  const { t } = useTranslation();
+  const go = useScrollTo();
+  const k = (f) => t(`work.items.${it.key}.${f}`);
+  const cta = 'wk-flip roll-host group/cta mt-5 inline-flex items-center gap-3 text-[14px] font-medium lg:mt-8';
+  const dot = (
+    <span className="wk-btn grid h-11 w-11 place-items-center rounded-full bg-lime text-ink group-hover/cta:rotate-45">
+      <ArrowUpRight className="h-4 w-4" />
+    </span>
+  );
+  return (
+    <>
+      <div data-flip="" className="wk-flip flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-400">
+        <span><span className="wk-accent text-lime">{pad(i + 1)}</span> / {pad(n)}</span><span className="wk-rule h-px w-6 bg-paper/15" /><span>{it.year}</span>
+      </div>
+      <h3 data-flip="" className="wk-flip mt-3 text-[clamp(1.9rem,3.4vw,4.4rem)] font-medium leading-[0.95] tracking-[-0.045em] lg:mt-6">{k('title')}</h3>
+      <p data-flip="" className="wk-flip wk-soft mt-2 font-serif text-[clamp(1.25rem,2vw,2.4rem)] italic leading-[1.05] text-ink-300 lg:mt-3">{k('tag')}</p>
+      <p data-flip="" className="wk-flip wk-soft mt-6 hidden max-w-[40ch] text-[15px] leading-relaxed text-ink-300 lg:block 2xl:text-[16px]">{k('desc')}</p>
+      <div className="mt-4 flex flex-wrap gap-2 lg:mt-6">
+        {[k('kind'), k('place')].map((x) => <span key={x} data-flip="" className="wk-flip wk-chip rounded-full border border-white/[0.09] bg-white/[0.03] px-3 py-1 text-[12px] text-ink-200">{x}</span>)}
+      </div>
+      {it.url ? (
+        <a href={it.url} target="_blank" rel="noopener noreferrer" data-flip="" className={cta}>
+          {dot}<Roll>{t('work.visit')}</Roll>
+        </a>
+      ) : (
+        <button type="button" onClick={() => go('contact')} data-flip="" className={cta}>
+          {dot}<Roll>{t('work.ask')}</Roll>
+        </button>
+      )}
+    </>
+  );
+}
+
 function Slide({ it, i, n, refs }) {
   const { t } = useTranslation();
-  const k = (f) => t(`work.items.${it.key}.${f}`);
-  const facts = k('facts');
-  const metric = k('metric');
   const set = (name) => (el) => { refs[name].current[i] = el; };
+  const title = t(`work.items.${it.key}.title`);
+  const ui = it.url ? null : t(`work.items.${it.key}.ui`);
+  // a live site is one link; a private system is just the picture
+  const Stage = it.url ? 'a' : 'div';
+  const stageProps = it.url
+    ? { href: it.url, target: '_blank', rel: 'noopener noreferrer', 'data-cursor': `${t('work.cursor')} ↗`, 'aria-label': `${title}: ${t('work.visit')}` }
+    : {};
 
   return (
-    <div ref={set('wraps')} className="relative h-[min(76svh,820px)] w-[88vw] shrink-0 lg:w-[min(86vw,1560px)]">
-      <span ref={set('nums')} aria-hidden="true" className="pointer-events-none absolute -top-[0.5em] left-[-0.04em] select-none text-[clamp(7rem,15vw,19rem)] font-semibold leading-none tracking-[-0.06em] text-transparent will-change-transform [-webkit-text-stroke:1px_rgba(242,242,238,0.14)]">
-        0{i + 1}
-      </span>
-
-      <div className="relative z-10 grid h-full grid-rows-[minmax(0,1fr)_auto] gap-5 lg:grid-cols-12 lg:grid-rows-1 lg:items-center lg:gap-10">
-        {/* the stage: site window, phone, what it does */}
-        <div className="relative min-h-0 lg:order-2 lg:col-span-8 lg:h-[90%]">
-          <a href={it.url} target="_blank" rel="noopener noreferrer" data-cursor={`${t('work.cursor')} ↗`} aria-label={`${k('title')}: ${t('work.visit')}`} className="group absolute inset-0 block">
-            <div ref={set('wins')} className="frag-card absolute bottom-[7%] left-0 right-[11%] top-0 flex flex-col overflow-hidden rounded-[18px] border border-white/[0.09] bg-[#0D0D0D] will-change-transform lg:right-[13%]">
+    <div ref={set('wraps')} className="relative h-[min(76svh,820px)] w-[88vw] shrink-0 lg:w-[min(90vw,1640px)]">
+      <div className="relative z-10 grid h-full grid-rows-[minmax(0,1fr)_auto] gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:grid-rows-1 lg:items-center lg:gap-12">
+        {/* the stage: site window and phone */}
+        <div className="relative min-h-0 lg:order-2 lg:h-[90%]">
+          <Stage {...stageProps} className="group absolute inset-0 block">
+            <div ref={set('wins')} className="frag-card absolute bottom-[7%] left-0 right-[11%] top-0 flex flex-col overflow-hidden rounded-[18px] border border-white/[0.09] bg-[#0D0D0D] will-change-transform lg:right-[9%]">
               <div className="flex h-10 shrink-0 items-center gap-3 border-b border-white/[0.07] bg-[linear-gradient(180deg,#171718,#111112)] px-4">
                 <span className="flex gap-1.5">{[0, 1, 2].map((d) => <span key={d} className="h-2.5 w-2.5 rounded-full bg-paper/[0.12]" />)}</span>
-                <span className="flex min-w-0 items-center gap-1.5 font-mono text-[11px] text-ink-300"><Lock className="h-3 w-3 shrink-0" /><span className="truncate">{host(it.url)}</span></span>
-                <span className="ml-auto flex items-center gap-1.5 rounded-full bg-lime/[0.12] px-2.5 py-1 text-[10.5px] font-medium text-lime">
-                  <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-lime" />{t('work.live')}
-                </span>
+                <span className="flex min-w-0 items-center gap-1.5 font-mono text-[11px] text-ink-300"><Lock className="h-3 w-3 shrink-0" /><span className="truncate">{it.url ? host(it.url) : t(`work.items.${it.key}.host`)}</span></span>
+                {it.url ? (
+                  <span className="ml-auto flex items-center gap-1.5 rounded-full bg-lime/[0.12] px-2.5 py-1 text-[10.5px] font-medium text-lime">
+                    <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-lime" />{t('work.live')}
+                  </span>
+                ) : (
+                  <span className="ml-auto flex items-center gap-1.5 rounded-full bg-paper/[0.06] px-2.5 py-1 text-[10.5px] font-medium text-ink-300">
+                    <Lock className="h-3 w-3" />{t('work.private')}
+                  </span>
+                )}
               </div>
               <div className="relative min-h-0 flex-1 overflow-hidden bg-ink-950">
-                {/* the capture is three screens tall: hovering scrolls through the site */}
+                {ui ? <OpsBoard ui={ui} /> : (
+                /* the capture is three screens tall: hovering scrolls through the site */
                 <img
                   src={it.desk}
-                  alt={`${k('title')} website`}
+                  alt={`${title} website`}
                   loading="lazy"
                   decoding="async"
                   className="absolute inset-0 h-full w-full object-cover transition-[object-position] duration-[1.4s] ease-[cubic-bezier(.45,0,.25,1)] [object-position:50%_0%] group-hover:duration-[7s] group-hover:[object-position:50%_100%]"
                 />
+                )}
                 <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]" />
-                <span ref={set('scans')} aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-px bg-lime opacity-0 shadow-[0_0_20px_4px_rgba(200,255,46,0.45)]" />
               </div>
             </div>
 
-            <div ref={set('phones')} className="frag-card absolute bottom-0 right-0 w-[27%] max-w-[240px] rounded-[30px] border border-white/[0.12] bg-[#0b0b0c] p-[5px] will-change-transform lg:w-[21%]">
+            <div ref={set('phones')} className="frag-card hit-ring absolute bottom-0 right-0 w-[27%] max-w-[240px] rounded-[30px] border border-white/[0.12] bg-[#0b0b0c] p-[5px] will-change-transform lg:w-[21%]">
               <div className="relative aspect-[390/844] overflow-hidden rounded-[25px] bg-ink-950">
-                <img src={it.phone} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover object-top" />
+                {ui ? <OpsPhone ui={ui} /> : <img src={it.phone} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover object-top" />}
                 <span className="absolute left-1/2 top-[7px] h-[13px] w-[30%] -translate-x-1/2 rounded-full bg-black" />
               </div>
             </div>
-          </a>
-
-          <div ref={set('facts')} className="pointer-events-none absolute -left-[2%] bottom-[16%] z-10 hidden w-[min(250px,42%)] will-change-transform sm:block lg:-left-[5%]">
-            <div className="frag-card grainy rounded-[14px] border border-white/[0.08] bg-[linear-gradient(180deg,#1c1c1d_0%,#131314_100%)] p-4">
-            {Array.isArray(metric) && (
-              <div className="mb-3 border-b border-white/[0.06] pb-3">
-                <p className={mono}>{metric[0]}</p>
-                <p className="mt-1 text-[30px] font-medium leading-none tracking-[-0.04em] text-lime">{metric[1]}</p>
-              </div>
-            )}
-            <p className={mono}>{t('work.factsLabel')}</p>
-            <ul className="mt-2.5 space-y-2">
-              {Array.isArray(facts) && facts.map((f) => (
-                <li key={f} className="flex items-center gap-2 text-[12.5px] text-ink-100">
-                  <span className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-lime/[0.14] text-lime"><Check className="h-2.5 w-2.5" strokeWidth={3} /></span>{f}
-                </li>
-              ))}
-            </ul>
-            </div>
-          </div>
+          </Stage>
         </div>
 
         {/* the story */}
-        <div ref={set('infos')} className="will-change-transform lg:order-1 lg:col-span-4">
-          <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-400">
-            <span><span className="text-lime">0{i + 1}</span> / 0{n}</span><span className="h-px w-6 bg-paper/15" /><span>{it.year}</span>
-          </div>
-          <h3 className="mt-3 text-[clamp(1.9rem,3.4vw,4.4rem)] font-medium leading-[0.95] tracking-[-0.045em] lg:mt-6">{k('title')}</h3>
-          <p className="mt-2 font-serif text-[clamp(1.25rem,2vw,2.4rem)] italic leading-[1.05] text-ink-300 lg:mt-3">{k('tag')}</p>
-          <p className="mt-6 hidden max-w-[40ch] text-[15px] leading-relaxed text-ink-300 lg:block 2xl:text-[16px]">{k('desc')}</p>
-          <div className="mt-4 flex flex-wrap gap-2 lg:mt-6">
-            {[k('kind'), k('place')].map((c) => <span key={c} className="rounded-full border border-white/[0.09] bg-white/[0.03] px-3 py-1 text-[12px] text-ink-200">{c}</span>)}
-          </div>
-          <a href={it.url} target="_blank" rel="noopener noreferrer" className="roll-host group/cta mt-5 inline-flex items-center gap-3 text-[14px] font-medium lg:mt-8">
-            <span className="grid h-11 w-11 place-items-center rounded-full bg-lime text-ink transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover/cta:rotate-45">
-              <ArrowUpRight className="h-4 w-4" />
-            </span>
-            <Roll>{t('work.visit')}</Roll>
-          </a>
+        <div ref={set('infos')} className="will-change-transform lg:order-1">
+          <Story it={it} i={i} n={n} />
         </div>
       </div>
     </div>
@@ -137,25 +153,37 @@ export default function Work() {
   const bar = useRef(null);
   const count = useRef(null);
   const intro = useRef(null);
-  const refs = { wraps: useRef([]), wins: useRef([]), phones: useRef([]), facts: useRef([]), infos: useRef([]), nums: useRef([]), scans: useRef([]) };
+  const refs = { wraps: useRef([]), wins: useRef([]), phones: useRef([]), infos: useRef([]) };
+  const slot = { root: useRef(null), win: useRef(null), phone: useRef(null) };
   const geo = useRef(null);
   const [height, setHeight] = useState(null);
   const { scrollYProgress: p } = useScroll({ target: section, offset: ['start start', 'end end'] });
 
   const update = useCallback(() => {
     const g = geo.current;
-    const sec = section.current;
-    if (!g || !sec || !row.current) return;
-    const r = sec.getBoundingClientRect();
-    const x = -Math.min(Math.max(0, -r.top) * SPEED, g.travel);
+    if (!g || !row.current) return;
+    // where the section is, from the scroll position: no layout is read while scrolling
+    const top = g.top - window.scrollY;
+    const x = -Math.min(Math.max(0, -top) * SPEED, g.travel);
     row.current.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`;
+
+    // the rising lime: `level` is where it is half way in; from below the screen at the start to above it at the end
+    const P = g.travel ? -x / g.travel : 0;
+    const F = g.H * FADE;
+    const level = lerp(g.H + F / 2, -F / 2, P);
+    if (lime.current) lime.current.style.transform = `translate3d(0, ${(level - F / 2).toFixed(1)}px, 0)`;
+    // a piece of text is "on lime" once the level is above its middle; flip it only when that changes
+    const flip = (it, dy = 0) => {
+      const on = it.y + dy > level;
+      if (it.on !== on) { it.on = on; it.el.classList.toggle('on-lime', on); }
+    };
 
     let active = 0;
     let best = Infinity;
     g.centers.forEach((c, i) => {
       const d = (c + x - g.vw / 2) / g.vw; // -1 .. 1 across the screen
       const ad = Math.min(1, Math.abs(d));
-      if (ad < best) { best = ad; active = i; }
+      if (Math.abs(d) < best) { best = Math.abs(d); active = i; } // unclamped, so the nearest slide wins even off screen
       const s = ease(1 - clamp01((ad - 0.03) / 0.5)); // 1 when the slide is centred
       const hit = clamp01(1 - Math.abs(s - 0.9) / 0.1); // the lime flash as the pieces lock in
 
@@ -163,61 +191,73 @@ export default function Work() {
       if (win) win.style.transform = `perspective(1800px) rotateY(${(Math.max(-1, Math.min(1, d)) * -9).toFixed(2)}deg) scale(${(1 - 0.1 * ease(ad)).toFixed(4)})`;
       const phone = refs.phones.current[i];
       if (phone) {
-        phone.style.transform = `translate3d(${((1 - s) * 46).toFixed(1)}%, ${((1 - s) * 10).toFixed(1)}%, 0) rotate(${lerp(11, -3, s).toFixed(2)}deg)`;
+        // off centre the phone drifts outward on its own side, so a leaving slide's phone never lands on the next story
+        const out = d < 0 ? -1 : 1;
+        phone.style.transform = `translate3d(${((1 - s) * 46 * out).toFixed(1)}%, ${((1 - s) * 10).toFixed(1)}%, 0) rotate(${lerp(11 * out, -3, s).toFixed(2)}deg)`;
         phone.style.setProperty('--hit', hit.toFixed(3));
-      }
-      const fact = refs.facts.current[i];
-      if (fact) {
-        fact.style.transform = `translate3d(${((1 - s) * -40).toFixed(1)}px, ${((1 - s) * 50).toFixed(1)}px, 0) rotate(${lerp(-12, -2, s).toFixed(2)}deg)`;
-        fact.style.opacity = clamp01(s * 1.4).toFixed(3);
-        fact.style.setProperty('--hit', hit.toFixed(3));
       }
       const info = refs.infos.current[i];
       if (info) {
         const e = 1 - clamp01((ad - 0.1) / 0.38);
+        const ty = (1 - ease(e)) * 30;
+        g.infoTy[i] = ty;
         info.style.opacity = e.toFixed(3);
-        info.style.transform = `translate3d(0, ${((1 - ease(e)) * 30).toFixed(1)}px, 0)`;
+        info.style.transform = `translate3d(0, ${ty.toFixed(1)}px, 0)`;
+        if (e > 0) g.flips[i].forEach((it) => flip(it, ty)); // only the stories on screen
       }
-      // a lime scan line passes over the window while the slide crosses the centre
-      const scan = refs.scans.current[i];
-      if (scan) {
-        const pos = (0.3 - d) / 0.6;
-        scan.style.opacity = pos > 0 && pos < 1 ? (Math.sin(pos * Math.PI) * 0.95).toFixed(3) : '0';
-        scan.style.transform = `translate3d(${(clamp01(pos) * (win?.offsetWidth ?? 0)).toFixed(1)}px, 0, 0)`;
-      }
-      const num = refs.nums.current[i];
-      if (num) num.style.transform = `translate3d(${(d * 16).toFixed(2)}vw, 0, 0)`;
     });
-    // the intro lags behind the row and fades as the first slide arrives over it
-    if (intro.current) {
-      intro.current.style.transform = `translate3d(${(-x * 0.35).toFixed(1)}px, 0, 0)`;
-      intro.current.style.opacity = (1 - clamp01((-x - g.vw * 0.15) / (g.vw * 0.45))).toFixed(3);
+
+    // the open slot: turns in like a project, then plays its entrance once it's centred
+    if (g.slot) {
+      const d = (g.slot + x - g.vw / 2) / g.vw;
+      const ad = Math.min(1, Math.abs(d));
+      const s = ease(1 - clamp01((ad - 0.03) / 0.5));
+      if (slot.win.current) slot.win.current.style.transform = `perspective(1800px) rotateY(${(Math.max(-1, Math.min(1, d)) * -9).toFixed(2)}deg) scale(${(1 - 0.1 * ease(ad)).toFixed(4)})`;
+      if (slot.phone.current) {
+        slot.phone.current.style.transform = `translate3d(${((1 - s) * 46).toFixed(1)}%, ${((1 - s) * 10).toFixed(1)}%, 0) rotate(${lerp(11, -3, s).toFixed(2)}deg)`;
+        slot.phone.current.style.setProperty('--hit', clamp01(1 - Math.abs(s - 0.9) / 0.1).toFixed(3));
+      }
+      const root = slot.root.current;
+      if (root) {
+        if (ad < 0.22 && !root.classList.contains('is-in')) root.classList.add('is-in');
+        else if (ad > 0.75 && root.classList.contains('is-in')) root.classList.remove('is-in');
+      }
     }
 
-    // lime floods in from the right over the last stretch
-    const L = ease(clamp01((-x - (g.travel - g.vw * 2.3)) / (g.vw * 2.15)));
-    if (lime.current) {
-      const rr = lerp(-50, 175, L);
-      const m = `radial-gradient(circle at 108% 55%, #000 ${rr.toFixed(2)}vmax, transparent ${(rr + 50).toFixed(2)}vmax)`;
-      lime.current.style.maskImage = m;
-      lime.current.style.webkitMaskImage = m;
-    }
-    if (chrome.current) chrome.current.style.color = mix(PAPER, INK, clamp01(L * 1.7 - 0.35));
-    if (bar.current) bar.current.style.transform = `scaleX(${(g.travel ? -x / g.travel : 0).toFixed(4)})`;
-    if (count.current) count.current.textContent = `0${active + 1} / 0${ITEMS.length}`;
-    if (r.top < window.innerHeight && r.bottom > 0) limeAmt.set(L);
+    // the intro moves off with the row (never under the first slide) and fades on its way out
+    if (intro.current) intro.current.style.opacity = (1 - clamp01((-x - g.vw * 0.05) / (g.vw * 0.4))).toFixed(3);
+
+    if (g.chrome) flip(g.chrome);
+    if (bar.current) bar.current.style.transform = `scaleX(${P.toFixed(4)})`;
+    const label = `${pad(active + 1)} / ${pad(ITEMS.length)}`;
+    if (count.current && count.current.textContent !== label) count.current.textContent = label;
+    if (top < g.vh && top + g.h > 0) limeAmt.set(P);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const measure = useCallback(() => {
     const rw = row.current;
     const st = stage.current;
-    if (!rw || !st) return;
+    const sec = section.current;
+    if (!rw || !st || !sec) return;
     const vw = st.clientWidth;
+    const vh = window.innerHeight;
     const travel = Math.max(0, rw.scrollWidth - vw);
     const centers = refs.wraps.current.map((w) => (w ? w.offsetLeft + w.offsetWidth / 2 : 0));
-    geo.current = { vw, travel, centers };
-    const h = Math.round(travel / SPEED + window.innerHeight);
+    const sl = slot.root.current;
+    // text positions, relative to the stage (and without the slide-up the story is currently drawn with)
+    const sr = st.getBoundingClientRect();
+    const old = geo.current?.infoTy ?? [];
+    const at = (el, dy = 0) => { const r = el.getBoundingClientRect(); return { el, y: r.top + r.height / 2 - sr.top - dy, on: el.classList.contains('on-lime') }; };
+    const flips = refs.infos.current.map((el, i) => (el ? [...el.querySelectorAll('[data-flip]')].map((f) => at(f, old[i] ?? 0)) : []));
+    const h = Math.round(travel / SPEED + vh + HOLD * vh);
+    geo.current = {
+      vw, vh, H: st.clientHeight, travel, centers, flips, h,
+      top: sec.getBoundingClientRect().top + window.scrollY,
+      slot: sl ? sl.offsetLeft + sl.offsetWidth / 2 : 0,
+      chrome: chrome.current ? at(chrome.current) : null,
+      infoTy: old,
+    };
     setHeight((prev) => (prev && Math.abs(prev - h) < 2 ? prev : h));
     update();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -233,51 +273,55 @@ export default function Work() {
     return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
   }, [measure, i18n.language]);
 
-  const next = t('work.next');
+  // fetch and decode the screenshots a screen or so before the run starts, so they don't decode mid-scroll
+  useEffect(() => {
+    const sec = section.current;
+    if (!sec || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      sec.querySelectorAll('img').forEach((img) => { img.loading = 'eager'; img.decode?.().catch(() => {}); });
+    }, { rootMargin: '0px 0px 150% 0px' });
+    io.observe(sec);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section
       id="work"
       ref={section}
-      data-shape="3" data-x="0" data-mx="0" data-my="0" data-scale="1" data-mscale="0.7" data-alpha="0.4" data-malpha="0.3"
       style={{ height: height ? `${height}px` : '460vh' }}
       className="relative"
     >
+      {/* the particle cloud stays hidden through the hero and the whole sideways run; it fades in as the lime section takes over */}
+      <div aria-hidden="true" data-shape="3" data-mscale="0.7" data-alpha="0" className="pointer-events-none absolute inset-x-0 bottom-0 h-screen" />
+
       <div ref={stage} className="sticky top-0 h-[100svh] overflow-hidden">
-        <div ref={lime} aria-hidden="true" className="pointer-events-none absolute inset-0 bg-lime [mask-image:radial-gradient(circle_at_108%_55%,#000_-50vmax,transparent_0vmax)]" />
+        <div ref={lime} aria-hidden="true" style={{ transform: 'translate3d(0, 100svh, 0)' }} className="wk-rise pointer-events-none absolute inset-x-0 top-0 h-[135%] will-change-transform" />
 
         <div ref={row} className="relative z-10 flex h-full items-center gap-[7vw] pl-[max(20px,6vw)] pt-10 will-change-transform">
           {/* intro */}
-          <div ref={intro} className="flex w-[84vw] shrink-0 flex-col justify-center will-change-transform lg:w-[min(70vw,1150px)]">
+          <div ref={intro} className="flex w-[84vw] shrink-0 flex-col justify-center lg:w-[min(70vw,1150px)]">
             <Tag>{t('work.tag')}</Tag>
             <h2 className="mt-6 text-[clamp(6rem,24vw,26rem)] font-medium uppercase leading-[0.78] tracking-[-0.065em]">{t('work.big')}</h2>
             <div className="mt-10 flex flex-wrap items-end justify-between gap-6">
               <p className="max-w-[22ch] font-serif text-[clamp(1.6rem,2.6vw,3rem)] italic leading-[1.05] text-ink-200">{t('work.title')}</p>
-              <span className="font-mono text-[12px] uppercase tracking-[0.08em] text-ink-400">( 0{ITEMS.length} ) {t('work.drag')} →</span>
+              <span className="font-mono text-[12px] uppercase tracking-[0.08em] text-ink-400">( {pad(ITEMS.length)} ) {t('work.drag')} →</span>
             </div>
           </div>
 
           {ITEMS.map((it, i) => <Slide key={it.key} it={it} i={i} n={ITEMS.length} refs={refs} />)}
 
-          {/* the hand-over to the lime section */}
-          <div className="flex h-full w-[100vw] shrink-0 flex-col justify-center px-[max(20px,6vw)] text-ink">
-            {Array.isArray(next) && (
-              <p className="text-[clamp(3.4rem,11vw,13rem)] font-medium leading-[0.86] tracking-[-0.06em]">
-                <span className="block">{next[0]}</span>
-                <span className="block font-serif font-normal italic tracking-[-0.03em]">{next[1]}</span>
-              </p>
-            )}
-          </div>
+          <Slot refs={slot} />
         </div>
 
         {/* progress */}
-        <div ref={chrome} className="pointer-events-none absolute inset-x-0 bottom-12 z-10 text-paper lg:bottom-14">
-          <div className="flex items-center gap-5 px-[max(20px,6vw)] font-mono text-[11px] uppercase tracking-[0.08em]">
-            <span ref={count} className="tabular-nums">01 / 0{ITEMS.length}</span>
-            <span className="relative h-px w-[min(240px,30vw)]">
-              <span className="absolute inset-0 bg-current opacity-20" />
-              <span ref={bar} className="absolute inset-0 origin-left scale-x-0 bg-current" />
-            </span>
-          </div>
+        <div ref={chrome} aria-hidden="true" className="wk-flip pointer-events-none absolute bottom-12 left-0 z-10 flex items-center gap-5 px-[max(20px,6vw)] font-mono text-[11px] uppercase tracking-[0.08em] text-paper lg:bottom-14">
+          <span ref={count} className="tabular-nums">01 / {pad(ITEMS.length)}</span>
+          <span className="relative h-px w-[min(240px,30vw)]">
+            <span className="absolute inset-0 bg-current opacity-20" />
+            <span ref={bar} className="absolute inset-0 origin-left scale-x-0 bg-current" />
+          </span>
         </div>
       </div>
     </section>

@@ -145,46 +145,57 @@
       "overdue": "Overdue invoices",
       "orders": "Orders",
       "ordersMeta": "One source of truth",
+      "search": "Search orders, clients…",
+      "client": "Client",
+      "order": "Order",
+      "amount": "Amount",
+      "statusCol": "Status",
+      "delta": "+7.9%",
+      "paid": "All paid",
+      "auto": "Automations",
+      "autoMeta": "12 running",
       "rows": [
-        [
-          "Keller GmbH",
-          "#2291",
-          "approved"
-        ],
-        [
-          "Nordlicht AG",
-          "#2290",
-          "inProd"
-        ],
-        [
-          "Brandt & Söhne",
-          "#2288",
-          "shipped"
-        ],
-        [
-          "Vogel Logistik",
-          "#2287",
-          "waiting"
-        ],
-        [
-          "Studio Mira",
-          "#2285",
-          "shipped"
-        ]
+        ["Keller GmbH", "#2291", "approved", 4200],
+        ["Nordlicht AG", "#2290", "inProd", 2860],
+        ["Brandt & Söhne", "#2288", "shipped", 1950],
+        ["Vogel Logistik", "#2287", "waiting", 6100],
+        ["Studio Mira", "#2285", "shipped", 3400],
+        ["Hartmann KG", "#2284", "inProd", 2280],
+        ["Lindner Bau", "#2283", "shipped", 7450],
+        ["Atelier Nord", "#2281", "shipped", 1320],
+        ["Seidel Optik", "#2280", "shipped", 940]
       ],
       "status": {
+        "new": "New",
         "inProd": "In production",
         "approved": "Approved",
         "shipped": "Shipped",
         "waiting": "Waiting"
+      },
+      "live": {
+        "who": "Lena",
+        "now": "now",
+        "ago": "{n}m",
+        "approved": "{who} approved order {no}",
+        "production": "Order {no} moved to production",
+        "shipped": "Order {no} shipped, tracking sent",
+        "new": "New order {no} from {client}",
+        "invoice": "Invoice {no} sent automatically",
+        "stock": "Stock synced from the warehouse",
+        "report": "Weekly report is ready",
+        "clients": ["Becker & Co", "Weiss Medien", "Fuchs Logistik", "Kaiser Druck", "Roth Studio", "Winter Holz"]
       },
       "activity": "Activity",
       "feed": [
         "Invoice #2291 sent automatically",
         "Lena approved order #2290",
         "Stock synced from the warehouse",
-        "Weekly report is ready"
+        "Weekly report is ready",
+        "Delivery note matched to order #2284",
+        "Tom moved Thursday's pickup to 10:00"
       ],
+      "team": "Team",
+      "online": "online",
       "week": "This week",
       "days": [
         "Mon",
@@ -242,7 +253,41 @@
     "tag": "Selected work",
     "title": "Built, shipped and in daily use.",
     "visit": "Visit site",
+    "private": "Private",
+    "ask": "Ask about this project",
     "items": {
+      "ops": {
+        "title": "Production system",
+        "tag": "Brief to published, one button at a time.",
+        "desc": "For a creator media company: every post moves from brief to edit, QA and approval, one button per person, then goes out on schedule. Payroll and earnings reports come straight from the work.",
+        "kind": "Workflow, payroll & reporting",
+        "place": "In daily use",
+        "host": "internal · production",
+        "ui": {
+          "ws": "Production",
+          "nav": ["Board", "Calendar", "Payroll", "Earnings", "Team"],
+          "board": "Board",
+          "week": "Week 47",
+          "filters": ["All creators", "My steps"],
+          "cols": [
+            { "name": "Brief", "n": "6", "cards": [["Kitchen Lab", "5-minute pasta, three ways", "Maria", "Thu 09:00"], ["Tiny Science", "Why ice floats", "Maria", "Thu 15:00"], ["Northside Eats", "Five sauces, one burger", "Maria", "Fri 12:00"]] },
+            { "name": "Edit", "n": "9", "cards": [["Trail Notes", "Best night hike of the year", "Tom", "Thu 12:00"], ["Northside Eats", "Street tacos, ranked", "Lena", "Fri 10:00"], ["Tiny Science", "Can you hear colours?", "Tom", "Fri 15:00"]] },
+            { "name": "QA", "n": "4", "cards": [["Fix It Garage", "Brake pads in 60 seconds", "Jonas", "Thu 18:00"], ["Kitchen Lab", "One-pan breakfast", "Jonas", "Fri 09:00"]] },
+            { "name": "Approve", "n": "3", "cards": [["Tiny Science", "The loudest animal on earth", "Sara", "Thu 20:00"], ["Kitchen Lab", "Knife skills in 30 seconds", "Sara", "Fri 18:00"]] },
+            { "name": "Scheduled", "n": "12", "cards": [["Trail Notes", "Packing for three days", "Sara", "Today 19:00"], ["Northside Eats", "Late-night ramen", "Sara", "Today 21:30"], ["Fix It Garage", "Check your tyres in 20 seconds", "Sara", "Tomorrow 09:00"]] }
+          ],
+          "toast": "Lena handed “Brake pads in 60 seconds” to QA · just now",
+          "payroll": "Payroll · November",
+          "payrollValue": "Ready",
+          "earnings": "Earnings · this week",
+          "phone": {
+            "when": "Today · Lena",
+            "title": "Your next steps",
+            "cards": [["Fix It Garage", "Brake pads in 60 seconds", "Edit"], ["Northside Eats", "Street tacos, ranked", "Edit"], ["Kitchen Lab", "One-pan breakfast", "Fix notes"]],
+            "cta": "Hand to QA"
+          }
+        }
+      },
       "lb": {
         "title": "LB Hairdesign",
         "kind": "Booking & client management",
@@ -305,7 +350,23 @@
     ],
     "drag": "Scroll",
     "factsLabel": "What it does",
-    "live": "Live"
+    "live": "Live",
+    "slotTag": "Your project",
+    "slotBody": "Pick what your team still does by hand. We'll turn it into one system, like this one.",
+    "slotUrl": "your-company.com",
+    "slotOpen": "Open",
+    "slotLabel": "Your system here",
+    "slotPick": "Still done by hand",
+    "slotCta": "Start with {n} modules",
+    "slotCta1": "Start with 1 module",
+    "slotCta0": "Start a project",
+    "slotModules": "{n} modules",
+    "slotModules1": "1 module",
+    "slotEmpty": "Pick what to build",
+    "slotBrief": "Still done by hand today: {list}.",
+    "slotPhone": "Today",
+    "slotWs": "Your company",
+    "build": { "orders": "Orders", "schedule": "Scheduling", "invoices": "Invoices", "reports": "Reports", "inventory": "Inventory", "approvals": "Approvals", "portal": "Client portal", "payroll": "Payroll" }
   },
   "process": {
     "tag": "How we work",

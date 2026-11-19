@@ -6,46 +6,105 @@ import { EASE, Lines, Magnetic, Roll, Signature, Tag } from './ui/primitives';
 import { useScrollTo } from './Nav';
 import { useReady } from '../lib/ready';
 import { FRAGS, Fragment } from './hero/fragments';
-import SystemWindow from './hero/SystemWindow';
+import SystemWindow, { MODS } from './hero/SystemWindow';
 
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const ramp = (v, [a, b]) => clamp01((v - a) / (b - a));
 const lerp = (a, b, t) => a + (b - a) * t;
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const inCubic = (t) => t * t * t;
+// a quick rise into `at` and a slower fall after it (lime flashes)
+const pulse = (v, at, rise = 0.005, fall = 0.03) => (v < at ? clamp01(1 - (at - v) / rise) : clamp01(1 - (v - at) / fall));
+const D2R = Math.PI / 180;
+const n2 = (n) => String(n).padStart(2, '0');
+const PILE_R = [-3, 2, -1.5, 3, -2, 1, -2.5, 2.5, -1, 1.5]; // phones: the waiting scraps sit in a loose pile
+const RING_R = { sticky: '4px', toast: '9999px', voice: '9999px' }; // the mapped outline follows each scrap's corners
 
 /*
- * The hero is a pinned story over a 340vh scroll track (progress p 0..1):
- *   intro  0.00–0.14  the headline, with the team's real "system" drifting around it: sheets, chats, sticky notes
- *   mess   0.11–0.38  "Right now, it runs on this." The scraps crowd the screen.
- *   scan   0.34–0.66  the lime scan line sweeps down. It prints the new system as it goes, and every scrap it touches
- *                     straightens and flies into the module that replaces it.
- *   system 0.60–1.00  the system boots (counters, chart, synced), the promise lands and gets signed.
+ * The hero is a pinned story over a 400vh scroll track (progress p 0..1):
+ *   intro     0.00–0.12  the headline, with the team's real "system" drifting around it: sheets, chats, sticky notes
+ *   mess      0.09–0.31  "Right now, it runs on this." The scraps crowd the screen.
+ *   map       0.29–0.44  a thin lime line sweeps down. Every scrap it touches straightens, takes a lime outline and is
+ *                        sorted into one of two quiet columns at the sides (a pile on phones). Behind the line the new
+ *                        system appears as an exploded 3D blueprint, centred on the screen.
+ *   build     0.47–0.63  the scraps leave their columns one by one, bottom layer first, and land on their module,
+ *                        which prints in.
+ *   assemble  0.585–0.70 the layers snap down tier by tier and the system turns to face you as it docks on the right.
+ *                        Light runs round the frame.
+ *   system    0.64–1.00  it boots (counters, charts, synced), the promise lands and gets signed, and the app keeps
+ *                        working by itself (see SystemWindow).
  * One handler (update) writes every style from p, so scrolling back plays it in reverse.
  */
 const BEAT = {
-  introOut: [0.05, 0.14],
-  messIn: [0.11, 0.19],
-  crowd: [0.1, 0.3],
-  messOut: [0.32, 0.38],
-  scan: [0.34, 0.66],
-  boot: [0.6, 0.74],
-  sysIn: [0.63, 0.71],
-  sign: [0.7, 0.88],
+  introOut: [0.04, 0.12],
+  messIn: [0.09, 0.16],
+  crowd: [0.08, 0.27],
+  messOut: [0.27, 0.31],
+  scan: [0.29, 0.44],
+  shell: [0.43, 0.47],
+  fly: { start: 0.47, step: 0.0125, dur: 0.05 },
+  turn: [0.585, 0.7],
+  drop: [[0.585, 0.635], [0.6, 0.65], [0.615, 0.665]],
+  solid: [0.63, 0.69],
+  sysIn: [0.645, 0.715],
+  boot: [0.65, 0.75],
+  online: [0.68, 0.8],
+  sign: [0.71, 0.87],
+  live: 0.74,
 };
 const fit = (lines, k = 0.47, cap = '7.5rem', min = '2.4rem') => `clamp(${min}, ${(100 / (k * Math.max(...lines.map((l) => l.length)))).toFixed(2)}cqw, ${cap})`;
 
+/**
+ * Where a point of the system (x, y relative to its centre, z above its base) ends up, before perspective, under the
+ * plane's transform: translate3d(tx, ty, 0) rotateX(ax) rotateZ(az) scale3d(s, s, s). Mirrors the CSS exactly, so a
+ * scrap given the same position and rotations sits precisely on its module.
+ */
+function project(st, x, y, z) {
+  const X = x * st.s; const Y = y * st.s; const Z = z * st.s;
+  const c1 = Math.cos(st.az * D2R); const s1 = Math.sin(st.az * D2R);
+  const x1 = X * c1 - Y * s1; const y1 = X * s1 + Y * c1;
+  const c2 = Math.cos(st.ax * D2R); const s2 = Math.sin(st.ax * D2R);
+  return { x: x1 + st.tx, y: y1 * c2 - Z * s2 + st.ty, z: y1 * s2 + Z * c2 };
+}
+/** Layout position of el inside root, ignoring transforms. */
+function offsetIn(el, root) {
+  let x = 0; let y = 0; let n = el;
+  while (n && n !== root) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; }
+  return { x, y };
+}
+/** The progress at which the scan line reaches screen height y. */
+const scanAt = (y, H) => lerp(BEAT.scan[0], BEAT.scan[1], clamp01((y / H + 0.02) / 1.04));
+
+/**
+ * Writes a style only when it changes. The scroll handlers below run every frame and most values sit still for long
+ * stretches; an unchanged write still restyles the element (and, for a custom property, everything inside it).
+ */
+function put(el, k, v) {
+  if (!el) return;
+  const c = el.__put || (el.__put = {});
+  if (c[k] === v) return;
+  c[k] = v;
+  if (k.charCodeAt(0) === 45) el.style.setProperty(k, v);
+  else el.style[k] = v;
+}
+
+/** Sets text only when it differs (rewriting the same text still invalidates layout). */
+function text(el, v) {
+  if (el && el.textContent !== v) el.textContent = v;
+}
+
 function show(el, o, y = 0) {
   if (!el) return;
-  el.style.opacity = o.toFixed(3);
-  el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
-  el.style.visibility = o < 0.01 ? 'hidden' : 'visible';
-  el.style.pointerEvents = o > 0.6 ? 'auto' : 'none';
+  put(el, 'opacity', o.toFixed(3));
+  put(el, 'transform', `translate3d(0, ${y.toFixed(1)}px, 0)`);
+  put(el, 'visibility', o < 0.01 ? 'hidden' : 'visible');
+  put(el, 'pointerEvents', o > 0.6 ? 'auto' : 'none');
 }
 function lines(els, v, [a, b]) {
   els.forEach((el, i) => {
     if (!el) return;
     const e = ease(ramp(v, [a + i * 0.025, b + i * 0.025]));
-    el.style.transform = `translate3d(0, ${((1 - e) * 106).toFixed(1)}%, 0)`;
+    put(el, 'transform', `translate3d(0, ${((1 - e) * 106).toFixed(1)}%, 0)`);
   });
 }
 
@@ -58,6 +117,11 @@ export default function Hero() {
   const track = useRef(null);
   const stage = useRef(null);
   const win = useRef(null);
+  const plane = useRef(null);
+  const layer = useRef(null);
+  const glow = useRef(null);
+  const sheen = useRef(null);
+  const trace = useRef(null);
   const line = useRef(null);
   const count = useRef(null);
   const c0 = useRef(null);
@@ -69,6 +133,11 @@ export default function Hero() {
   const mods = useRef({});
   const boot = useRef({});
   const geo = useRef(null);
+  // the system works by itself while it's up and on screen. Told to the window directly (boot.current.setLive), so
+  // switching it never re-renders the whole hero.
+  const liveOn = useRef(false);
+  const inView = useRef(true);
+  const tellLive = () => boot.current.setLive?.(liveOn.current && inView.current);
   const sigP = useMotionValue(0);
   const { scrollYProgress: p } = useScroll({ target: track, offset: ['start start', 'end end'] });
 
@@ -85,7 +154,7 @@ export default function Hero() {
   const update = useCallback((v) => {
     const g = geo.current;
     if (!g) return;
-    const { W, H, wide, k, targets } = g;
+    const { W, H, wide, k, O, ex, tierZ } = g;
 
     // copy
     const out0 = ease(ramp(v, BEAT.introOut));
@@ -99,21 +168,28 @@ export default function Hero() {
     lines(c2Lines.current, v, BEAT.sysIn);
     sigP.set(ramp(v, BEAT.sign));
 
-    // the scan line and the system it prints
+    // the scan line, and the blueprint revealed behind it
     const s = ramp(v, BEAT.scan);
     const lineY = lerp(-0.02, 1.02, s) * H;
     if (line.current) {
-      line.current.style.transform = `translate3d(0, ${lineY.toFixed(1)}px, 0)`;
-      line.current.style.opacity = s > 0 && s < 1 ? '1' : '0';
+      put(line.current, 'transform', `translate3d(0, ${lineY.toFixed(1)}px, 0)`);
+      put(line.current, 'opacity', s > 0 && s < 1 ? '1' : '0');
     }
-    if (win.current && g.win) {
-      const cut = s >= 1 ? 0 : clamp01((g.win.bottom - lineY) / g.win.h) * 100;
-      win.current.style.clipPath = `inset(0 0 ${cut.toFixed(2)}% 0)`;
-    }
+    if (win.current) put(win.current, 'clipPath', s >= 1 ? 'none' : `inset(-2000px -2000px ${Math.max(0, g.win.bottom - lineY).toFixed(1)}px -2000px)`);
 
-    // the scraps
+    // the plane: an exploded blueprint that turns to face you as it assembles
+    const E = 1 - ease(ramp(v, BEAT.turn));
+    const st = { ax: ex.ax * E, az: ex.az * E, s: lerp(1, ex.s, E), tx: ex.tx * E, ty: ex.ty * E };
+    if (plane.current) {
+      put(plane.current, 'transform', E < 0.0005 ? 'none'
+        : `translate3d(${st.tx.toFixed(2)}px, ${st.ty.toFixed(2)}px, 0) rotateX(${st.ax.toFixed(3)}deg) rotateZ(${st.az.toFixed(3)}deg) scale3d(${st.s.toFixed(4)}, ${st.s.toFixed(4)}, ${st.s.toFixed(4)})`);
+    }
+    const tierE = BEAT.drop.map((r) => 1 - inCubic(ramp(v, r))); // 1 floating .. 0 seated
+    const zOf = (tier) => tierZ[tier] * tierE[tier];
+
+    // the scraps: mapped by the line, sorted out of the way, then flown onto their module in 3D one by one
     const crowd = ease(ramp(v, BEAT.crowd));
-    const scanAt = (y) => lerp(BEAT.scan[0], BEAT.scan[1], clamp01(y / H));
+    const fill = {};
     const flash = {};
     let touched = 0;
     FRAGS.forEach((f, i) => {
@@ -125,88 +201,207 @@ export default function Hero() {
       const y0 = (lerp(A.y, Bp.y, crowd) / 100) * H;
       const r0 = lerp(A.r, Bp.r, crowd);
       const sc0 = (0.7 + 0.36 * f.z) * k * (1 + crowd * 0.07 * f.z);
-      const tg = targets[f.to] ?? targets.orders ?? { x: W * 0.7, y: H * 0.6 };
-      // touched when the line reaches it; it then flies in so it lands as the line prints its module
-      const tTouch = scanAt(y0);
-      const tLand = scanAt(tg.y);
-      const go0 = Math.max(tTouch, tLand - 0.07);
-      const go1 = Math.max(tTouch + 0.05, tLand + 0.015);
-      const hit = ease(ramp(v, [tTouch - 0.012, tTouch + 0.02]));
+      const Q = g.queue[i];
+      const tCap = scanAt(y0, H);
+      const cap = ease(ramp(v, [tCap - 0.008, tCap + 0.016])); // straightens, sharpens, takes the outline
+      const sort = ease(ramp(v, [tCap + 0.004, tCap + 0.04])); // glides to its place in the queue
+      if (v >= tCap) touched++;
+      const go0 = Math.max(BEAT.fly.start + f.n * BEAT.fly.step, tCap + 0.045);
+      const go1 = go0 + BEAT.fly.dur;
       const fly = ease(ramp(v, [go0, go1]));
-      if (v >= tTouch) touched++;
-      const x = lerp(x0, tg.x, fly);
-      const y = lerp(y0, tg.y, fly);
-      const sc = lerp(sc0, 0.28 * k, fly);
-      const rot = lerp(r0 * (1 - hit), 0, fly);
-      const op = 1 - ramp(fly, [0.55, 1]);
-      const blur = (1 - f.z) * 2.4 * (1 - hit);
-      el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(-50%, -50%) rotate(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`;
-      el.style.opacity = op.toFixed(3);
-      el.style.filter = blur > 0.2 ? `blur(${blur.toFixed(2)}px)` : 'none';
-      el.style.setProperty('--hit', (hit * (1 - fly)).toFixed(3));
-      el.style.zIndex = String(Math.round(f.z * 10) + (hit > 0 ? 20 : 0));
-      const fl = clamp01(1 - Math.abs(v - go1) / 0.03);
-      flash[f.to] = Math.max(flash[f.to] ?? 0, fl);
+      const waiting = sort * (1 - ramp(v, [go0 - 0.02, go0])); // dimmed while it waits, lit again on its turn
+      const md = g.mods[f.to] ?? g.mods.orders;
+      let x = lerp(x0, Q.x, sort); let y = lerp(y0, Q.y, sort); let z = 0; let rx = 0;
+      let rz = lerp(r0 * (1 - cap), Q.r, sort); let sc = lerp(sc0, Q.s, sort);
+      if (fly > 0 && md) {
+        const T = project(st, md.cx, md.cy, zOf(md.tier));
+        x = lerp(x, O.x + T.x, fly);
+        y = lerp(y, O.y + T.y, fly);
+        z = lerp(0, T.z, fly) + Math.sin(Math.PI * fly) * 160; // lifted toward you mid-flight, then set down
+        rx = st.ax * fly;
+        rz = lerp(rz, st.az, fly);
+        sc = lerp(sc, (st.s * md.w) / g.frags[i].w, fly);
+      }
+      const op = lerp(1, 0.55, waiting) * (1 - ramp(fly, [0.7, 1]));
+      const blur = (1 - f.z) * 2.4 * (1 - cap);
+      put(el, 'transform', `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${z.toFixed(1)}px) translate(-50%, -50%) rotateX(${rx.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg) scale3d(${sc.toFixed(4)}, ${sc.toFixed(4)}, ${sc.toFixed(4)})`);
+      put(el, 'opacity', op.toFixed(3));
+      put(el, 'visibility', op < 0.005 ? 'hidden' : 'visible');
+      put(el, 'filter', blur > 0.2 ? `blur(${blur.toFixed(2)}px)` : 'none');
+      put(el, '--cap', (cap * lerp(1, 0.35, waiting) * (1 - ramp(fly, [0, 0.3]))).toFixed(3));
+      put(el, '--free', (1 - cap).toFixed(3));
+      put(el, 'zIndex', String(fly > 0 ? 40 + f.n : sort > 0 ? 30 - f.n : Math.round(f.z * 10)));
+      if (md) {
+        fill[md.key] = Math.max(fill[md.key] ?? 0, ramp(v, [go1 - 0.006, go1 + 0.04]));
+        flash[md.key] = Math.max(flash[md.key] ?? 0, pulse(v, go1));
+      }
     });
-    Object.entries(mods.current).forEach(([key, el]) => {
-      if (el) el.style.boxShadow = flash[key] ? `0 0 0 1px rgba(200,255,46,${(flash[key] * 0.9).toFixed(2)}), 0 0 24px rgba(200,255,46,${(flash[key] * 0.25).toFixed(2)})` : '';
+    if (count.current) text(count.current, `${n2(touched)}/${n2(FRAGS.length)}`);
+
+    // the modules: float, outline, print, seat
+    let built = 0;
+    const list = Object.values(g.mods);
+    list.forEach((md) => {
+      const el = mods.current[md.key];
+      if (!el) return;
+      const z = zOf(md.tier);
+      const seat = BEAT.drop[md.tier][1];
+      const fl = md.key === 'chrome' || fill[md.key] === undefined ? ramp(v, BEAT.shell) : fill[md.key];
+      const wire = ease(ramp(v, [md.wireAt - 0.004, md.wireAt + 0.018])) * (1 - ramp(v, [seat - 0.02, seat]));
+      if (fl >= 0.999) built++;
+      put(el, 'transform', z > 0.05 ? `translateZ(${z.toFixed(2)}px)` : 'none');
+      put(el, '--z', z.toFixed(2));
+      put(el, '--wire', wire.toFixed(3));
+      put(el, '--fill', fl.toFixed(4));
+      put(el, '--pl', fl > 0.001 && fl < 0.999 ? '1' : '0');
+      put(el, '--ex', tierE[md.tier].toFixed(3));
+      put(el, '--zmax', tierZ[md.tier].toFixed(1));
+      put(el, '--flash', Math.max(flash[md.key] ?? 0, pulse(v, seat, 0.004, 0.028) * 0.75).toFixed(3));
     });
-    if (count.current) count.current.textContent = `${String(touched).padStart(2, '0')}/${String(FRAGS.length).padStart(2, '0')}`;
+
+    // the frame: blueprint → solid window, then the power-on moment
+    const solid = ease(ramp(v, BEAT.solid));
+    const bt = boot.current;
+    if (bt.base) {
+      put(bt.base, '--ex', E.toFixed(3));
+      put(bt.base, '--solid', solid.toFixed(3));
+    }
+    if (bt.built) text(bt.built, `${built}/${list.length}`);
+    const on = ramp(v, BEAT.online);
+    if (glow.current) put(glow.current, 'opacity', (solid * (0.45 + 0.55 * Math.sin(Math.PI * Math.min(on * 1.6, 1)))).toFixed(3));
+    if (sheen.current) {
+      put(sheen.current, 'opacity', on > 0 && on < 1 ? '1' : '0');
+      put(sheen.current.firstChild, 'transform', `translate3d(${lerp(-110, 310, ease(on)).toFixed(1)}%, 0, 0) skewX(-16deg)`);
+    }
+    if (trace.current) {
+      put(trace.current, 'strokeDashoffset', (-on).toFixed(4));
+      put(trace.current, 'opacity', Math.sin(Math.PI * on).toFixed(3));
+    }
 
     // boot
     const b = ease(ramp(v, BEAT.boot));
-    const bt = boot.current;
-    if (bt.rev) bt.rev.textContent = money.format(Math.round(51940 * b));
-    if (bt.open) bt.open.textContent = nums.format(Math.round(128 * b));
-    if (bt.overdue) bt.overdue.textContent = nums.format(Math.round(14 * (1 - b)));
-    if (bt.chart) bt.chart.style.strokeDashoffset = (1 - b).toFixed(3);
+    put(plane.current, '--b', b.toFixed(3));
+    const d = bt.delta ?? { open: 0, rev: 0 };
+    if (bt.rev) text(bt.rev, money.format(Math.round((51940 + d.rev) * b)));
+    if (bt.open) text(bt.open, nums.format(Math.round((128 + d.open) * b)));
+    if (bt.overdue) text(bt.overdue, nums.format(Math.round(14 * (1 - b))));
+    if (bt.chart) put(bt.chart, 'strokeDashoffset', (1 - b).toFixed(3));
     const ui = t('hero.ui');
-    if (bt.syncText) bt.syncText.textContent = b >= 0.999 ? ui.synced : ui.syncing;
+    if (bt.syncText) text(bt.syncText, b >= 0.999 ? ui.synced : ui.syncing);
     if (bt.sync) {
-      bt.sync.style.color = b >= 0.999 ? '#C8FF2E' : '';
-      bt.sync.style.backgroundColor = b >= 0.999 ? 'rgba(200,255,46,0.12)' : '';
+      put(bt.sync, 'color', b >= 0.999 ? '#C8FF2E' : '');
+      put(bt.sync, 'backgroundColor', b >= 0.999 ? 'rgba(200,255,46,0.12)' : '');
     }
+
+    // the system keeps working once it's up
+    const lv = v >= BEAT.live;
+    if (lv !== liveOn.current) { liveOn.current = lv; tellLive(); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
   const measure = useCallback(() => {
     const st = stage.current;
-    if (!st) return;
+    const w = win.current;
+    const pl = plane.current;
+    if (!st || !w || !pl) return;
     const sr = st.getBoundingClientRect();
+    const wr = w.getBoundingClientRect(); // the box itself is never transformed (the plane inside it is)
     const wide = window.innerWidth >= 1024;
-    const targets = {};
+    const W = sr.width; const H = sr.height;
+    const O = { x: wr.left - sr.left + wr.width / 2, y: wr.top - sr.top + wr.height / 2 };
+    const P = wide ? Math.max(1900, wr.width * 2.7) : 1500;
+    const k = wide ? Math.min(1.4, Math.max(0.8, H / 900)) : Math.min(0.85, Math.max(0.6, W / 520));
+    const tierZ = (wide ? [0.09, 0.2, 0.33] : [0.06, 0.13, 0.21]).map((f) => f * wr.height);
+    const pw = pl.offsetWidth; const ph = pl.offsetHeight;
+    const found = {};
     Object.entries(mods.current).forEach(([key, el]) => {
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      if (r.width > 0) targets[key] = { x: r.left - sr.left + r.width / 2, y: r.top - sr.top + r.height / 2 };
+      if (!el || !el.offsetWidth || !MODS[key]) return;
+      const o = offsetIn(el, pl);
+      const md = { key, tier: MODS[key].tier, w: el.offsetWidth, h: el.offsetHeight };
+      md.cx = o.x + md.w / 2 - pw / 2;
+      md.cy = o.y + md.h / 2 - ph / 2;
+      found[key] = md;
     });
-    const wr = win.current?.getBoundingClientRect();
+
+    // the exploded view: tilted back and turned, then sized to fit and centred on the screen while it's built
+    const pts = [[-pw / 2, -ph / 2, 0], [pw / 2, -ph / 2, 0], [-pw / 2, ph / 2, 0], [pw / 2, ph / 2, 0]];
+    Object.values(found).forEach((md) => {
+      [-1, 1].forEach((sx) => [-1, 1].forEach((sy) => pts.push([md.cx + (sx * md.w) / 2, md.cy + (sy * md.h) / 2, tierZ[md.tier]])));
+    });
+    const box = (st) => {
+      const bb = { l: Infinity, r: -Infinity, t: Infinity, b: -Infinity };
+      pts.forEach(([x, y, z]) => {
+        const q = project(st, x, y, z);
+        const f = P / (P - q.z);
+        const sx = O.x + q.x * f; const sy = O.y + q.y * f;
+        bb.l = Math.min(bb.l, sx); bb.r = Math.max(bb.r, sx); bb.t = Math.min(bb.t, sy); bb.b = Math.max(bb.b, sy);
+      });
+      return bb;
+    };
+    const ex = wide ? { ax: 50, az: -30, s: 1, tx: 0, ty: 0 } : { ax: 44, az: -18, s: 1, tx: 0, ty: 0 };
+    let bb = box(ex);
+    ex.s = Math.min(0.95, (wide ? 0.54 * W : 0.94 * W) / (bb.r - bb.l), (wide ? 0.72 * (H - 90) : 0.52 * H) / (bb.b - bb.t));
+    const aim = wide ? { x: W / 2, y: H / 2 + 36 } : { x: W / 2, y: H * 0.42 };
+    for (let i = 0; i < 3; i++) {
+      bb = box(ex);
+      ex.tx += aim.x - (bb.l + bb.r) / 2;
+      ex.ty += aim.y - (bb.t + bb.b) / 2;
+    }
+    bb = box(ex);
+    Object.values(found).forEach((md) => {
+      // its outline appears when the scan line reaches its top edge in the exploded view
+      const top = project(ex, md.cx, md.cy - md.h / 2, tierZ[md.tier]);
+      md.wireAt = scanAt(O.y + top.y * (P / (P - top.z)), H);
+    });
+
+    // where each mapped scrap waits: a column either side of the build, or a small pile under it on phones
+    const queue = FRAGS.map((f, i) => {
+      const fw = frags.current[i]?.offsetWidth || f.w;
+      if (!wide) return { x: W / 2 + (f.n % 2 ? 4 : -4), y: Math.min(H * 0.86, bb.b + 70) + f.n * 3, r: PILE_R[f.n] ?? 0, s: 0.58 * k };
+      const [side, j] = f.q;
+      const gutter = side === 'l' ? bb.l : W - bb.r;
+      return { x: side === 'l' ? gutter / 2 : W - gutter / 2, y: lerp(0.19, 0.81, j / 4) * H, r: 0, s: Math.min(0.72 * k, (gutter * 0.8) / fw) };
+    });
+
+    w.style.perspective = `${P}px`;
+    if (layer.current) {
+      layer.current.style.perspective = `${P}px`;
+      layer.current.style.perspectiveOrigin = `${O.x.toFixed(1)}px ${O.y.toFixed(1)}px`;
+    }
     geo.current = {
-      W: sr.width,
-      H: sr.height,
-      wide,
-      k: wide ? Math.min(1.4, Math.max(0.8, sr.height / 900)) : Math.min(0.85, Math.max(0.6, sr.width / 520)),
-      targets,
-      win: wr && { bottom: wr.bottom - sr.top, h: wr.height },
+      W, H, wide, O, ex, tierZ, k, queue, mods: found,
+      frags: FRAGS.map((f, i) => ({ w: frags.current[i]?.offsetWidth || f.w })),
+      win: { bottom: wr.bottom - sr.top },
     };
     update(p.get());
   }, [p, update]);
 
   useMotionValueEvent(p, 'change', update);
   useEffect(() => {
+    boot.current.repaint = () => update(p.get());
+    boot.current.wantLive = () => liveOn.current && inView.current;
     measure();
     const raf = requestAnimationFrame(measure);
     document.fonts?.ready.then(measure);
     window.addEventListener('resize', measure);
     return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', measure); };
-  }, [measure]);
+  }, [measure, update, p]);
 
-  // pointer parallax on the scraps (fine pointers only)
+  // the live system only runs while the hero is on screen
+  useEffect(() => {
+    const el = track.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(([e]) => { inView.current = e.isIntersecting; tellLive(); }, { rootMargin: '-10% 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // pointer parallax on the scraps (fine pointers only; scoped to their layer so nothing else restyles)
   const onMove = (e) => {
-    const st = stage.current;
-    if (!st || e.pointerType !== 'mouse') return;
-    st.style.setProperty('--mx', ((e.clientX / window.innerWidth) * 2 - 1).toFixed(3));
-    st.style.setProperty('--my', ((e.clientY / window.innerHeight) * 2 - 1).toFixed(3));
+    const el = layer.current;
+    if (!el || e.pointerType !== 'mouse') return;
+    put(el, '--mx', ((e.clientX / window.innerWidth) * 2 - 1).toFixed(2));
+    put(el, '--my', ((e.clientY / window.innerHeight) * 2 - 1).toFixed(2));
   };
 
   const ctas = (
@@ -221,29 +416,36 @@ export default function Hero() {
   );
 
   return (
-    <section ref={track} id="top" className="relative h-[340vh]">
-      {/* the particle cloud: scattered clusters while it's a mess; it fades away once the system takes over */}
-      <div aria-hidden="true" data-shape="1" data-x="1.2" data-mx="0" data-my="-0.9" data-scale="0.85" data-mscale="0.6" data-alpha="0.35" data-malpha="0.25" className="pointer-events-none absolute inset-x-0 top-0 h-[150vh]" />
-      <div aria-hidden="true" data-shape="1" data-x="1.7" data-mx="0" data-my="-1.4" data-scale="1.05" data-mscale="0.7" data-alpha="0" data-malpha="0" className="pointer-events-none absolute inset-x-0 top-[180vh] h-[160vh]" />
-
+    <section ref={track} id="top" className="relative h-[400vh]">
       <div ref={stage} onPointerMove={onMove} className={`sticky top-0 h-[100svh] overflow-hidden ${ready ? 'is-ready' : ''}`}>
         {/* the system */}
         <div data-nosnippet="" aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1] flex items-end pb-[4svh] lg:items-center lg:pb-0 lg:pt-16">
           <div className="wrap lg:grid lg:grid-cols-12 lg:gap-x-8">
-            <div ref={win} style={{ clipPath: 'inset(0 0 100% 0)' }} className="h-[40svh] sm:h-[44svh] lg:col-span-7 lg:col-start-6 lg:h-[min(66svh,700px)]">
-              <SystemWindow ui={t('hero.ui')} reg={reg} boot={boot} />
+            <div ref={win} style={{ clipPath: 'inset(0 0 100% 0)' }} className="relative h-[40svh] sm:h-[44svh] lg:col-span-7 lg:col-start-6 lg:h-[min(66svh,700px)]">
+              <div ref={glow} className="sys-glow" />
+              <div ref={plane} className="p3d absolute inset-0">
+                <SystemWindow key={lang} ui={t('hero.ui')} reg={reg} boot={boot} money={money} />
+              </div>
+              <div ref={sheen} className="sys-sheen"><i /></div>
+              <svg className="sys-trace" aria-hidden="true">
+                <g ref={trace}>
+                  <rect className="halo" x="0.75" y="0.75" rx="18" pathLength="1" />
+                  <rect x="0.75" y="0.75" rx="18" pathLength="1" />
+                </g>
+              </svg>
             </div>
           </div>
         </div>
 
         {/* the scraps */}
-        <div data-nosnippet="" aria-hidden="true" className="pointer-events-none absolute inset-0 z-[2]">
+        <div ref={layer} data-nosnippet="" aria-hidden="true" className="pointer-events-none absolute inset-0 z-[2]">
           {FRAGS.map((f, i) => (
             <div key={f.kind} ref={(el) => { frags.current[i] = el; }} className="absolute left-0 top-0 opacity-0 will-change-transform" style={{ width: f.w }}>
               <div className="frag-par" style={{ '--d': f.z }}>
                 <div className="frag-in" style={{ transitionDelay: `${0.45 + i * 0.07}s` }}>
                   <div className="frag-drift" style={{ animationDuration: `${7 + (i % 4) * 1.4}s`, animationDelay: `${-i * 1.7}s` }}>
                     <Fragment kind={f.kind} data={frag?.[f.kind]} />
+                    <i className="frag-ring" style={{ '--r': RING_R[f.kind] ?? '14px' }} />
                   </div>
                 </div>
               </div>
@@ -252,14 +454,11 @@ export default function Hero() {
         </div>
 
         {/* the scan line */}
-        <div ref={line} data-nosnippet="" aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-[3] opacity-0 will-change-transform">
-          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-lime/[0.07] to-transparent" />
-          <div className="h-[2px] bg-lime shadow-[0_0_22px_3px_rgba(200,255,46,0.5)]" />
-          <div className="wrap">
-            <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-lime">
-              {t('hero.scan')} · <span ref={count}>00/{FRAGS.length}</span> {t('hero.sources')}
-            </p>
-          </div>
+        <div ref={line} data-nosnippet="" aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-0 opacity-0 will-change-transform">
+          <div className="scan-core absolute inset-x-0 top-0 h-px" />
+          <p className="wrap absolute inset-x-0 top-2.5 font-mono text-[10px] uppercase tracking-[0.08em] text-ink-400">
+            {t('hero.scan')} · <span ref={count} className="tabular-nums text-lime/80">00/{n2(FRAGS.length)}</span>
+          </p>
         </div>
 
         {/* the copy: three beats in the same place */}

@@ -4,20 +4,22 @@ import { Bell, Folder, Mail, Paperclip, Play } from 'lucide-react';
  * The "before" picture: scraps of how a growing team really runs. Positions are the card centre in % of the screen.
  *   a = desktop, while the headline is up (clustered on the right)   b = desktop, "it runs on this" (spread out)
  *   m = phones (lower half, under the copy)   z = depth 0 (far, blurred) .. 1 (near)   to = the module it becomes
+ *   n = its turn in the build: the system is put together bottom-up (shell, then the work, then the numbers on top)
+ *   q = where it waits once the scan line has mapped it: [side, slot] in two tidy columns either side of the build
  * One visual language for all of them (dark glass, mono details); the only colour is a muted coral for what's wrong.
  * Lime is kept for the fix.
  */
 export const FRAGS = [
-  { kind: 'sheet', to: 'orders', z: 0.95, w: 300, a: { x: 74, y: 33, r: -6 }, b: { x: 62, y: 29, r: -9 }, m: { x: 36, y: 76, r: -6 } },
-  { kind: 'chat', to: 'feed', z: 0.8, w: 252, a: { x: 90, y: 22, r: 5 }, b: { x: 87, y: 19, r: 8 }, m: { x: 74, y: 68, r: 6 } },
-  { kind: 'numbers', to: 'kpiRevenue', z: 1, w: 236, a: { x: 82, y: 53, r: 4 }, b: { x: 74, y: 56, r: 7 }, m: { x: 68, y: 88, r: 5 } },
-  { kind: 'email', to: 'feed', z: 0.7, w: 262, a: { x: 92, y: 69, r: -4 }, b: { x: 89, y: 72, r: -7 }, m: { x: 82, y: 97, r: -4 } },
-  { kind: 'sticky', to: 'kpiOpen', z: 0.9, w: 176, a: { x: 69, y: 73, r: 7 }, b: { x: 52, y: 80, r: 10 }, m: { x: 22, y: 93, r: 7 } },
-  { kind: 'calendar', to: 'schedule', z: 0.6, w: 244, a: { x: 80, y: 88, r: -3 }, b: { x: 70, y: 91, r: -6 }, m: { x: 50, y: 101, r: -3 } },
-  { kind: 'pdf', to: 'orders', z: 0.5, w: 214, a: { x: 97, y: 44, r: 11 }, b: { x: 97, y: 44, r: 14 }, m: { x: 93, y: 81, r: 10 } },
-  { kind: 'toast', to: 'feed', z: 0.55, w: 230, a: { x: 71, y: 13, r: -3 }, b: { x: 45, y: 11, r: -5 }, m: { x: 30, y: 65, r: -3 } },
-  { kind: 'folder', to: 'sidebar', z: 0.4, w: 262, a: { x: 66, y: 53, r: -9 }, b: { x: 39, y: 47, r: -11 }, m: { x: 14, y: 85, r: -9 } },
-  { kind: 'voice', to: 'feed', z: 0.45, w: 210, a: { x: 87, y: 95, r: 5 }, b: { x: 92, y: 95, r: 8 }, m: { x: 88, y: 63, r: 6 } },
+  { kind: 'sheet', to: 'orders', n: 2, q: ['l', 1], z: 0.95, w: 300, a: { x: 74, y: 33, r: -6 }, b: { x: 62, y: 29, r: -9 }, m: { x: 36, y: 76, r: -6 } },
+  { kind: 'chat', to: 'feed', n: 4, q: ['r', 0], z: 0.8, w: 252, a: { x: 90, y: 22, r: 5 }, b: { x: 87, y: 19, r: 8 }, m: { x: 74, y: 68, r: 6 } },
+  { kind: 'numbers', to: 'kpiRevenue', n: 7, q: ['r', 2], z: 1, w: 236, a: { x: 82, y: 53, r: 4 }, b: { x: 74, y: 56, r: 7 }, m: { x: 68, y: 88, r: 5 } },
+  { kind: 'email', to: 'kpiOverdue', n: 9, q: ['r', 3], z: 0.7, w: 262, a: { x: 92, y: 69, r: -4 }, b: { x: 89, y: 72, r: -7 }, m: { x: 82, y: 97, r: -4 } },
+  { kind: 'sticky', to: 'kpiOpen', n: 8, q: ['l', 3], z: 0.9, w: 176, a: { x: 69, y: 73, r: 7 }, b: { x: 52, y: 80, r: 10 }, m: { x: 22, y: 93, r: 7 } },
+  { kind: 'calendar', to: 'schedule', n: 1, q: ['l', 4], z: 0.6, w: 244, a: { x: 80, y: 88, r: -3 }, b: { x: 70, y: 91, r: -6 }, m: { x: 50, y: 101, r: -3 } },
+  { kind: 'pdf', to: 'orders', n: 3, q: ['r', 1], z: 0.5, w: 214, a: { x: 97, y: 44, r: 11 }, b: { x: 97, y: 44, r: 14 }, m: { x: 93, y: 81, r: 10 } },
+  { kind: 'toast', to: 'feed', n: 5, q: ['l', 0], z: 0.55, w: 230, a: { x: 71, y: 13, r: -3 }, b: { x: 45, y: 11, r: -5 }, m: { x: 30, y: 65, r: -3 } },
+  { kind: 'folder', to: 'sidebar', n: 0, q: ['l', 2], z: 0.4, w: 262, a: { x: 66, y: 53, r: -9 }, b: { x: 39, y: 47, r: -11 }, m: { x: 14, y: 85, r: -9 } },
+  { kind: 'voice', to: 'feed', n: 6, q: ['r', 4], z: 0.45, w: 210, a: { x: 87, y: 95, r: 5 }, b: { x: 92, y: 95, r: 8 }, m: { x: 88, y: 63, r: 6 } },
 ];
 
 const glass = 'frag-card grainy overflow-hidden rounded-[14px] border border-white/[0.08] bg-[linear-gradient(180deg,#1c1c1d_0%,#131314_100%)] text-paper';
