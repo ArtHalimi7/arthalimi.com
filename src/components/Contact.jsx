@@ -1,17 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { m, useScroll, useTransform } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { m, useInView, useScroll, useTransform } from 'framer-motion';
+import { ArrowUpRight, Check, Plus } from 'lucide-react';
 import { Reveal, Roll, Tag } from './ui/primitives';
+import { CutShape } from './ui/cut';
+import { GAP, useCut } from '../lib/cut';
 
 const EMAIL = 'arthalimi989@gmail.com';
+const REQUIRED = ['name', 'email', 'message'];
 
-function Field({ label, hot = false, ...props }) {
-  const Tag2 = props.rows ? 'textarea' : 'input';
+function Field({ n, label, hot = false, ...props }) {
+  const El = props.rows ? 'textarea' : 'input';
   return (
-    <label className="block">
-      <span className="text-[13px] text-ink-300">{label}</span>
-      <Tag2 {...props} className={`mt-2 w-full resize-none border-b bg-transparent pb-3 text-[18px] text-paper outline-none transition-colors duration-700 focus:border-lime ${hot ? 'border-lime' : 'border-paper/15'}`} />
+    <label className="group/f relative block">
+      <span className="flex items-baseline gap-2.5 text-[13px] text-ink-300 transition-colors duration-300 group-focus-within/f:text-paper">
+        <span className="font-mono text-[10.5px] tracking-[0.08em] text-ink-500 transition-colors duration-300 group-focus-within/f:text-lime">{n}</span>
+        {label}
+      </span>
+      <El {...props} className="peer mt-2.5 block w-full resize-none border-b border-paper/[0.12] bg-transparent pb-3 text-[18px] text-paper outline-none transition-colors duration-300 hover:border-paper/25 focus-visible:outline-none" />
+      {/* the focus line draws in from the left */}
+      <span aria-hidden="true" className={`pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left bg-lime transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] peer-focus:scale-x-100 ${hot ? 'scale-x-100' : 'scale-x-0'}`} />
     </label>
   );
 }
@@ -27,6 +35,21 @@ export default function Contact() {
   const x2 = useTransform(scrollYProgress, [0, 1], ['12%', '0%']);
   const toggle = (n) => setPicked((p) => (p.includes(n) ? p.filter((x) => x !== n) : [...p, n]));
 
+  // the card's shape follows its own size, the tab's and the button's (ui/cut.jsx)
+  const { box, tab, btn, dims } = useCut();
+
+  // a lime light runs once round the edge when the form arrives, and again when a brief lands or it's sent
+  const seen = useInView(box, { once: true, margin: '0px 0px -15% 0px' });
+  const [trace, setTrace] = useState(0);
+
+  // how much of the brief is filled in (name, a valid email, a message)
+  const form = useRef(null);
+  const [done, setDone] = useState(0);
+  const check = useCallback(() => {
+    const els = form.current?.elements;
+    if (els) setDone(REQUIRED.filter((k) => els[k]?.value.trim() && els[k].checkValidity()).length);
+  }, []);
+
   // the builder at the end of the Work run hands over what the visitor picked (Work → work/Slot.jsx)
   const message = useRef(null);
   const filled = useRef('');
@@ -39,9 +62,11 @@ export default function Contact() {
       if (!text || !el) return;
       // never overwrite what the visitor typed themselves
       if (!el.value.trim() || el.value === filled.current) { el.value = text; filled.current = text; }
+      check();
       const list = t('contact.needs');
       setPicked((p) => (p.length || !Array.isArray(list) ? p : [list[0]]));
       setHot(true);
+      setTrace((n) => n + 1);
       clearTimeout(off);
       off = setTimeout(() => {
         setHot(false);
@@ -51,38 +76,44 @@ export default function Contact() {
     };
     window.addEventListener('ah:brief', onBrief);
     return () => { window.removeEventListener('ah:brief', onBrief); clearTimeout(off); };
-  }, [t]);
+  }, [t, check]);
 
   const submit = async (e) => {
     e.preventDefault();
     const formEl = e.currentTarget;
-    const form = new FormData(formEl);
-    if (form.get('_honey')) return;
+    const data = new FormData(formEl);
+    if (data.get('_honey')) return;
     setState('sending');
     try {
       const res = await fetch(`https://formsubmit.co/ajax/${EMAIL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
-          name: form.get('name'),
-          email: form.get('email'),
-          company: form.get('company') || '-',
+          name: data.get('name'),
+          email: data.get('email'),
+          company: data.get('company') || '-',
           needs: picked.join(', ') || '-',
-          message: form.get('message'),
+          message: data.get('message'),
           language: i18n.language,
-          _subject: `Art Halimi Studio: new enquiry from ${form.get('name')}`,
+          _subject: `Art Halimi Studio: new enquiry from ${data.get('name')}`,
           _template: 'table',
           _captcha: 'false',
         }),
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || String(data.success) === 'false') throw new Error('failed');
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || String(json.success) === 'false') throw new Error('failed');
       setState('sent');
+      setTrace((n) => n + 1);
       formEl.reset();
       setPicked([]);
+      setDone(0);
     } catch {
       setState('error');
     }
+  };
+  const onInput = () => {
+    check();
+    if (state === 'sent' || state === 'error') setState('idle');
   };
 
   return (
@@ -101,37 +132,66 @@ export default function Contact() {
             <a href={`mailto:${EMAIL}`} className="link-line mt-2 text-[20px] font-medium tracking-[-0.02em]">{EMAIL}</a>
           </Reveal>
           <Reveal className="lg:col-span-8" delay={0.1}>
-            <form id="contact-form" onSubmit={submit} className="rounded-[24px] border border-paper/[0.09] bg-ink/90 p-6 sm:p-10">
-              <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
-              <div className="grid gap-10 sm:grid-cols-2">
-                <Field label={t('contact.name')} name="name" required autoComplete="name" />
-                <Field label={t('contact.email')} name="email" type="email" required autoComplete="email" />
+            <div ref={box} className={`group relative pt-11 ${dims ? '' : 'rounded-[28px] bg-ink/90'}`}>
+              <CutShape dims={dims} trace={trace} play={seen} className="stroke-paper/[0.09] transition-[stroke] duration-500 group-focus-within:stroke-paper/[0.2]" />
+
+              {/* the tab */}
+              <div ref={tab} className="absolute left-0 top-0 flex h-11 items-center gap-2 pl-6 pr-5 sm:pl-10 sm:pr-6 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ink-300">
+                <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-lime" />
+                {t('contact.brief')}
               </div>
-              <div className="mt-10"><Field label={t('contact.company')} name="company" autoComplete="organization" /></div>
-              <fieldset className="mt-10">
-                <legend className="text-[13px] text-ink-300">{t('contact.need')}</legend>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {Array.isArray(needs) && needs.map((n) => {
-                    const on = picked.includes(n);
-                    return (
-                      <button key={n} type="button" onClick={() => toggle(n)} aria-pressed={on} className={`rounded-full border px-4 py-2 text-[14px] transition-colors ${on ? 'border-lime bg-lime text-ink' : 'border-paper/15 text-ink-200 hover:border-paper/40'}`}>
-                        {n}
-                      </button>
-                    );
-                  })}
+
+              <form id="contact-form" ref={form} onSubmit={submit} onInput={onInput} className="relative px-6 pt-8 sm:px-10 sm:pt-10">
+                <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
+                <div className="grid gap-10 sm:grid-cols-2">
+                  <Field n="01" label={t('contact.name')} name="name" required autoComplete="name" />
+                  <Field n="02" label={t('contact.email')} name="email" type="email" required autoComplete="email" />
                 </div>
-              </fieldset>
-              <div className="mt-10"><Field ref={message} hot={hot} label={t('contact.message')} name="message" rows={4} required /></div>
-              <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
-                <p aria-live="polite" className={`text-[14px] ${state === 'error' ? 'text-red-400' : 'text-lime'}`}>
-                  {state === 'sent' && t('contact.sent')}
-                  {state === 'error' && t('contact.error')}
-                </p>
-                <button type="submit" disabled={state === 'sending'} className="btn btn-lime disabled:opacity-60">
+                <div className="mt-10"><Field n="03" label={t('contact.company')} name="company" autoComplete="organization" /></div>
+                <fieldset className="mt-10">
+                  <legend className="flex items-baseline gap-2.5 text-[13px] text-ink-300">
+                    <span className="font-mono text-[10.5px] tracking-[0.08em] text-ink-500">04</span>
+                    {t('contact.need')}
+                  </legend>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {Array.isArray(needs) && needs.map((n) => {
+                      const on = picked.includes(n);
+                      return (
+                        <button key={n} type="button" onClick={() => toggle(n)} aria-pressed={on} className={`inline-flex items-center gap-2 rounded-full border py-1.5 pl-1.5 pr-4 text-[14px] transition-[background-color,border-color,color,transform] duration-300 active:scale-[0.97] ${on ? 'border-lime/50 bg-lime/[0.07] text-paper' : 'border-paper/[0.12] text-ink-200 hover:border-paper/35 hover:text-paper'}`}>
+                          <span className={`grid h-6 w-6 place-items-center rounded-full border transition-colors duration-300 ${on ? 'border-lime bg-lime text-ink' : 'border-paper/20 text-ink-400'}`}>
+                            {on ? <Check className="h-3.5 w-3.5" strokeWidth={2.5} /> : <Plus className="h-3.5 w-3.5" />}
+                          </span>
+                          {n}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </fieldset>
+                <div className="mt-10"><Field n="05" ref={message} hot={hot} label={t('contact.message')} name="message" rows={4} required /></div>
+
+                {/* the last row runs alongside the notch: how far the brief is, or how sending went */}
+                <div className="mt-8 flex min-h-14 items-center gap-3" style={dims ? { paddingRight: dims.bw + GAP + 12 } : undefined}>
+                  {state === 'idle' || state === 'sending' ? (
+                    <div aria-hidden="true" className="flex items-center gap-3">
+                      <span className="flex gap-1">
+                        {REQUIRED.map((k, i) => <span key={k} className={`h-[3px] w-5 rounded-full transition-colors duration-500 ${i < done ? 'bg-lime' : 'bg-paper/[0.12]'}`} />)}
+                      </span>
+                      <span className={`font-mono text-[10.5px] uppercase tracking-[0.12em] transition-colors duration-500 ${done === REQUIRED.length ? 'text-lime' : 'text-ink-400'}`}>
+                        {done === REQUIRED.length ? t('contact.ready') : `${done}/${REQUIRED.length}`}
+                      </span>
+                    </div>
+                  ) : null}
+                  <p aria-live="polite" className={`text-[13px] leading-snug sm:text-[14px] ${state === 'error' ? 'text-red-400' : 'text-lime'}`}>
+                    {state === 'sent' && t('contact.sent')}
+                    {state === 'error' && t('contact.error')}
+                  </p>
+                </div>
+
+                <button ref={btn} type="submit" disabled={state === 'sending'} className="btn btn-lime absolute bottom-0 right-0 h-14 px-7 py-0 text-[16px] disabled:opacity-60">
                   <Roll>{state === 'sending' ? t('contact.sending') : t('contact.send')}</Roll> <ArrowUpRight className="h-4 w-4" />
                 </button>
-              </div>
-            </form>
+              </form>
+            </div>
           </Reveal>
         </div>
       </div>

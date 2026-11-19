@@ -251,12 +251,6 @@ body {
 @keyframes clickRing { from { transform: scale(0.3); opacity: 0.95; } to { transform: scale(2.2); opacity: 0; } }
 .live-click { position: absolute; left: 2px; top: 2px; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 9999px; border: 1.5px solid #c8ff2e; animation: clickRing 0.65s ease-out both; }
 
-/* Footer: lime pulses travelling along the flow lines, and a scan line passing over the mark */
-.flow-pulse { stroke-dasharray: 90 1900; animation: flow 10s linear infinite; }
-@keyframes flow { from { stroke-dashoffset: 90; } to { stroke-dashoffset: -1900; } }
-.mark-scan { top: 8%; animation: markScan 4.2s ease-in-out infinite alternate; }
-@keyframes markScan { from { top: 8%; } to { top: 92%; } }
-
 @keyframes cue { from { transform: translateY(-100%); } to { transform: translateY(320%); } }
 
 @keyframes sweep { from { left: -16%; } to { left: 116%; } }

@@ -434,7 +434,9 @@
     "sending": "Wird gesendet…",
     "sent": "Danke. Wir melden uns innerhalb eines Werktags.",
     "error": "Das hat nicht geklappt. Bitte schreiben Sie uns direkt.",
-    "direct": "Oder per E-Mail"
+    "direct": "Oder per E-Mail",
+    "brief": "Projektanfrage",
+    "ready": "Bereit zum Senden"
   },
   "footer": {
     "line": "Software für wachsende Teams.",

@@ -434,7 +434,9 @@
     "sending": "Sending…",
     "sent": "Thank you. We'll get back to you within one working day.",
     "error": "That didn't go through. Please email us directly.",
-    "direct": "Or email us"
+    "direct": "Or email us",
+    "brief": "Project brief",
+    "ready": "Ready to send"
   },
   "footer": {
     "line": "Software for growing teams.",
