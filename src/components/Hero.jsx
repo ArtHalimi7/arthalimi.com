@@ -5,7 +5,8 @@ import { ArrowUpRight } from 'lucide-react';
 import { EASE, Lines, Magnetic, Roll, Signature, Tag } from './ui/primitives';
 import { useScrollTo } from './Nav';
 import { useReady } from '../lib/ready';
-import { FRAGS, Fragment } from './hero/fragments';
+import { FRAGS } from './hero/fragments';
+import Scraps from './hero/Scraps';
 import SystemWindow, { MODS } from './hero/SystemWindow';
 
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
@@ -18,7 +19,6 @@ const pulse = (v, at, rise = 0.005, fall = 0.03) => (v < at ? clamp01(1 - (at - 
 const D2R = Math.PI / 180;
 const n2 = (n) => String(n).padStart(2, '0');
 const PILE_R = [-3, 2, -1.5, 3, -2, 1, -2.5, 2.5, -1, 1.5]; // phones: the waiting scraps sit in a loose pile
-const RING_R = { sticky: '4px', toast: '9999px', voice: '9999px' }; // the mapped outline follows each scrap's corners
 
 /*
  * The hero is a pinned story over a 400vh scroll track (progress p 0..1):
@@ -437,21 +437,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* the scraps */}
-        <div ref={layer} data-nosnippet="" aria-hidden="true" className="pointer-events-none absolute inset-0 z-[2]">
-          {FRAGS.map((f, i) => (
-            <div key={f.kind} ref={(el) => { frags.current[i] = el; }} className="absolute left-0 top-0 opacity-0 will-change-transform" style={{ width: f.w }}>
-              <div className="frag-par" style={{ '--d': f.z }}>
-                <div className="frag-in" style={{ transitionDelay: `${0.45 + i * 0.07}s` }}>
-                  <div className="frag-drift" style={{ animationDuration: `${7 + (i % 4) * 1.4}s`, animationDelay: `${-i * 1.7}s` }}>
-                    <Fragment kind={f.kind} data={frag?.[f.kind]} />
-                    <i className="frag-ring" style={{ '--r': RING_R[f.kind] ?? '14px' }} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* the scraps (positioned from here; their arrival, live mess and diagnosis live in hero/Scraps.jsx) */}
+        <Scraps layer={layer} frags={frags} data={frag} words={t('hero.diag')} p={p} ready={ready} />
 
         {/* the scan line */}
         <div ref={line} data-nosnippet="" aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-0 opacity-0 will-change-transform">

@@ -1,3 +1,4 @@
+import { startTransition, useEffect, useState } from 'react';
 import { Bell, Folder, Mail, Paperclip, Play } from 'lucide-react';
 
 /*
@@ -8,7 +9,21 @@ import { Bell, Folder, Mail, Paperclip, Play } from 'lucide-react';
  *   q = where it waits once the scan line has mapped it: [side, slot] in two tidy columns either side of the build
  * One visual language for all of them (dark glass, mono details); the only colour is a muted coral for what's wrong.
  * Lime is kept for the fix.
+ * While the headline is up (`live`, from hero/Scraps.jsx) the mess carries on by itself: someone types in the chat, the
+ * unread count climbs, a third revenue figure turns up, Tom fights a formula, the voice note plays. Nothing changes a
+ * scrap's size, so the hero's measurements hold.
  */
+
+/** A step counter that ticks every `ms` while `live`; back to 0 when it stops. */
+function useTick(live, ms) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!live) { setN(0); return undefined; }
+    const id = setInterval(() => startTransition(() => setN((v) => v + 1)), ms);
+    return () => clearInterval(id);
+  }, [live, ms]);
+  return n;
+}
 export const FRAGS = [
   { kind: 'sheet', to: 'orders', n: 2, q: ['l', 1], z: 0.95, w: 300, a: { x: 74, y: 33, r: -6 }, b: { x: 62, y: 29, r: -9 }, m: { x: 36, y: 76, r: -6 } },
   { kind: 'chat', to: 'feed', n: 4, q: ['r', 0], z: 0.8, w: 252, a: { x: 90, y: 22, r: 5 }, b: { x: 87, y: 19, r: 8 }, m: { x: 74, y: 68, r: 6 } },
@@ -26,7 +41,11 @@ const glass = 'frag-card grainy overflow-hidden rounded-[14px] border border-whi
 const mono = 'font-mono text-[10px] uppercase tracking-[0.06em] text-ink-400';
 const CORAL = 'text-[#F2766B]';
 
-function Sheet({ f }) {
+const TYPING = ['=', '=S', '=SUM(', '=SUM(B', '=SUM(B2:', '#REF!', '#REF!', '#REF!'];
+const EDIT = [4, 2]; // the cell Tom is fighting with: last row, column C
+
+function Sheet({ f, live }) {
+  const n = useTick(live, 620);
   return (
     <div className={glass}>
       <div className="flex items-center gap-2 border-b border-white/[0.06] px-3 py-2">
@@ -37,12 +56,15 @@ function Sheet({ f }) {
         {['', 'A', 'B', 'C', 'D'].map((h, i) => <span key={`h${i}`} className="border-b border-r border-white/[0.05] px-1.5 py-1 text-center text-ink-500">{h}</span>)}
         {f.rows.map((r, ri) => [
           <span key={`n${ri}`} className="border-b border-r border-white/[0.05] py-1 text-center text-ink-500">{ri + 1}</span>,
-          ...r.map((c, ci) => {
+          ...r.map((c0, ci) => {
+            const editing = live && ri === EDIT[0] && ci === EDIT[1];
+            const c = editing ? TYPING[n % TYPING.length] : c0;
             const err = c === '#REF!' || c.startsWith('=S');
             const odd = c.includes('?') || c.endsWith('!');
             return (
-              <span key={`${ri}-${ci}`} className={`truncate border-b border-r border-white/[0.05] px-1.5 py-1 ${err ? `bg-[#F2766B]/[0.12] ${CORAL}` : odd ? 'text-[#E8B44A]' : 'text-ink-200'}`}>
+              <span key={`${ri}-${ci}`} className={`relative truncate border-b border-r border-white/[0.05] px-1.5 py-1 ${err ? `bg-[#F2766B]/[0.12] ${CORAL}` : odd ? 'text-[#E8B44A]' : 'text-ink-200'} ${editing ? 'overflow-visible outline outline-1 -outline-offset-1 outline-[#E8B44A]' : ''}`}>
                 {c}
+                {editing && <span className="absolute -top-[13px] left-[-1px] rounded-t-[3px] bg-[#E8B44A] px-1 font-sans text-[8px] font-medium leading-[13px] text-ink">Tom</span>}
               </span>
             );
           }),
@@ -52,18 +74,26 @@ function Sheet({ f }) {
   );
 }
 
-function Chat({ f }) {
+function Chat({ f, live }) {
+  const n = useTick(live, 1700);
+  const typing = n % 2 === 1; // odd ticks: the last message is still being typed; even: it lands, the badge goes up
+  const badge = (Number(f.badge) || 0) + (Math.floor(n / 2) % 7);
   return (
     <div className={`${glass} p-3.5`}>
       <div className="mb-3 flex items-center justify-between">
         <span className={mono}># {f.channel}</span>
-        <span className="flex items-center gap-1.5 font-mono text-[10px] text-[#F2766B]"><span className="h-1.5 w-1.5 rounded-full bg-[#F2766B]" />{f.badge}</span>
+        <span key={badge} className={`flex items-center gap-1.5 font-mono text-[10px] text-[#F2766B] ${live && n ? 'frag-flip' : ''}`}><span className="h-1.5 w-1.5 rounded-full bg-[#F2766B]" />{badge}</span>
       </div>
       <div className="space-y-2.5">
         {f.msgs.map(([who, text], i) => (
           <div key={i} className="flex gap-2.5">
             <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-white/[0.08] text-[9px] font-medium text-ink-200">{who[0]}</span>
-            <p className="text-[11.5px] leading-snug"><span className="mr-1.5 font-medium text-paper">{who}</span><span className="text-ink-300">{text}</span></p>
+            <p className="text-[11.5px] leading-snug">
+              <span className="mr-1.5 font-medium text-paper">{who}</span>
+              {typing && i === f.msgs.length - 1
+                ? <span className="inline-flex translate-y-[-2px] gap-[3px]">{[0, 1, 2].map((d) => <span key={d} className="h-1 w-1 animate-pulseDot rounded-full bg-ink-300" style={{ animationDelay: `${d * 0.18}s` }} />)}</span>
+                : <span className="text-ink-300">{text}</span>}
+            </p>
           </div>
         ))}
       </div>
@@ -82,14 +112,16 @@ function Email({ f }) {
   );
 }
 
-function Numbers({ f }) {
+function Numbers({ f, live }) {
+  const n = useTick(live && Boolean(f.v3), 3000);
+  const v2 = n % 2 ? f.v3 : f.v2;
   return (
     <div className={`${glass} p-3.5`}>
       <p className={mono}>{f.label}</p>
       <div className="mt-2.5 flex items-baseline gap-2.5 tabular-nums">
         <span className="text-[20px] font-medium tracking-[-0.03em]">{f.v1}</span>
         <span className={`text-[16px] ${CORAL}`}>≠</span>
-        <span className="text-[20px] font-medium tracking-[-0.03em] text-ink-300">{f.v2}</span>
+        <span key={v2} className={`text-[20px] font-medium tracking-[-0.03em] text-ink-300 ${n ? 'frag-flip' : ''}`}>{v2}</span>
       </div>
       <p className={`mt-2 text-[11px] ${CORAL}`}>{f.q}</p>
     </div>
@@ -105,12 +137,12 @@ function Sticky({ f }) {
   );
 }
 
-function Calendar({ f }) {
+function Calendar({ f, live }) {
   return (
     <div className={`${glass} p-3.5`}>
       <div className="flex items-center justify-between">
         <span className={mono}>{f.day}</span>
-        <span className="rounded-full bg-[#F2766B]/[0.12] px-2 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.06em] text-[#F2766B]">{f.conflict}</span>
+        <span className="flex items-center gap-1.5 rounded-full bg-[#F2766B]/[0.12] px-2 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.06em] text-[#F2766B]">{live && <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-[#F2766B]" />}{f.conflict}</span>
       </div>
       <div className="relative mt-3 h-[62px]">
         <div className="absolute left-0 right-9 top-0 h-[38px] rounded-[8px] border-l-2 border-paper/40 bg-white/[0.06] px-2.5 py-1.5 text-[10.5px] text-ink-200">{f.e1}</div>
@@ -135,11 +167,13 @@ function Pdf({ f }) {
   );
 }
 
-function Toast({ f }) {
+function Toast({ f, live }) {
+  const n = useTick(live, 2300) % 9;
+  const m = String(f.text).match(/^(\d+)(.*)$/);
   return (
     <div className={`${glass} flex items-center gap-2.5 rounded-full px-3.5 py-2.5 text-[11.5px] text-ink-200`}>
-      <span className="relative text-ink-300"><Bell className="h-3.5 w-3.5" /><span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#F2766B]" /></span>
-      {f.text}
+      <span key={n} className={`relative inline-block origin-top text-ink-300 ${n ? 'frag-bell' : ''}`}><Bell className="h-3.5 w-3.5" /><span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#F2766B]" /></span>
+      {m ? `${Number(m[1]) + n}${m[2]}` : f.text}
     </div>
   );
 }
@@ -155,12 +189,14 @@ function FolderPath({ f }) {
   );
 }
 
-function Voice({ f }) {
+function Voice({ f, live }) {
   const bars = [5, 11, 8, 15, 6, 12, 17, 9, 5, 13, 7, 10, 4, 8, 12, 6];
+  const n = useTick(live, 240);
+  const at = live ? n % (bars.length + 5) : 5; // the playhead, then a short pause before it starts over
   return (
     <div className={`${glass} flex items-center gap-3 rounded-full py-2 pl-2 pr-4`}>
       <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white/[0.08] text-paper"><Play className="ml-0.5 h-3 w-3" fill="currentColor" /></span>
-      <span className="flex h-5 items-center gap-[2px]">{bars.map((h, i) => <span key={i} className={`w-[2px] rounded-full ${i < 5 ? 'bg-paper/80' : 'bg-paper/25'}`} style={{ height: h }} />)}</span>
+      <span className="flex h-5 items-center gap-[2px]">{bars.map((h, i) => <span key={i} className={`w-[2px] rounded-full ${i < at ? 'bg-paper/80' : 'bg-paper/25'}`} style={{ height: h }} />)}</span>
       <span className="font-mono text-[10px] tabular-nums text-ink-400">{f.len}</span>
     </div>
   );
@@ -168,7 +204,7 @@ function Voice({ f }) {
 
 const KINDS = { sheet: Sheet, chat: Chat, email: Email, numbers: Numbers, sticky: Sticky, calendar: Calendar, pdf: Pdf, toast: Toast, folder: FolderPath, voice: Voice };
 
-export function Fragment({ kind, data }) {
+export function Fragment({ kind, data, live = false }) {
   const C = KINDS[kind];
-  return C && data ? <C f={data} /> : null;
+  return C && data ? <C f={data} live={live} /> : null;
 }

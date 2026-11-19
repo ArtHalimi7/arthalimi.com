@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, m } from 'framer-motion';
@@ -9,6 +9,32 @@ import { homePath, isHomePath } from '../lib/seo';
 import { saveLanguage } from '../i18n';
 
 const LINKS = ['work', 'services', 'process', 'studio'];
+const SECTIONS = [...LINKS, 'contact'];
+
+/** The section under the middle of the screen (null in between, e.g. the hero or the lime statement). Home page only. */
+function useActiveSection(enabled) {
+  const [id, setId] = useState(null);
+  useEffect(() => {
+    if (!enabled) { setId(null); return undefined; }
+    let raf = 0;
+    const read = () => {
+      raf = 0;
+      const mid = window.innerHeight * 0.45;
+      let hit = null;
+      for (const s of SECTIONS) {
+        const r = document.getElementById(s)?.getBoundingClientRect();
+        if (r && r.top <= mid && r.bottom > mid) hit = s;
+      }
+      setId(hit);
+    };
+    const on = () => { if (!raf) raf = requestAnimationFrame(read); };
+    read();
+    window.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('resize', on);
+    return () => { window.removeEventListener('scroll', on); window.removeEventListener('resize', on); cancelAnimationFrame(raf); };
+  }, [enabled]);
+  return id;
+}
 
 export function useScrollTo() {
   const lenis = useLenis();
@@ -59,12 +85,12 @@ function Lang() {
   );
 }
 
-function NavLink({ label, href, onClick }) {
+function NavLink({ id, label, href, onClick, on }) {
   const [hit, setHit] = useState(0);
   // The scramble's random glyphs have other widths than the label. The real label (invisible) holds the width and the
   // scramble is laid over it, so the pill, which is only as wide as its contents, never resizes and shakes.
   return (
-    <a href={href} onClick={(e) => { e.preventDefault(); onClick(); }} onMouseEnter={() => setHit((h) => h + 1)} className="relative rounded-full px-4 py-2 text-[13.5px] text-ink-200 transition-colors hover:bg-paper/[0.06] hover:text-paper">
+    <a href={href} data-spy={id} aria-current={on ? 'true' : undefined} onClick={(e) => { e.preventDefault(); onClick(); }} onMouseEnter={() => setHit((h) => h + 1)} className={`relative rounded-full px-4 py-2 text-[13.5px] transition-colors hover:text-paper ${on ? 'text-paper' : 'text-ink-200 hover:bg-paper/[0.06]'}`}>
       <span className="opacity-0">{label}</span>
       <span aria-hidden="true" className="absolute inset-0 flex items-center justify-center whitespace-nowrap">
         <Scramble text={label} trigger={hit} />
@@ -82,6 +108,15 @@ export default function Nav() {
   const lenis = useLenis();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  // where you are on the page: a pill slides to that section's link
+  const active = useActiveSection(isHomePath(pathname));
+  const links = useRef(null);
+  const [pill, setPill] = useState(null);
+  useEffect(() => {
+    const a = active && links.current?.querySelector(`[data-spy="${active}"]`);
+    // in between sections it fades out where it is, instead of sliding away
+    setPill((p) => (a ? { x: a.offsetLeft, w: a.offsetWidth } : p && { ...p, gone: true }));
+  }, [active, i18n.language]);
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 24);
@@ -109,8 +144,13 @@ export default function Nav() {
             <span className="text-[14.5px] font-semibold tracking-[-0.02em]">Art Halimi</span>
           </a>
 
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
-            {LINKS.map((id) => <NavLink key={id} label={t(`nav.${id}`)} href={href(id)} onClick={() => nav(id)} />)}
+          <nav ref={links} className="relative hidden items-center gap-1 lg:flex" aria-label="Main">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-0 top-1/2 h-9 rounded-full border border-paper/[0.08] bg-paper/[0.07] transition-[transform,width,opacity] duration-500 ease-[cubic-bezier(.22,1,.36,1)]"
+              style={{ width: pill?.w ?? 0, transform: `translate(${pill?.x ?? 0}px, -50%)`, opacity: pill && !pill.gone ? 1 : 0 }}
+            />
+            {LINKS.map((id) => <NavLink key={id} id={id} on={active === id} label={t(`nav.${id}`)} href={href(id)} onClick={() => nav(id)} />)}
           </nav>
 
           <div className="flex items-center gap-2.5">

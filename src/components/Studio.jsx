@@ -1,12 +1,60 @@
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { Lines, Reveal, Roll, Tag } from './ui/primitives';
+import { Lines, Reveal, Roll, Signature, Tag } from './ui/primitives';
 import { CutShape } from './ui/cut';
 import { GAP, useCut } from '../lib/cut';
+
+/** The time in Gelsenkirchen, to the minute. Empty until mounted, so the prerendered page never shows a stale time. */
+function useLocalTime(lng) {
+  const [time, setTime] = useState('');
+  useEffect(() => {
+    const f = new Intl.DateTimeFormat(lng === 'de' ? 'de-DE' : 'en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Berlin' });
+    const tick = () => setTime(f.format(new Date()));
+    tick();
+    const id = setInterval(tick, 10000);
+    return () => clearInterval(id);
+  }, [lng]);
+  return time;
+}
+
+/*
+ * The studio's principles, written up as what they are: promises, on a sheet of paper, signed. The signature writes
+ * itself (pen speed, stroke by stroke) when the sheet comes into view. The folded corner is .paper-sheet in index.css.
+ */
+function Agreement({ principles }) {
+  const { t } = useTranslation();
+  const ref = useRef(null);
+  const seen = useInView(ref, { once: true, margin: '0px 0px -30% 0px' });
+  if (!Array.isArray(principles)) return null;
+  return (
+    <Reveal className="mt-20 sm:mt-24">
+      <div ref={ref} className="paper-sheet relative rounded-[6px] bg-paper px-6 pb-9 pt-8 text-ink sm:px-12 sm:pb-12 sm:pt-11 lg:px-16">
+        <p className="border-b border-ink/15 pb-5 text-[14px] font-medium tracking-[-0.01em]">{t('studio.terms')}</p>
+        <ol>
+          {principles.map((p, i) => (
+            <li key={p.title} className="grid gap-2 border-b border-ink/10 py-7 md:grid-cols-[64px_minmax(0,1.15fr)_minmax(0,1fr)] md:gap-8 md:py-9">
+              <span className="font-serif text-[22px] italic leading-none text-ink/45 md:pt-1">§ {i + 1}</span>
+              <p className="text-[clamp(1.45rem,2.3vw,2.15rem)] font-medium leading-[1.08] tracking-[-0.035em]">{p.title}</p>
+              <p className="max-w-[48ch] text-[15.5px] leading-relaxed text-ink/70 md:pt-1">{p.desc}</p>
+            </li>
+          ))}
+        </ol>
+        <div className="mt-8 sm:mt-10">
+          <Signature play={seen} delay={0.3} duration={2.6} width={2.4} label={t('hero.sign')} className="-ml-2 h-auto w-[210px] text-ink sm:w-[250px]" />
+          <span className="mt-1 block h-px w-[230px] bg-ink/25 sm:w-[270px]" />
+          <p className="mt-2.5 text-[13px] text-ink/60">{t('hero.sign')}</p>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
 
 export default function Studio() {
   const { t, i18n } = useTranslation();
   const cut = useCut();
+  const time = useLocalTime(i18n.language);
   const principles = t('studio.principles');
   return (
     <section id="studio" data-shape="2" data-x="-1.9" data-mx="0" data-my="1.5" data-scale="0.8" data-alpha="0.6" data-malpha="0.3" className="relative py-24 sm:py-32">
@@ -23,6 +71,7 @@ export default function Studio() {
               <div ref={cut.tab} className="absolute left-0 top-0 flex h-10 items-center gap-2 pl-6 pr-5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ink-300 sm:pl-7">
                 <span className="h-1.5 w-1.5 rounded-full bg-lime" />
                 {t('footer.where')}
+                {time && <span className="ml-1.5 tabular-nums text-paper">{time}</span>}
               </div>
               <div className="relative px-6 pt-6 sm:px-7">
                 <p className="text-[17px] leading-relaxed text-ink-200">{t('studio.p1')}</p>
@@ -37,15 +86,7 @@ export default function Studio() {
           </Reveal>
         </div>
 
-        <ol className="mt-20 grid gap-px overflow-hidden rounded-[20px] border border-paper/[0.09] bg-paper/[0.09] md:grid-cols-3">
-          {Array.isArray(principles) && principles.map((p, i) => (
-            <Reveal as="li" key={p.title} delay={i * 0.08} className="group relative bg-ink p-8 sm:p-10">
-              <span className="text-[13px] tabular-nums text-ink-500 transition-colors duration-500 group-hover:text-lime">0{i + 1}</span>
-              <p className="mt-16 text-[22px] font-medium leading-[1.15] tracking-[-0.03em]">{p.title}</p>
-              <p className="mt-3 text-[15px] leading-relaxed text-ink-300">{p.desc}</p>
-            </Reveal>
-          ))}
-        </ol>
+        <Agreement principles={principles} />
       </div>
     </section>
   );

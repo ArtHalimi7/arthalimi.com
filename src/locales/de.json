@@ -32,6 +32,18 @@
     ],
     "sysAccent": "gebaut für die Art, wie Ihr Team wirklich arbeitet.",
     "sign": "Art Halimi, Gründer",
+    "diag": {
+      "sheet": "Aufträge in einer Datei, die nur einer versteht",
+      "chat": "Entscheidungen, die im Chat untergehen",
+      "numbers": "Zwei Versionen der Wahrheit",
+      "email": "Eine Rechnung, die im Mailverlauf hängt",
+      "sticky": "Ein Prozess auf einem Klebezettel",
+      "calendar": "Schon wieder doppelt gebucht",
+      "pdf": "Zweimal von Hand abgetippt",
+      "toast": "Lärm statt Information",
+      "folder": "Niemand weiß, welche Datei gilt",
+      "voice": "Anweisungen, die niemand findet"
+    },
     "frag": {
       "sheet": {
         "file": "Auftraege_2025_FINAL_v7.xlsx",
@@ -96,6 +108,7 @@
         "label": "Umsatz · März",
         "v1": "48.120 €",
         "v2": "51.940 €",
+        "v3": "52.310 €",
         "q": "Welche Zahl stimmt?"
       },
       "sticky": {
@@ -237,7 +250,46 @@
         "eg": "Lead-Bewertung, Content-Planung, Dokumentensortierung."
       }
     ],
-    "also": "Außerdem: Performance-Audits für langsame oder teure Apps und Websites für Unternehmen, die auch online überzeugen wollen."
+    "also": "Außerdem: Performance-Audits für langsame oder teure Apps und Websites für Unternehmen, die auch online überzeugen wollen.",
+    "replaces": "Was es ersetzt",
+    "demo": {
+      "flow": {
+        "title": "Freigaben",
+        "board": "Aufträge",
+        "week": "KW 47",
+        "cols": ["Neu", "Prüfung", "Freigabe", "Erledigt"],
+        "cards": [[["Becker & Co", "#2293"]], [["Nordlicht AG", "#2290"]], [["Vogel Logistik", "#2287"]], [["Brandt & Söhne", "#2288"], ["Studio Mira", "#2285"]]],
+        "client": "Keller GmbH, #2291",
+        "task": "Lieferant vor 15 Uhr anrufen",
+        "nobody": "Nicht zugewiesen",
+        "log": ["Neuer Auftrag #2291 von Keller GmbH", "Tom prüft den Lagerbestand für #2291", "An Maria übergeben: Lieferant vor 15 Uhr anrufen", "Maria hat #2291 um 14:20 freigegeben"]
+      },
+      "dash": {
+        "title": "Berichte",
+        "versions": "2 Versionen",
+        "ok": "Abgeglichen",
+        "chart": "Umsatz pro Woche",
+        "sources": ["Bank", "Shop", "Tabellen"],
+        "synced": "Gerade synchronisiert"
+      },
+      "link": {
+        "title": "Verbindungen",
+        "hub": "Ihr System",
+        "in": ["Shop", "Bank", "Tabellen"],
+        "out": ["Rechnungen", "Slack", "Berichte"],
+        "log": ["Bestellung #2292 aus dem Shop angelegt", "Zahlung über 4.200 € der Rechnung #2291 zugeordnet", "#auftraege: Tageszusammenfassung gepostet", "Lagerbestand aus dem Lager synchronisiert"]
+      },
+      "ai": {
+        "title": "Posteingang",
+        "meta": "Automatisch sortiert",
+        "rows": [["pdf", "Lieferschein_scan(2).pdf", "Auftrag #2284 zugeordnet"], ["mail", "AW: AW: WG: Rechnung 2291", "Rechnung gebucht"], ["mail", "Neue Anfrage von Weiss Medien", "Lead für Tom, Score 82"], ["mail", "Änderung zu Auftrag #2287", "Von Lena geprüft"]],
+        "reading": "Liest…",
+        "person": "Braucht einen Menschen",
+        "review": "Prüfen",
+        "extract": "Von der KI gelesen",
+        "fields": [[["Lieferant", "Brandt & Söhne"], ["Auftrag", "#2284"], ["Positionen", "14 von 14"]], [["Betrag", "4.200 €"], ["Fällig", "30. Nov."], ["Auftrag", "#2291"]], [["Firma", "Weiss Medien"], ["Wunsch", "Kundenportal"], ["Score", "82"]], [["Auftrag", "#2287"], ["Änderung", "Neuer Liefertermin"], ["Betrifft", "Produktionsplan"]]]
+      }
+    }
   },
   "shift": {
     "tag": "Der Wechsel",
@@ -388,7 +440,19 @@
         "title": "Betreuen",
         "desc": "Monitoring, Fehlerbehebung und Verbesserungen nach dem Start. Wir bleiben dabei, damit das System mit dem Unternehmen wächst."
       }
-    ]
+    ],
+    "art": {
+      "map": ["Bestellung", "Lager prüfen", "Freigabe", "Rechnung"],
+      "hand": "von Hand",
+      "week": "Woche",
+      "preview": "Vorschau",
+      "old": "Tabellen",
+      "new": "Neues System",
+      "parallel": "Laufen parallel",
+      "switched": "Umgestellt",
+      "ok": "Alles läuft normal",
+      "runRows": ["Fehler behoben", "Verbesserung live"]
+    }
   },
   "studio": {
     "tag": "Das Studio",
@@ -408,6 +472,7 @@
         "desc": "Software, die ein Unternehmen trägt, braucht Pflege. Das gehört zum Job."
       }
     ],
+    "terms": "Worauf Sie sich verlassen können",
     "founder": "Gegründet von Art Halimi, Full-Stack-Entwickler.",
     "languages": "Projekte laufen auf Englisch oder Albanisch.",
     "linkedin": "LinkedIn"

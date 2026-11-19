@@ -32,6 +32,18 @@
     ],
     "sysAccent": "built around how your team really works.",
     "sign": "Art Halimi, founder",
+    "diag": {
+      "sheet": "Orders in a file only one person understands",
+      "chat": "Decisions buried in chat",
+      "numbers": "Two versions of the truth",
+      "email": "An invoice stuck in a thread",
+      "sticky": "A process on a sticky note",
+      "calendar": "Double-booked, again",
+      "pdf": "Typed in by hand, twice",
+      "toast": "Noise instead of information",
+      "folder": "Nobody knows which file is final",
+      "voice": "Instructions nobody can search"
+    },
     "frag": {
       "sheet": {
         "file": "orders_2025_FINAL_v7.xlsx",
@@ -96,6 +108,7 @@
         "label": "Revenue · March",
         "v1": "€48,120",
         "v2": "€51,940",
+        "v3": "€52,310",
         "q": "Which one is right?"
       },
       "sticky": {
@@ -237,7 +250,46 @@
         "eg": "Lead scoring, content planning, document triage."
       }
     ],
-    "also": "Also: performance audits for slow or expensive apps, and websites for businesses that want to look the part."
+    "also": "Also: performance audits for slow or expensive apps, and websites for businesses that want to look the part.",
+    "replaces": "What it replaces",
+    "demo": {
+      "flow": {
+        "title": "Approvals",
+        "board": "Orders",
+        "week": "Week 47",
+        "cols": ["New", "Checking", "Approval", "Done"],
+        "cards": [[["Becker & Co", "#2293"]], [["Nordlicht AG", "#2290"]], [["Vogel Logistik", "#2287"]], [["Brandt & Söhne", "#2288"], ["Studio Mira", "#2285"]]],
+        "client": "Keller GmbH, #2291",
+        "task": "Call the supplier before 15:00",
+        "nobody": "Unassigned",
+        "log": ["New order #2291 from Keller GmbH", "Tom is checking stock for #2291", "Handed to Maria: call the supplier before 15:00", "Maria approved #2291 at 14:20"]
+      },
+      "dash": {
+        "title": "Reports",
+        "versions": "2 versions",
+        "ok": "Reconciled",
+        "chart": "Revenue by week",
+        "sources": ["Bank", "Shop", "Sheets"],
+        "synced": "Synced just now"
+      },
+      "link": {
+        "title": "Connections",
+        "hub": "Your system",
+        "in": ["Shop", "Bank", "Sheets"],
+        "out": ["Invoices", "Slack", "Reports"],
+        "log": ["Order #2292 from the shop, created", "Payment of €4,200 matched to invoice #2291", "#orders: today's summary posted", "Stock synced from the warehouse"]
+      },
+      "ai": {
+        "title": "Inbox",
+        "meta": "Sorted automatically",
+        "rows": [["pdf", "delivery_note_scan(2).pdf", "Matched to order #2284"], ["mail", "Re: Re: Fwd: Invoice 2291", "Invoice booked"], ["mail", "New enquiry from Weiss Medien", "Lead for Tom, score 82"], ["mail", "Change to order #2287", "Checked by Lena"]],
+        "reading": "Reading…",
+        "person": "Needs a person",
+        "review": "Review",
+        "extract": "Read by AI",
+        "fields": [[["Supplier", "Brandt & Söhne"], ["Order", "#2284"], ["Items", "14 of 14"]], [["Amount", "€4,200"], ["Due", "30 Nov"], ["Order", "#2291"]], [["Company", "Weiss Medien"], ["Wants", "Client portal"], ["Score", "82"]], [["Order", "#2287"], ["Change", "New delivery date"], ["Affects", "Production plan"]]]
+      }
+    }
   },
   "shift": {
     "tag": "The shift",
@@ -388,7 +440,19 @@
         "title": "Run",
         "desc": "Monitoring, fixes and improvements after launch. We stay on, so the system keeps up with the business."
       }
-    ]
+    ],
+    "art": {
+      "map": ["Order in", "Check stock", "Approve", "Invoice"],
+      "hand": "by hand",
+      "week": "Week",
+      "preview": "Preview",
+      "old": "Spreadsheets",
+      "new": "New system",
+      "parallel": "Running side by side",
+      "switched": "Switched over",
+      "ok": "All systems normal",
+      "runRows": ["Fix shipped", "Improvement shipped"]
+    }
   },
   "studio": {
     "tag": "The studio",
@@ -408,6 +472,7 @@
         "desc": "Software that runs a business needs looking after. That's part of the job."
       }
     ],
+    "terms": "What you can hold us to",
     "founder": "Founded by Art Halimi, full-stack engineer.",
     "languages": "Projects run in English or Albanian.",
     "linkedin": "LinkedIn"
