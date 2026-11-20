@@ -100,7 +100,7 @@ export default function Shift() {
   }, [update]);
 
   return (
-    <section ref={ref} data-shape="3" data-x="0" data-mx="0" data-my="0" data-scale="1" data-mscale="0.7" data-alpha="0.55" className="relative h-[170vh]">
+    <section ref={ref} data-shape="3" data-x="0" data-mx="0" data-my="-2.05" data-scale="1" data-mscale="0.62" data-alpha="0.55" className="relative h-[170vh]">
       <m.div ref={limeRef} style={{ clipPath: clip }} className="pointer-events-none absolute inset-x-0 -bottom-24 top-0 bg-lime" />
       <m.div ref={pinned} style={{ clipPath: textClip }} className="sticky top-0 z-10 flex h-[100svh] flex-col justify-center overflow-hidden text-ink">
         <div className="wrap">

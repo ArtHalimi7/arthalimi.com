@@ -15,7 +15,7 @@ const LEAD = '70vh';
 
 const PAGES = ['work', 'services', 'process', 'studio', 'contact'];
 const ELSEWHERE = [
-  ['Email', 'mailto:arthalimi989@gmail.com'],
+  ['Email', 'mailto:hello@arthalimi.com'],
   ['LinkedIn', 'https://www.linkedin.com/in/arthalimi/'],
   ['GitHub', 'https://github.com/ArtHalimi7'],
 ];

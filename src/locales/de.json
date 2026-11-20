@@ -395,7 +395,6 @@
       }
     },
     "big": "Work",
-    "cursor": "Projekt ansehen",
     "next": [
       "Das nächste",
       "könnte Ihres sein."
@@ -457,7 +456,7 @@
   "studio": {
     "tag": "Das Studio",
     "title": "Nah genug, um sich zu kümmern. Gebaut, um zu halten.",
-    "p1": "Art Halimi Studio ist ein unabhängiges Software-Studio aus Gelsenkirchen. Wir arbeiten mit Teams in Deutschland, der Schweiz und darüber hinaus, denen Tabellen und Standard-Tools zu klein geworden sind.",
+    "p1": "Art Halimi Studio ist ein unabhängiges Software-Studio aus Deutschland. Wir arbeiten mit Teams im gesamten deutschsprachigen Raum und darüber hinaus, denen Tabellen und Standard-Tools zu klein geworden sind.",
     "principles": [
       {
         "title": "Sie sprechen mit denen, die es bauen.",
@@ -481,7 +480,13 @@
     "tag": "Kontakt",
     "big1": "Bauen wir,",
     "big2": "was Ihnen fehlt.",
-    "lead": "Erzählen Sie uns, was Ihr Team noch von Hand erledigt. Wir antworten innerhalb eines Werktags mit einem Vorschlag.",
+    "lead": "Erzählen Sie uns, was Ihr Team noch von Hand erledigt.",
+    "nextTitle": "So geht es weiter",
+    "next": [
+      { "when": "Heute", "what": "Sie senden die Anfrage oder einfach eine E-Mail." },
+      { "when": "Innerhalb eines Werktags", "what": "Eine Antwort, wie wir es angehen würden." },
+      { "when": "Danach", "what": "Ein kurzes Gespräch, ein schriftlicher Umfang und ein fester Plan." }
+    ],
     "name": "Name",
     "email": "E-Mail",
     "company": "Unternehmen (optional)",
@@ -499,7 +504,9 @@
     "sending": "Wird gesendet…",
     "sent": "Danke. Wir melden uns innerhalb eines Werktags.",
     "error": "Das hat nicht geklappt. Bitte schreiben Sie uns direkt.",
-    "direct": "Oder per E-Mail",
+    "direct": "Oder direkt per E-Mail",
+    "copy": "E-Mail-Adresse kopieren",
+    "copied": "Kopiert",
     "brief": "Projektanfrage",
     "ready": "Bereit zum Senden"
   },
@@ -513,7 +520,7 @@
     "h2": "von selbst läuft.",
     "pages": "Seiten",
     "elsewhere": "Anderswo",
-    "where": "Gelsenkirchen, Deutschland",
+    "where": "Deutschland",
     "stack": [
       "TypeScript",
       "React",

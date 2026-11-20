@@ -1,13 +1,59 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { m, useInView, useScroll, useTransform } from 'framer-motion';
-import { ArrowUpRight, Check, Plus } from 'lucide-react';
+import { ArrowUpRight, Check, Copy, Plus } from 'lucide-react';
 import { Reveal, Roll, Tag } from './ui/primitives';
 import { CutShape } from './ui/cut';
 import { GAP, useCut } from '../lib/cut';
 
-const EMAIL = 'arthalimi989@gmail.com';
+const EMAIL = 'hello@arthalimi.com';
 const REQUIRED = ['name', 'email', 'message'];
+
+/** The email, as a card: the address opens the mail app, the round button copies it. */
+function EmailCard({ label, copyLabel, copiedLabel }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(EMAIL); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { /* the link still works */ }
+  };
+  return (
+    <div className="rounded-[20px] border border-paper/[0.09] bg-ink-850/70 p-5 sm:p-6">
+      <p aria-live="polite" className={`flex items-center gap-1.5 text-[13px] transition-colors duration-300 ${copied ? 'text-lime' : 'text-ink-400'}`}>{copied ? <><Check className="h-3.5 w-3.5" strokeWidth={2.5} />{copiedLabel}</> : label}</p>
+      <div className="mt-3 flex items-center justify-between gap-4">
+        <a href={`mailto:${EMAIL}`} className="group/e flex min-w-0 items-center gap-2 text-[clamp(1.05rem,1.5vw,1.3rem)] font-medium tracking-[-0.02em] text-paper">
+          <span className="truncate">{EMAIL}</span>
+          <ArrowUpRight className="h-4 w-4 shrink-0 text-ink-400 transition-[color,transform] duration-300 group-hover/e:-translate-y-0.5 group-hover/e:translate-x-0.5 group-hover/e:text-lime" />
+        </a>
+        <button type="button" onClick={copy} aria-label={copyLabel} className={`grid h-10 w-10 shrink-0 place-items-center rounded-full border transition-[background-color,border-color,color] duration-300 ${copied ? 'border-lime bg-lime text-ink' : 'border-paper/15 text-ink-300 hover:border-paper/40 hover:text-paper'}`}>
+          {copied ? <Check className="h-4 w-4" strokeWidth={2.5} /> : <Copy className="h-4 w-4" />}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** What happens after the brief is sent. Once it's sent, the first step ticks off and the second is the live one. */
+function NextSteps({ title, steps, sent }) {
+  if (!Array.isArray(steps)) return null;
+  const now = sent ? 1 : 0;
+  return (
+    <div>
+      <p className="text-[13px] text-ink-400">{title}</p>
+      <ol className="relative mt-5">
+        <span aria-hidden="true" className="absolute bottom-3 left-[7px] top-3 w-px bg-paper/[0.1]" />
+        <span aria-hidden="true" className="absolute left-[7px] top-3 w-px origin-top bg-lime transition-[height] duration-700 ease-[cubic-bezier(.22,1,.36,1)]" style={{ height: sent ? '42%' : 0 }} />
+        {steps.map((s, i) => (
+          <li key={s.when} className="relative pb-6 pl-9 last:pb-0">
+            <span aria-hidden="true" className={`absolute left-0 top-[3px] grid h-[15px] w-[15px] place-items-center rounded-full border transition-colors duration-500 ${i < now ? 'border-lime bg-lime text-ink' : i === now ? 'border-lime bg-ink' : 'border-paper/20 bg-ink'}`}>
+              {i < now ? <Check className="h-2.5 w-2.5" strokeWidth={3} /> : i === now ? <span className="h-[5px] w-[5px] animate-pulseDot rounded-full bg-lime" /> : null}
+            </span>
+            <p className={`text-[12.5px] transition-colors duration-500 ${i === now ? 'text-lime' : 'text-ink-400'}`}>{s.when}</p>
+            <p className="mt-1 max-w-[30ch] text-[15.5px] leading-snug text-ink-100">{s.what}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
 
 function Field({ n, label, hot = false, ...props }) {
   const El = props.rows ? 'textarea' : 'input';
@@ -126,10 +172,15 @@ export default function Contact() {
         </h2>
 
         <div className="wrap mt-24 grid gap-16 lg:grid-cols-12">
+          {/* the side: a promise, what happens next, and the address, spread to the height of the form */}
           <Reveal className="lg:col-span-4">
-            <p className="max-w-[34ch] text-[17px] leading-relaxed text-ink-200">{t('contact.lead')}</p>
-            <p className="mt-12 text-[13px] text-ink-400">{t('contact.direct')}</p>
-            <a href={`mailto:${EMAIL}`} className="link-line mt-2 text-[20px] font-medium tracking-[-0.02em]">{EMAIL}</a>
+            <div className="flex h-full flex-col gap-12 lg:pt-11">
+              <p className="max-w-[17ch] text-[clamp(1.6rem,2.3vw,2.15rem)] font-medium leading-[1.12] tracking-[-0.035em]">{t('contact.lead')}</p>
+              <NextSteps title={t('contact.nextTitle')} steps={t('contact.next', { returnObjects: true })} sent={state === 'sent'} />
+              <div className="lg:mt-auto">
+                <EmailCard label={t('contact.direct')} copyLabel={t('contact.copy')} copiedLabel={t('contact.copied')} />
+              </div>
+            </div>
           </Reveal>
           <Reveal className="lg:col-span-8" delay={0.1}>
             <div ref={box} className={`group relative pt-11 ${dims ? '' : 'rounded-[28px] bg-ink/90'}`}>

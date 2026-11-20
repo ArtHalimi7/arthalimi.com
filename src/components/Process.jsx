@@ -36,7 +36,7 @@ export default function Process() {
   const n = Array.isArray(steps) ? steps.length : 4;
 
   return (
-    <section id="process" data-shape="4" data-x="2.1" data-mx="0" data-my="1.6" data-scale="0.75" data-alpha="0.6" data-malpha="0.3" className="relative py-24 sm:py-32">
+    <section id="process" data-shape="4" data-follow="" data-x="1.6" data-y="0.95" data-mx="0.15" data-my="1.5" data-scale="0.82" data-mscale="0.66" data-alpha="0.7" data-malpha="0.42" className="relative py-24 sm:py-32">
       <div className="wrap relative z-10">
         <Tag>{t('process.tag')}</Tag>
         <h2 className="mt-8 text-[clamp(2.4rem,5vw,4.6rem)] font-medium leading-[1] tracking-[-0.045em]">

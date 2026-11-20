@@ -4,7 +4,7 @@ import { introA, introAlpha, introB, introFill, introMix, introOn, introScale, l
 
 /*
  * One fixed point cloud behind the whole page. Five shapes share the same points:
- *   0 sphere (with a lime scan ring)   1 scattered clusters   2 ring   3 waving field   4 cube lattice
+ *   0 sphere (with a lime scan ring)   1 scattered clusters   2 ring   3 waving field   4 a silk sheet with a lime thread
  * Sections opt in with data-shape (and optional data-x / data-mx / data-my / data-scale / data-alpha).
  * As the page scrolls the cloud morphs between the shapes of the sections around the middle of the screen.
  * Inside the lime section (limeAmt) the points turn black.
@@ -69,7 +69,18 @@ const vertex = /* glsl */ `
       p.y = sin(p.x * 1.7 + uTime * 0.9) * 0.16 + cos(p.z * 2.1 + uTime * 0.7) * 0.13 + noise(vec3(p.xz * 1.2, uTime * 0.25)) * 0.12;
       return rotX(0.42) * p;
     }
-    if (i < 4.5) return aCube;
+    if (i < 4.5) {
+      // a sheet of silk: fine threads running sideways, bending through depth, the band breathing wider and narrower
+      // along its length, a slow twist rolling through it. aCube holds along (-1..1), thread (-1..1), depth jitter.
+      float x = aCube.x * 3.3;
+      float y = sin(x * 0.85 + uTime * 0.3) * 0.42 + sin(x * 1.9 - uTime * 0.42) * 0.11;
+      float z = cos(x * 0.6 + uTime * 0.2) * 0.55;
+      float tw = x * 0.5 + uTime * 0.18 + 0.45;
+      float width = 0.6 * (0.72 + 0.28 * cos(x * 0.9 + uTime * 0.27));
+      vec3 p = vec3(x, y, z) + vec3(0.0, cos(tw), sin(tw)) * aCube.y * width;
+      p.y += noise(vec3(x * 0.8, aCube.y * 2.0, uTime * 0.2)) * 0.05;
+      return p + vec3(0.0, 0.0, aCube.z * 0.012);
+    }
     return aText + vec3(sin(uTime * 0.7 + seed * 40.0), cos(uTime * 0.6 + seed * 30.0), 0.0) * 0.006;
   }
 
@@ -78,7 +89,8 @@ const vertex = /* glsl */ `
     t = t * t * (3.0 - 2.0 * t);
     vec3 p = mix(shape(uA), shape(uB), t);
     float wText = (uA > 4.5 ? 1.0 - t : 0.0) + (uB > 4.5 ? t : 0.0);
-    float spin = 1.0 - wText;
+    float wSilk = (abs(uA - 4.0) < 0.5 ? 1.0 - t : 0.0) + (abs(uB - 4.0) < 0.5 ? t : 0.0);
+    float spin = clamp(1.0 - wText - wSilk, 0.0, 1.0); // the wordmark and the silk sheet hold still; the rest turns slowly
     p = rotX((-uMouse.y * 0.18 + 0.08) * (1.0 - wText * 0.7)) * rotY(uRot * spin + uMouse.x * 0.25 * (1.0 - wText * 0.7)) * p;
     p = p * uScale + uShift;
 
@@ -92,10 +104,15 @@ const vertex = /* glsl */ `
     float tx = aText.x / uTextHalfW * 0.5 + 0.5;
     float filled = step(tx, uFill) * wText;
     float edge = smoothstep(0.035, 0.0, abs(tx - uFill)) * wText * step(0.001, uFill) * step(uFill, 0.999);
-    vLime = max(max(scan, spark * (1.0 - wText)), max(filled * 0.9, edge)) * (1.0 - uInk);
+    // the silk's middle thread is lime, with a brighter stretch travelling along it
+    float pulse = smoothstep(0.16, 0.0, abs(fract(aCube.x * 0.5 + 0.5 - uTime * 0.05) - 0.5) - 0.34);
+    float silk = wSilk * smoothstep(0.05, 0.0, abs(aCube.y)) * (0.55 + 0.45 * pulse);
+    vLime = max(max(max(scan, spark * (1.0 - wText)), max(filled * 0.9, edge)), silk) * (1.0 - uInk);
     float depth = clamp((-mv.z - (uDist - 1.8)) / 2.6, 0.0, 1.0);
     vAlpha = mix(1.0, 0.32, depth) * uAlpha * mix(1.0, 0.8 + filled * 0.5 + edge * 0.6, wText);
-    gl_PointSize = (2.6 + scan * 3.0 + spark * 1.5 * (1.0 - wText) + uInk * 0.8 + edge * 2.6 + wText * (0.7 + filled * 0.5)) * uDpr * ((uDist - 1.0) / -mv.z);
+    // the silk fades out toward its ends and its outer threads, so it has no hard edges
+    vAlpha *= mix(1.0, smoothstep(1.0, 0.5, abs(aCube.x)) * (0.45 + 0.55 * smoothstep(1.0, 0.35, abs(aCube.y))), wSilk);
+    gl_PointSize = (2.6 + scan * 3.0 + silk * 1.4 + spark * 1.5 * (1.0 - wText) + uInk * 0.8 + edge * 2.6 + wText * (0.7 + filled * 0.5)) * uDpr * ((uDist - 1.0) / -mv.z);
   }
 `;
 
@@ -133,7 +150,6 @@ function build(count) {
   const islands = [[-1.6, 0.8, -0.3], [1.7, 0.3, -0.6], [0.1, -1.0, 0.2]];
   const cols = Math.ceil(Math.sqrt(count * 1.7));
   const rows = Math.ceil(count / cols);
-  const edge = Math.ceil(Math.sqrt(count / 6));
   for (let i = 0; i < count; i++) {
     const k = i * 3;
     // sphere
@@ -157,14 +173,10 @@ function build(count) {
     // field
     const cx = i % cols; const cz = (i / cols) | 0;
     plane[k] = (cx / (cols - 1) - 0.5) * 6.4; plane[k + 1] = 0; plane[k + 2] = (cz / Math.max(1, rows - 1) - 0.5) * 3.6;
-    // cube lattice (points on the faces, snapped to a grid)
-    const face = i % 6; const j = (i / 6) | 0;
-    const u = ((j % edge) / (edge - 1) - 0.5) * 1.8; const v = ((((j / edge) | 0) % edge) / (edge - 1) - 0.5) * 1.8;
-    const h = 0.9 * (face % 2 ? 1 : -1);
-    const ax = (face / 2) | 0;
-    if (ax === 0) { cube[k] = h; cube[k + 1] = u; cube[k + 2] = v; }
-    else if (ax === 1) { cube[k] = u; cube[k + 1] = h; cube[k + 2] = v; }
-    else { cube[k] = u; cube[k + 1] = v; cube[k + 2] = h; }
+    // silk sheet: where along it (-1..1), which of its 29 threads (-1..1, the middle one exactly 0), a little depth
+    cube[k] = Math.random() * 2 - 1;
+    cube[k + 1] = ((i % 29) / 14 - 1) * (1 + (Math.random() - 0.5) * 0.01);
+    cube[k + 2] = gauss();
     seed[i] = Math.random();
   }
   return { sphere, chaos, torus, plane, cube, seed };
@@ -236,6 +248,11 @@ function measureAnchors(wide, view) {
       y: Number(wide ? d.y ?? 0 : d.my ?? 0),
       scale: Number(wide ? d.scale ?? 1 : d.mscale ?? d.scale ?? 1),
       alpha: Number(wide ? d.alpha ?? 1 : d.malpha ?? d.alpha ?? 1),
+      // data-follow: the shape belongs to the section's layout and scrolls with it (its y is given for the section's
+      // top at the top of the screen); without it the shape holds still while the section scrolls past
+      follow: d.follow != null,
+      top: r.top + sy,
+      uy: view.h / V,
     };
     const slot = wide ? el.querySelector('[data-scene-slot]') : null;
     const s = slot?.getBoundingClientRect();
@@ -393,7 +410,10 @@ export default function Scene() {
       uniforms.uTime.value = time;
       uniforms.uRot.value = time * 0.08;
       uniforms.uMouse.value = [mouse.x, mouse.y];
-      uniforms.uShift.value = [cur.x, cur.y, 0];
+      // a following shape rides along with its section, unsmoothed, so it stays locked to the layout
+      const ride = (a) => (a && a.follow ? (window.scrollY - a.top) * a.uy : 0);
+      const followY = introOn.get() > 0.5 ? 0 : lerp(ride(A), ride(B), f);
+      uniforms.uShift.value = [cur.x, cur.y + followY, 0];
       uniforms.uScale.value = cur.scale;
       uniforms.uAlpha.value = cur.alpha;
       uniforms.uInk.value = cur.ink;

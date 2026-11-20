@@ -106,7 +106,7 @@ export default function Loader({ onDone }) {
       >
         <span>Art Halimi Studio</span>
         <span className="justify-self-center font-mono text-[13px] tabular-nums text-paper">{String(count).padStart(3, '0')}</span>
-        <span className="justify-self-end">Gelsenkirchen, DE</span>
+        <span className="justify-self-end">Germany</span>
       </m.div>
       <m.div
         initial={{ opacity: 0 }}

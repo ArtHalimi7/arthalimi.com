@@ -10,6 +10,7 @@ import lbPhone from '../assets/work/lb-mobile.webp';
 import tafaDesk from '../assets/work/tafa-desktop.webp';
 import tafaPhone from '../assets/work/tafa-mobile.webp';
 import { OpsBoard, OpsPhone } from './work/OpsMock';
+import Phone from './ui/Phone';
 import Slot from './work/Slot';
 
 /*
@@ -87,7 +88,7 @@ function Slide({ it, i, n, refs }) {
   // a live site is one link; a private system is just the picture
   const Stage = it.url ? 'a' : 'div';
   const stageProps = it.url
-    ? { href: it.url, target: '_blank', rel: 'noopener noreferrer', 'data-cursor': `${t('work.cursor')} ↗`, 'aria-label': `${title}: ${t('work.visit')}` }
+    ? { href: it.url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `${title}: ${t('work.visit')}` }
     : {};
 
   return (
@@ -125,12 +126,9 @@ function Slide({ it, i, n, refs }) {
               </div>
             </div>
 
-            <div ref={set('phones')} className="frag-card hit-ring absolute bottom-0 right-0 w-[27%] max-w-[240px] rounded-[30px] border border-white/[0.12] bg-[#0b0b0c] p-[5px] will-change-transform lg:w-[21%]">
-              <div className="relative aspect-[390/844] overflow-hidden rounded-[25px] bg-ink-950">
-                {ui ? <OpsPhone ui={ui} /> : <img src={it.phone} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover object-top" />}
-                <span className="absolute left-1/2 top-[7px] h-[13px] w-[30%] -translate-x-1/2 rounded-full bg-black" />
-              </div>
-            </div>
+            <Phone ref={set('phones')} className="hit-ring absolute -bottom-[2%] -right-[2%] w-[40%] max-w-[300px] will-change-transform sm:w-[32%] lg:w-[25%]">
+              {ui ? <OpsPhone ui={ui} /> : <img src={it.phone} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover object-top" />}
+            </Phone>
           </Stage>
         </div>
 
@@ -192,8 +190,11 @@ export default function Work() {
       const phone = refs.phones.current[i];
       if (phone) {
         // off centre the phone drifts outward on its own side, so a leaving slide's phone never lands on the next story
+        // On phones the slides sit too close for that: it barely moves and fades instead.
         const out = d < 0 ? -1 : 1;
-        phone.style.transform = `translate3d(${((1 - s) * 46 * out).toFixed(1)}%, ${((1 - s) * 10).toFixed(1)}%, 0) rotate(${lerp(11 * out, -3, s).toFixed(2)}deg)`;
+        const narrow = g.vw < 1024;
+        phone.style.transform = `translate3d(${((1 - s) * (narrow ? 12 : 46) * out).toFixed(1)}%, ${((1 - s) * 10).toFixed(1)}%, 0) rotate(${lerp((narrow ? 6 : 11) * out, -3, s).toFixed(2)}deg)`;
+        phone.style.opacity = narrow ? clamp01((s - 0.25) / 0.55).toFixed(3) : '';
         phone.style.setProperty('--hit', hit.toFixed(3));
       }
       const info = refs.infos.current[i];

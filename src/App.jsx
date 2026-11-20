@@ -6,8 +6,8 @@ import { ReactLenis, useLenis } from 'lenis/react';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import Loader from './components/Loader';
-import Cursor from './components/Cursor';
 import Hud from './components/Hud';
+import Scrollbar from './components/Scrollbar';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import { Datenschutz, Impressum } from './pages/Legal';
@@ -103,8 +103,8 @@ export function AppShell() {
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
-            <Cursor />
             <Hud show={ready} />
+            <Scrollbar show={ready} />
           </ReadyContext.Provider>
         </MotionConfig>
       </LazyMotion>

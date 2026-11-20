@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpRight, BarChart3, Boxes, CalendarDays, Check, CheckCheck, FileText, Lock, Package, Plus, Users, Wallet, X } from 'lucide-react';
 import { LogoMark, Roll } from '../ui/primitives';
+import Phone from '../ui/Phone';
 import { useScrollTo } from '../Nav';
 
 /*
@@ -279,9 +280,7 @@ export default function Slot({ refs }) {
           </div>
 
           {/* the phone version */}
-          <div ref={refs.phone} className="frag-card hit-ring absolute bottom-0 right-0 w-[19%] max-w-[210px] rounded-[30px] border border-white/[0.12] bg-[#0b0b0c] p-[5px] will-change-transform">
-            <div className="relative flex aspect-[390/844] flex-col gap-2 overflow-hidden rounded-[25px] bg-ink-950 px-3 pb-3 pt-8 text-paper">
-              <span className="absolute left-1/2 top-[7px] h-[13px] w-[30%] -translate-x-1/2 rounded-full bg-black" />
+          <Phone ref={refs.phone} className="hit-ring absolute -bottom-[2%] -right-[2%] w-[36%] max-w-[264px] will-change-transform sm:w-[23%]" screenClassName="flex flex-col gap-2 bg-ink-950 px-3 pb-3 pt-8 text-paper">
               <p className="text-[8.5px] uppercase tracking-[0.08em] text-ink-500">{t('work.slotPhone')}</p>
               <p className="text-[13px] font-medium leading-tight">{t('work.slotWs')}</p>
               {sel.slice(0, 4).map((k, i) => {
@@ -297,8 +296,7 @@ export default function Slot({ refs }) {
                 );
               })}
               <span className="mt-auto block h-7 rounded-full bg-lime" />
-            </div>
-          </div>
+          </Phone>
         </div>
       </div>
     </div>

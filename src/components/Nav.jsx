@@ -186,7 +186,7 @@ export default function Nav() {
             </ul>
             <div className="mt-8 flex items-center justify-between">
               <Lang />
-              <a href="mailto:arthalimi989@gmail.com" className="text-[13px] text-ink-300">arthalimi989@gmail.com</a>
+              <a href="mailto:hello@arthalimi.com" className="text-[13px] text-ink-300">hello@arthalimi.com</a>
             </div>
           </m.div>
         )}

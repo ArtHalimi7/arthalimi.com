@@ -5,14 +5,15 @@
  */
 export const SITE = 'https://arthalimi.com';
 export const OG_IMAGE = `${SITE}/og.png`;
-export const EMAIL = 'arthalimi989@gmail.com';
+export const EMAIL = 'hello@arthalimi.com';
 
 // Every page that gets its own HTML file. `alt` = the same page in the other language.
 export const PAGES = [
   { path: '/', file: 'index.html', lang: 'en', key: 'home', alt: { en: '/', de: '/de' }, priority: '1.0' },
   { path: '/de', file: 'de.html', lang: 'de', key: 'home', alt: { en: '/', de: '/de' }, priority: '1.0' },
-  { path: '/impressum', file: 'impressum.html', lang: 'de', key: 'impressum', priority: '0.2' },
-  { path: '/datenschutz', file: 'datenschutz.html', lang: 'de', key: 'datenschutz', priority: '0.2' },
+  // the legal pages stay reachable from the footer but out of search results (the Impressum carries a street address)
+  { path: '/impressum', file: 'impressum.html', lang: 'de', key: 'impressum', priority: '0.2', noindex: true },
+  { path: '/datenschutz', file: 'datenschutz.html', lang: 'de', key: 'datenschutz', priority: '0.2', noindex: true },
   { path: '/404', file: '404.html', lang: 'en', key: 'notfound', noindex: true },
 ];
 

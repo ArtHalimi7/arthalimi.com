@@ -17,6 +17,57 @@ html { background: var(--ink); -webkit-text-size-adjust: 100%; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 
+/* The scrollbar: the browser's own (it keeps dragging, keyboard and Lenis working), themed thin and quiet. The thumb
+   is ink-400, which keeps 3:1 against the near-black track; scrollbar-color inherits, so inner scrollers match. */
+html {
+  --scrollbar-thumb: #6e6e6e;
+  --scrollbar-track: var(--ink);
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent; /* no track behind the thumb */
+}
+@media (prefers-contrast: more) {
+  html { --scrollbar-thumb: #f2f2ee; --scrollbar-track: #000000; }
+}
+/* browsers without scrollbar-color (Safari before 26.2): the WebKit pseudo-elements, a slim pill with a lime hover */
+@supports not (scrollbar-color: auto) {
+  html { scrollbar-width: auto; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+  ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); background-clip: padding-box; border: 3px solid transparent; border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background-color: var(--lime); }
+}
+
+/* Mouse and trackpad screens: the browser's bar would keep a dark gutter down the right edge (Windows), so it's hidden
+   and components/Scrollbar.jsx floats its own pill there instead. Touch screens keep their native overlay bar. */
+@media (hover: hover) and (pointer: fine) {
+  html { scrollbar-width: none; }
+  html::-webkit-scrollbar { display: none; }
+}
+.ah-scrollbar { opacity: 0; pointer-events: none; }
+.ah-scrollbar[data-active='true'], .ah-scrollbar[data-drag='true'] { opacity: 1; pointer-events: auto; }
+.ah-scrollbar[data-show='false'] { opacity: 0; pointer-events: none; }
+.ah-scrollbar-thumb {
+  width: 4px;
+  border-radius: 999px;
+  background: rgba(242, 242, 238, 0.42);
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.25);
+  cursor: grab;
+  touch-action: none;
+  will-change: transform;
+  transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease, right 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ah-scrollbar[data-hover='true'] .ah-scrollbar-thumb, .ah-scrollbar-thumb:hover { width: 7px; right: 4px; background: rgba(242, 242, 238, 0.72); }
+.ah-scrollbar[data-drag='true'] .ah-scrollbar-thumb { width: 7px; right: 4px; background: var(--lime); box-shadow: 0 0 14px rgba(200, 255, 46, 0.45); cursor: grabbing; }
+.ah-scrollbar[data-ink='true']:not([data-drag='true']) .ah-scrollbar-thumb { background: rgba(10, 10, 10, 0.55); box-shadow: none; }
+.ah-scrollbar[data-ink='true'][data-hover='true']:not([data-drag='true']) .ah-scrollbar-thumb { background: rgba(10, 10, 10, 0.8); }
+@media (prefers-contrast: more) {
+  .ah-scrollbar-thumb { background: #f2f2ee; box-shadow: 0 0 0 1px #000; }
+  .ah-scrollbar[data-ink='true']:not([data-drag='true']) .ah-scrollbar-thumb { background: #000; box-shadow: 0 0 0 1px #f2f2ee; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ah-scrollbar, .ah-scrollbar-thumb { transition: none; }
+}
+
 body {
   background: var(--ink);
   color: var(--paper);
@@ -127,6 +178,13 @@ body {
    .frag-ring: the hero's scan line has mapped this scrap (--cap).  .hit-ring: a Work phone locking in (--hit). */
 .frag-ring { position: absolute; inset: -1px; pointer-events: none; border-radius: var(--r, 14px); box-shadow: 0 0 0 1.5px rgba(200, 255, 46, 0.7), 0 0 28px rgba(200, 255, 46, 0.2); opacity: var(--cap, 0); will-change: opacity; }
 .hit-ring::after { content: ''; position: absolute; inset: -1px; pointer-events: none; border-radius: 31px; box-shadow: 0 0 0 1.5px #c8ff2e, 0 0 28px rgba(200, 255, 46, 0.25); opacity: var(--hit, 0); will-change: opacity; }
+.phone-device.hit-ring::after { inset: 3.06% 8.41% 2.36%; border-radius: 19% / 9%; }
+
+/* The phone (ui/Phone.jsx): a photographic frame over the screen content. Insets and radii are shares of the frame
+   image (927 × 1697): its screen opening starts 11.65% in from each side, 4.83% from the top, 4.18% from the bottom. */
+.phone-device { aspect-ratio: 927 / 1697; filter: drop-shadow(0 34px 34px rgba(0, 0, 0, 0.5)) drop-shadow(0 10px 12px rgba(0, 0, 0, 0.35)); }
+.phone-screen { position: absolute; left: 11.3%; right: 11.3%; top: 4.55%; bottom: 3.9%; overflow: hidden; border-radius: 15.5% / 7.1%; background: #0a0a0a; }
+.phone-frame { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; pointer-events: none; user-select: none; }
 
 /* Hero intro (hero/Scraps.jsx): a scrap being diagnosed takes a lime outline and a tag naming what it costs.
    While it's tagged it comes to the front and into focus, over the styles the scroll handler writes. */

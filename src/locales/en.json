@@ -395,7 +395,6 @@
       }
     },
     "big": "Work",
-    "cursor": "View project",
     "next": [
       "The next one",
       "could be yours."
@@ -457,7 +456,7 @@
   "studio": {
     "tag": "The studio",
     "title": "Small enough to care. Engineered to last.",
-    "p1": "Art Halimi Studio is an independent software studio in Gelsenkirchen, Germany, working with teams in Germany, Switzerland and beyond that have outgrown spreadsheets and off-the-shelf tools.",
+    "p1": "Art Halimi Studio is an independent software studio based in Germany, working with teams across Europe that have outgrown spreadsheets and off-the-shelf tools.",
     "principles": [
       {
         "title": "You talk to the people building it.",
@@ -481,7 +480,13 @@
     "tag": "Contact",
     "big1": "Let's build",
     "big2": "what's missing.",
-    "lead": "Tell us what your team still does by hand. We reply within one working day with how we'd approach it.",
+    "lead": "Tell us what your team still does by hand.",
+    "nextTitle": "What happens next",
+    "next": [
+      { "when": "Today", "what": "You send the brief, or just an email." },
+      { "when": "Within one working day", "what": "A reply with how we'd approach it." },
+      { "when": "Then", "what": "A short call, a written scope and a fixed plan." }
+    ],
     "name": "Name",
     "email": "Email",
     "company": "Company (optional)",
@@ -499,7 +504,9 @@
     "sending": "Sending…",
     "sent": "Thank you. We'll get back to you within one working day.",
     "error": "That didn't go through. Please email us directly.",
-    "direct": "Or email us",
+    "direct": "Or email directly",
+    "copy": "Copy email address",
+    "copied": "Copied",
     "brief": "Project brief",
     "ready": "Ready to send"
   },
@@ -513,7 +520,7 @@
     "h2": "runs itself.",
     "pages": "Pages",
     "elsewhere": "Elsewhere",
-    "where": "Gelsenkirchen, Germany",
+    "where": "Germany",
     "stack": [
       "TypeScript",
       "React",
