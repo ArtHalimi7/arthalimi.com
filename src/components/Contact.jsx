@@ -130,24 +130,21 @@ export default function Contact() {
     const data = new FormData(formEl);
     if (data.get('_honey')) return;
     setState('sending');
+    // Netlify Forms: the form is found in the prerendered HTML at deploy, and submissions are posted back to the site.
+    // Netlify stores them and emails them to the address set under Site configuration → Notifications.
+    data.set('needs', picked.join(', ') || '-');
+    data.set('company', data.get('company') || '-');
+    data.set('subject', `New enquiry from ${data.get('name')}`);
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 15000); // never leave the button on "Sending…"
     try {
-      const res = await fetch(`https://formsubmit.co/ajax/${EMAIL}`, {
+      const res = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          name: data.get('name'),
-          email: data.get('email'),
-          company: data.get('company') || '-',
-          needs: picked.join(', ') || '-',
-          message: data.get('message'),
-          language: i18n.language,
-          _subject: `Art Halimi Studio: new enquiry from ${data.get('name')}`,
-          _template: 'table',
-          _captcha: 'false',
-        }),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString(),
+        signal: ctl.signal,
       });
-      const json = await res.json().catch(() => ({}));
-      if (!res.ok || String(json.success) === 'false') throw new Error('failed');
+      if (!res.ok) throw new Error('failed');
       setState('sent');
       setTrace((n) => n + 1);
       formEl.reset();
@@ -155,6 +152,8 @@ export default function Contact() {
       setDone(0);
     } catch {
       setState('error');
+    } finally {
+      clearTimeout(timer);
     }
   };
   const onInput = () => {
@@ -192,8 +191,15 @@ export default function Contact() {
                 {t('contact.brief')}
               </div>
 
-              <form id="contact-form" ref={form} onSubmit={submit} onInput={onInput} className="relative px-6 pt-8 sm:px-10 sm:pt-10">
+              {/* eslint-disable-next-line react/no-unknown-property -- Netlify reads this attribute from the prerendered HTML */}
+              <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="_honey" ref={form} onSubmit={submit} onInput={onInput} className="relative px-6 pt-8 sm:px-10 sm:pt-10">
+                {/* Netlify Forms: the form's name, a trap field for bots, and the fields filled in on send (they must exist here
+                    for Netlify to keep them) */}
+                <input type="hidden" name="form-name" value="contact" />
                 <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
+                <input type="hidden" name="needs" value="" />
+                <input type="hidden" name="language" value={i18n.language} />
+                <input type="hidden" name="subject" value="" />
                 <div className="grid gap-10 sm:grid-cols-2">
                   <Field n="01" label={t('contact.name')} name="name" required autoComplete="name" />
                   <Field n="02" label={t('contact.email')} name="email" type="email" required autoComplete="email" />

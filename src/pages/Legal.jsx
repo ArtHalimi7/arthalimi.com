@@ -67,7 +67,7 @@ export function Datenschutz() {
         <p>Diese Website setzt keine Cookies und verwendet keine Analyse- oder Tracking-Dienste. Die gewählte Sprache wird nur lokal in Ihrem Browser gespeichert. Schriftarten werden von dieser Website selbst ausgeliefert, nicht von Google.</p>
       </Section>
       <Section title="Kontaktformular">
-        <p>Wenn Sie das Kontaktformular nutzen, werden Ihre Angaben (Name, E-Mail, Unternehmen, Nachricht) über den Dienst FormSubmit (formsubmit.co) per E-Mail an mich übermittelt, um Ihre Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO. Die Daten werden gelöscht, sobald sie für die Bearbeitung nicht mehr erforderlich sind.</p>
+        <p>Wenn Sie das Kontaktformular nutzen, werden Ihre Angaben (Name, E-Mail, Unternehmen, Nachricht) über die Formularfunktion unseres Hosters Netlify (siehe Hosting) gespeichert und per E-Mail an mich weitergeleitet, um Ihre Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO. Die Daten werden gelöscht, sobald sie für die Bearbeitung nicht mehr erforderlich sind.</p>
       </Section>
       <Section title="Ihre Rechte">
         <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Schreiben Sie dazu an hello@arthalimi.com.</p>
