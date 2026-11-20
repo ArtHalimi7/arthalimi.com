@@ -7,6 +7,8 @@ import { CutShape } from './ui/cut';
 import { GAP, useCut } from '../lib/cut';
 
 const EMAIL = 'hello@arthalimi.com';
+// Web3Forms emails each enquiry to the inbox this key was made for. The key is public by design: it can only send there.
+const WEB3FORMS_KEY = 'ec0fa78b-574e-4915-b456-11e455b50891';
 const REQUIRED = ['name', 'email', 'message'];
 
 /** The email, as a card: the address opens the mail app, the round button copies it. */
@@ -130,21 +132,38 @@ export default function Contact() {
     const data = new FormData(formEl);
     if (data.get('_honey')) return;
     setState('sending');
-    // Netlify Forms: the form is found in the prerendered HTML at deploy, and submissions are posted back to the site.
-    // Netlify stores them and emails them to the address set under Site configuration → Notifications.
     data.set('needs', picked.join(', ') || '-');
     data.set('company', data.get('company') || '-');
     data.set('subject', `New enquiry from ${data.get('name')}`);
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), 15000); // never leave the button on "Sending…"
+    // Two routes at once, so an outage on one never loses an enquiry:
+    //   Web3Forms emails it to the inbox; Netlify Forms keeps a copy in the Netlify dashboard (Forms → contact).
+    const email = fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: data.get('subject'),
+        from_name: 'arthalimi.com',
+        replyto: data.get('email'),
+        name: data.get('name'),
+        email: data.get('email'),
+        company: data.get('company'),
+        needs: data.get('needs'),
+        message: data.get('message'),
+        language: data.get('language'),
+      }),
+      signal: ctl.signal,
+    }).then(async (res) => { const json = await res.json().catch(() => ({})); if (!res.ok || json.success !== true) throw new Error('email failed'); });
+    const copy = fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data).toString(),
+      signal: ctl.signal,
+    }).then((res) => { if (!res.ok) throw new Error('copy failed'); });
     try {
-      const res = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(data).toString(),
-        signal: ctl.signal,
-      });
-      if (!res.ok) throw new Error('failed');
+      await Promise.any([email, copy]);
       setState('sent');
       setTrace((n) => n + 1);
       formEl.reset();
