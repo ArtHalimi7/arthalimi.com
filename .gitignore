@@ -25,3 +25,7 @@ dist-ssr
 
 # Local env files
 .env
+
+# Keys and certificates: never commit
+*.pem
+*.key

@@ -1,7 +1,12 @@
-// Simple HTTP Basic Auth middleware for /api/visits
-const ADMIN_USER = process.env.ADMIN_USER || 'admin';
-const ADMIN_PASS = process.env.ADMIN_PASS || '***REMOVED***';
+// Simple HTTP Basic Auth middleware for /api/visits.
+// Credentials are read per request (dotenv is loaded further down) and there is
+// no built-in login: without ADMIN_USER and ADMIN_PASS the analytics endpoint stays locked.
 function basicAuth(req, res, next) {
+  const ADMIN_USER = process.env.ADMIN_USER;
+  const ADMIN_PASS = process.env.ADMIN_PASS;
+  if (!ADMIN_USER || !ADMIN_PASS) {
+    return res.status(503).send('Analytics login is disabled: set ADMIN_USER and ADMIN_PASS.');
+  }
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith('Basic ')) {
     res.set('WWW-Authenticate', 'Basic realm="Analytics"');
